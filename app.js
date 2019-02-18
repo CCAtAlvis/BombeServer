@@ -20,13 +20,20 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+
+let wsclients = [];
+
 // WebSockets
 app.ws('/echo', (ws, req) => {
   // console.log(ws);
-  console.log(req.url);
+  // console.log(req.url);
+  wsclients.push(ws);
   ws.on('message', (msg) => {
     console.log(msg);
-    ws.send();
+    console.log("sending to all clients");
+    wsclients.forEach(c => {
+      c.send(msg);
+    });
   });
 });
 
