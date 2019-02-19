@@ -10,30 +10,65 @@ var output;
 // handles JSON.stringify/parse
 
 const constraints = {audio: true, video: true};
+const SDPmediaConstraints = {
+  mandatory: {
+    'OfferToReceiveAudio': true,
+    'OfferToReceiveVideo': true
+  },
+  'offerToReceiveAudio': true,
+  'offerToReceiveVideo': true
+};
+
 const configuration = {iceServers: [{urls: "stun:stun.stunprotocol.org:3478"}]};
-const pc = new RTCPeerConnection(configuration);
+let pc = new RTCPeerConnection(configuration);
 // console.log(pc);
 // websocket.send(pc);
 
 // send any ice candidates to the other peer
-pc.onicecandidate = ({candidate}) => {
-  console.log({candidate});
-  websocket.send({candidate});
-  console.log("hello world");
+pc.onicecandidate = (event) => {
+  // console.log(event);
+  console.log(event.candidate);
 };
 
 // let the "negotiationneeded" event trigger offer generation
-pc.onnegotiationneeded = async () => {
-  try {
-    let offer = await pc.createOffer();
-    console.log(offer)
-    await pc.setLocalDescription(offer);
-    // send the offer to the other peer
-    console.log({desc: pc.localDescription});
-  } catch (err) {
-    console.error(err);
-  }
-};
+// pc.onnegotiationneeded = async () => {
+//   try {
+//     let offer = await pc.createOffer();
+//     console.log(offer);
+//     await pc.setLocalDescription(offer);
+//     // send the offer to the other peer
+//     console.log({desc: pc.localDescription});
+//   } catch (err) {
+//     console.error(err);
+//   }
+// };
+
+const createOffer = () => {
+  pc.createOffer(SDPmediaConstraints)
+  .then(offer => {
+    console.log(offer);
+    websocket.send(offer);
+    pc.setLocalDescription(offer);
+  })
+  .catch(err => {
+    console.log(err);
+  });
+}
+
+function onOffer(offer, name) {
+  connectedUser = name;
+  pc.setRemoteDescription(new RTCSessionDescription(offer)); 
+
+  myConnection.createAnswer(function (answer) {
+    myConnection.setLocalDescription(answer);
+    // websockets code here
+
+  }, function (error) {
+    alert("oops...error");
+  });
+}
+
+
 
 // once remote track media arrives, show it in remote video element
 pc.ontrack = (event) => {
@@ -55,92 +90,93 @@ async function start() {
     console.error(err);
   }
 }
-/*
-signaling.onmessage = async ({desc, candidate}) => {
-  try {
-    if (desc) {
-      // if we get an offer, we need to reply with an answer
-      if (desc.type === 'offer') {
-        await pc.setRemoteDescription(desc);
-        const stream =
-          await navigator.mediaDevices.getUserMedia(constraints);
-        stream.getTracks().forEach((track) =>
-          pc.addTrack(track, stream));
-        await pc.setLocalDescription(await pc.createAnswer());
-        signaling.send({desc: pc.localDescription});
-      } else if (desc.type === 'answer') {
-        await pc.setRemoteDescription(desc);
-      } else {
-        console.log('Unsupported SDP type.');
-      }
-    } else if (candidate) {
-      await pc.addIceCandidate(candidate);
-    }
-  } catch (err) {
-    console.error(err);
-  }
-};*/
-      function init() {
-         output = document.getElementById("output");
-         testWebSocket();
-      }
-	
-      function testWebSocket() {
-         websocket = new WebSocket(wsUri);
-		
-         websocket.onopen = function(evt) {
-            onOpen(evt)
-         };
-		
-         websocket.onclose = function(evt) {
-            onClose(evt)
-         };
-		
-         websocket.onmessage = function(evt) {
-            onMessage(evt)
-         };
-		
-         websocket.onerror = function(evt) {
-            onError(evt)
-         };
-      }
-	
-      function onOpen(evt) {
-         writeToScreen("CONNECTED");
-         doSend("THE MESSAGE");
-      }
-	
-      function onClose(evt) {
-         writeToScreen("DISCONNECTED");
-      }
-	
-      function onMessage(evt) {
-         writeToScreen('<span style = "color: blue;">RESPONSE: ' + 
-            evt.data+'</span>');
-          // websocket.close();
-      }
-	
-      function onError(evt) {
-         writeToScreen('<span style = "color: red;">ERROR:</span> '
-            + evt.data);
-      } 
-	
-      function doSend(message) {
-         writeToScreen("SENT: " + message); 
-         websocket.send(message);
-      }
-	
-      function writeToScreen(message) {
-         var pre = document.createElement("p"); 
-         pre.style.wordWrap = "break-word"; 
-         pre.innerHTML = message; 
-         output.appendChild(pre);
-      }
-	
-      window.addEventListener("load", init, false);
-   </script>
-	
+
+// signaling.onmessage = async ({desc, candidate}) => {
+//   try {
+//     if (desc) {
+//       // if we get an offer, we need to reply with an answer
+//       if (desc.type === 'offer') {
+//         await pc.setRemoteDescription(desc);
+//         const stream =
+//           await navigator.mediaDevices.getUserMedia(constraints);
+//         stream.getTracks().forEach((track) =>
+//           pc.addTrack(track, stream));
+//         await pc.setLocalDescription(await pc.createAnswer());
+//         signaling.send({desc: pc.localDescription});
+//       } else if (desc.type === 'answer') {
+//         await pc.setRemoteDescription(desc);
+//       } else {
+//         console.log('Unsupported SDP type.');
+//       }
+//     } else if (candidate) {
+//       await pc.addIceCandidate(candidate);
+//     }
+//   } catch (err) {
+//     console.error(err);
+//   }
+// };
+
+function init() {
+  output = document.getElementById("output");
+  testWebSocket();
+}
+
+function testWebSocket() {
+  websocket.onopen = function(evt) {
+    onOpen(evt)
+  };
+
+  websocket.onclose = function(evt) {
+    onClose(evt)
+  };
+
+  websocket.onmessage = function(evt) {
+    onMessage(evt)
+  };
+
+  websocket.onerror = function(evt) {
+    onError(evt)
+  };
+}
+
+function onOpen(evt) {
+  writeToScreen("CONNECTED");
+  doSend("THE MESSAGE");
+}
+
+function onClose(evt) {
+  writeToScreen("DISCONNECTED");
+}
+
+function onMessage(evt) {
+  writeToScreen('<span style = "color: blue;">RESPONSE: ' + 
+    evt.data+'</span>');
+  // websocket.close();
+}
+
+function onError(evt) {
+  writeToScreen('<span style = "color: red;">ERROR:</span> '
+    + evt.data);
+}
+
+function doSend(message) {
+  writeToScreen("SENT: " + message); 
+  websocket.send(message);
+}
+
+function writeToScreen(message) {
+  var pre = document.createElement("p"); 
+  pre.style.wordWrap = "break-word"; 
+  pre.innerHTML = message; 
+  output.appendChild(pre);
+}
+
+  window.addEventListener("load", init, false);
+</script>
+
    <h2>WebSocket Test</h2>
    <div id = "output"></div>
-	
+
+   <button onclick="createOffer()">Create Offer</button>
+
 </html>

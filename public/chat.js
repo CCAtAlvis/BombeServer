@@ -4,19 +4,19 @@ const constraints = window.constraints = {
   video: true
 };
 
-function handleSuccess(stream) {
+function handleSuccess (stream) {
   const video = document.querySelector('video');
   const videoTracks = stream.getVideoTracks();
   console.log('Got stream with constraints:', constraints);
   console.log(`Using video device: ${videoTracks[0].label}`);
   window.stream = stream; // make variable available to browser console
   video.srcObject = stream;
-  stream.onended = function(e) {
-    console.log("Ended",e);
-  }
+  stream.onended = function (e) {
+    console.log('Ended', e);
+  };
 }
 
-function handleError(error) {
+function handleError (error) {
   if (error.name === 'ConstraintNotSatisfiedError') {
     let v = constraints.video;
     errorMsg(`The resolution ${v.width.exact}x${v.height.exact} px is not supported by your device.`);
@@ -28,7 +28,7 @@ function handleError(error) {
   errorMsg(`getUserMedia error: ${error.name}`, error);
 }
 
-function errorMsg(msg, error) {
+function errorMsg (msg, error) {
   const errorElement = document.querySelector('#errorMsg');
   errorElement.innerHTML += `<p>${msg}</p>`;
   if (typeof error !== 'undefined') {
@@ -36,7 +36,7 @@ function errorMsg(msg, error) {
   }
 }
 
-async function init() {
+async function init () {
   try {
     const stream = await navigator.mediaDevices.getUserMedia(constraints);
     handleSuccess(stream);
