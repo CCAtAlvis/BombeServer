@@ -32,7 +32,9 @@ app.ws('/echo', (ws, req) => {
     console.log(msg);
     console.log("sending to all clients");
     wsclients.forEach(c => {
-      c.send(msg);
+      if (c.readyState === c.OPEN) {
+        c.send(msg);
+      }
     });
   });
 });

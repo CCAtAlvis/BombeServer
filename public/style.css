@@ -1,0 +1,137 @@
+body {
+    background-image: url("background.jpg");
+    border: 0px;
+    margin: 0px;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+#loginCard {
+    background-color: white;
+    height: 400px;
+    width: 300px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 100px; 
+    border-radius: 20px;
+    border: 2px solid skyblue;
+}
+img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 10px; 
+}
+#Register {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 110px;
+    padding-right: 110px;
+}
+#showUserScreen {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 77px;
+    padding-right: 77px;
+}
+#Login {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 119px;
+    padding-right: 119px;
+}
+#userScreen {
+    display: none;
+    background-color: white;
+    height: 400px;
+    width: 300px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 100px; 
+    border-radius: 20px;
+    border: 2px solid skyblue;
+}
+#RegisterDiv {
+    display: none;
+    background-color: white;
+    height: 610px;
+    width: 300px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 50px; 
+    border-radius: 20px;
+    border: 2px solid skyblue;
+}
+#LoginDiv {
+    display: none;
+    background-color: white;
+    height: 400px;
+    width: 300px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 100px; 
+    border-radius: 20px;
+    border: 2px solid skyblue;
+}
+#EmailInput,#ReferralInput {
+    padding-left: 10px;
+    padding-right: 10px; 
+    padding-top: 40px;
+}
+#PasswordInput, #ConfirmPasswordInput, 
+#NameInput, #ContactInput {
+    padding-left: 10px;
+    padding-right: 10px; 
+    padding-top: 10px;
+}
+#SubmitButton {
+    padding-top: 10px;
+    padding-left: 10px;
+}
+#chatBig {
+    display: block;
+    background-color: white;
+    height: 725px;
+    width: 1500px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10px; 
+    border-radius: 20px;
+    border: 2px solid skyblue;
+}
+#logoOnly {
+    display: block  ;
+    background-color: white;
+    height: 500px;
+    width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 180px; 
+    border-radius: 20px;
+}
+#container {
+    display: block;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background-color: white;
+    height: 400px;
+    width: 534px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 100px; 
+    border-radius: 20px;
+    margin-right: 18px;
+    margin-bottom: 15px;
+    border: 2px solid white;
+}
+
+video {
+    height: 399px;
+    width: 533px;
+    border-radius: 20px;
+    border-right: 2px solid skyblue;
+    border-bottom: 2px solid skyblue;
+}
