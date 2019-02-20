@@ -4,12 +4,12 @@
    <title>WebSocket Test</title>
 
    <script language = "javascript" type = "text/javascript">
-var wsUri = 'ws://localhost:8000/echo';
+var wsUri = 'ws://localhost:8000/ws/echo';
 var websocket = new WebSocket(wsUri);
 var output;
 // handles JSON.stringify/parse
 
-const constraints = {audio: true, video: true};
+const constraiytnts = {audio: true, video: true};
 const SDPmediaConstraints = {
   mandatory: {
     'OfferToReceiveAudio': true,
@@ -21,13 +21,12 @@ const SDPmediaConstraints = {
 
 const configuration = {iceServers: [{urls: "stun:stun.stunprotocol.org:3478"}]};
 let pc = new RTCPeerConnection(configuration);
-// console.log(pc);
-// websocket.send(pc);
 
 // send any ice candidates to the other peer
 pc.onicecandidate = (event) => {
   // console.log(event);
   console.log(event.candidate);
+  // websockets here
 };
 
 // let the "negotiationneeded" event trigger offer generation

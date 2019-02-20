@@ -8,7 +8,12 @@ const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 
 const app = express();
-const expressWs = require('express-ws')(app);
+const expressWs = require('express-ws');
+expressWs(app);
+
+// initialize web sockets routing
+const initWS = require('./controller/wsController');
+initWS(app);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -19,25 +24,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
-let wsclients = [];
-
-// WebSockets
-app.ws('/echo', (ws, req) => {
-  // console.log(req.url);
-  wsclients.push(ws);
-  ws.on('message', (msg) => {
-    // console.log(msg);
-    // console.log('sending to all clients');
-    wsclients.forEach(c => {
-      if (c.readyState === c.OPEN && c !== ws) {
-        c.send(msg);
-      } else {
-        // splice the array here
-      }
-    });
-  });
-});
 
 // routing
 app.use('/', indexRouter);
