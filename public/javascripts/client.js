@@ -1,4 +1,4 @@
-let wsUri = 'ws://bombe.herokuapp.com:8000/ws/echo/chetan';
+let wsUri = 'wss://bombe.herokuapp.com:8000/ws/echo/chetan';
 let output;
 const websocket = new WebSocket(wsUri);
 const constraints = { audio: true, video: true };
