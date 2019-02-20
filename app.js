@@ -20,6 +20,9 @@ expressWs(app);
 const initWS = require('./controller/wsController');
 initWS(app);
 
+const TURN = require('./controller/turnController');
+TURN.initTURN();
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
