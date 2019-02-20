@@ -12,6 +12,8 @@ router.ws('/echo/:id', (ws, req) => {
   // TODO:
   // proper handling of ws clients by inserting in DB
   wsclients.push(ws);
+  console.log('client connected');
+  console.log(ws._socket.remoteAddress);
 
   ws.on('message', (message) => {
     console.log(message);

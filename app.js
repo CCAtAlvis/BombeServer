@@ -1,17 +1,22 @@
+// require mandatory modules
 const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 
+// require routings
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 
+// create express app
 const app = express();
+
+// require and serup express-ws for WebSockets
 const expressWs = require('express-ws');
 expressWs(app);
 
-// initialize web sockets routing
+// initialize WebSockets routing
 const initWS = require('./controller/wsController');
 initWS(app);
 
