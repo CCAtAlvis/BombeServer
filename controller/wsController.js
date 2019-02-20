@@ -14,7 +14,7 @@ router.ws('/echo/:id', (ws, req) => {
   wsclients.push(ws);
 
   ws.on('message', (message) => {
-    // console.log(msg);
+    console.log(message);
     // console.log('sending to all clients');
 
     // TODO
