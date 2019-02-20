@@ -1,9 +1,10 @@
 body {
-    background-image: url("background.jpg");
+    background-image: url("../images/background.jpg");
     border: 0px;
     margin: 0px;
     background-repeat: no-repeat;
     background-size: cover;
+    background-attachment: initial;
 }
 #loginCard {
     background-color: white;
@@ -24,7 +25,7 @@ body {
     margin-top: 100px; 
     border-radius: 20px;
     border: 2px solid skyblue;
-    display: none;
+    display: block;
 }
 img {
     display: block;
@@ -38,6 +39,20 @@ img {
     margin-right: auto;
     padding-left: 110px;
     padding-right: 110px;
+}
+#LiveButton {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 81px;
+    padding-right: 81px;
+}
+#ChatButton {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 123px;
+    padding-right: 123px;
 }
 #showUserScreen {
     display: block;
