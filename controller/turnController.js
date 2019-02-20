@@ -2,7 +2,7 @@ const Turn = require('node-turn');
 
 const configuration = {
   listeningPort: 9999,
-  listeningIps: ['172.27.239.209', '172.26.64.1', '192.168.56.1', '192.168.1.104'],
+  listeningIps: ['52.18.45.95', '172.27.239.209', '172.26.64.1', '192.168.56.1', '192.168.1.104'],
   minPort: 1000,
   maxPort: 65535,
   authMech: "none",
@@ -10,7 +10,7 @@ const configuration = {
   //   username: "password",
   //   bombe: "bombe"
   // },
-  debugLevel: "ERROR",
+  debugLevel: "INFO",
 }
 
 const server = new Turn(configuration);
