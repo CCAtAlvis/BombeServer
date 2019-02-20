@@ -19,6 +19,11 @@
                 document.getElementById("loginCard").style.display = "none";
                 document.getElementById("userScreen").style.display = "block";
             }
+            function showliveORchatScreen() {
+                document.getElementById("liveORchat").style.display = "block";
+                document.getElementById("userScreen").style.display = "none";
+                alert('aaa');
+            }
         </script>
     </head>
     <body>
@@ -70,14 +75,22 @@
         </div>
         <div id="userScreen">
             <img src="logo.png">
+            <a href="live.html">LIVE</a>
             <form action="chat.html">
                 <div class="form-group" id="ReferralInput">
                     <input type="text" class="form-control" placeholder="Enter Referral Code">
                 </div>
                 <div id="SubmitButton">
-                    <button type="submit" class="btn btn-outline-primary" style="padding-left: 112px; padding-right: 112px;">Submit</button>
+                    <button type="submit" onclick="showliveORchatScreen()" class="btn btn-outline-primary" style="padding-left: 112px; padding-right: 112px;">Submit</button>
                 </div>
             </form>
+        </div>
+        <div id="liveORchat">
+            <img src="logo.png">
+            <br><br>
+            <button type="button" id="Register"       class="btn btn-outline-primary" onclick="register()">View Live Stream</button>
+            <br>
+            <button type="button" id="Login"          class="btn btn-outline-primary" onclick="login()">Chat</button>
         </div>
     </body>
 </html>
