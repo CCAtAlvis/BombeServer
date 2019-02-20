@@ -10,7 +10,15 @@ const SDPmediaConstraints = {
   'offerToReceiveAudio': true,
   'offerToReceiveVideo': true
 };
-let configuration = { iceServers: [{ urls: 'stun:stun.stunprotocol.org:3478' }] };
+let configuration = { iceServers: [
+  { urls: 'stun:stun.stunprotocol.org:3478' }, 
+  // { urls: 'turn:bturn2.xirsys.com:80?transport=udp',
+  //   username: 'cf3f2d7e-34ee-11e9-83f7-1c77da0cc4bc',
+  //   credential: 'cf3f2e50-34ee-11e9-82e9-78f09928b5b8' },
+  { urls: 'turn:localhost:9999',
+    username: 'bombe',
+    credential: 'bombe'
+  }] };
 let localConnection = new RTCPeerConnection(configuration);
 
 // localConnection.onicecandidate = (event) => {
@@ -18,22 +26,22 @@ let localConnection = new RTCPeerConnection(configuration);
 //     console.log(event.candidate);
 // };
 
-$(document).ready(function () {
-  $.ajax({
-    url: 'https://global.xirsys.net/_turn/I-SEE-U/',
-    type: 'PUT',
-    async: false,
-    headers: {
-      'Authorization': 'Basic ' + btoa('bombe:a2041642-34eb-11e9-ac14-0242ac110004')
-    },
-    success: function (res) {
-      console.log(res);
-      console.log('ICE List: ' + res.v.iceServers);
-      configuration.iceServers = res.v.iceServers;
-      localConnection = new RTCPeerConnection(configuration);
-    }
-  });
-});
+// $(document).ready(function () {
+//   $.ajax({
+//     url: 'https://global.xirsys.net/_turn/I-SEE-U/',
+//     type: 'PUT',
+//     async: false,
+//     headers: {
+//       'Authorization': 'Basic ' + btoa('bombe:a2041642-34eb-11e9-ac14-0242ac110004')
+//     },
+//     success: function (res) {
+//       console.log(res);
+//       console.log('ICE List: ' + res.v.iceServers);
+//       configuration.iceServers = res.v.iceServers;
+//       localConnection = new RTCPeerConnection(configuration);
+//     }
+//   });
+// });
 
 const createOffer = () => {
   localConnection.createOffer(SDPmediaConstraints)
