@@ -45,8 +45,13 @@ pc.onicecandidate = (event) => {
 const createOffer = () => {
   pc.createOffer(SDPmediaConstraints)
   .then(offer => {
-    console.log(offer);
-    websocket.send(offer);
+    let msg = {
+      type : "offer",
+      user : "chetan",
+      offer : offer
+    }
+    console.log(msg);
+    websocket.send(JSON.stringify(msg));
     pc.setLocalDescription(offer);
   })
   .catch(err => {
@@ -61,11 +66,24 @@ function onOffer(offer, name) {
   pc.createAnswer()
   .then((answer) => {
     pc.setLocalDescription(answer);
+    pc.setRemoteDescription(offer);
+    let msg = {
+      type : "answer",
+      user : "chinmay",
+      answer : answer
+    }
+    console.log(msg);
+    websocket.send(JSON.stringify(msg));
     // websockets code here
 
   }).catch((error) => {
     alert("oops...error");
   });
+}
+
+function onAnswer(answer, name) {
+  connectedUser = name;
+  pc.setRemoteDescription(new RTCSessionDescription(answer));
 }
 
 
@@ -151,6 +169,14 @@ function onClose(evt) {
 function onMessage(evt) {
   writeToScreen('<span style = "color: blue;">RESPONSE: ' + 
     evt.data+'</span>');
+  message = JSON.parse(evt.data);
+  if (message.type == "offer") {
+    onOffer(message.offer,message.name);
+  } else if(message.type == "answer") {
+    onAnswer(message.answer,message.name);
+  } else {
+    
+  }
   // websocket.close();
 }
 
