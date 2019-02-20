@@ -4,7 +4,7 @@
         <title>
             I-SEE-YOU
         </title>
-        <link rel="stylesheet" type="text/css" href="style.css">
+        <link rel="stylesheet" type="text/css" href="./stylesheets/style.css">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
         <script>
             function register() {
@@ -28,7 +28,7 @@
     </head>
     <body>
         <div id="loginCard">
-            <img src="logo.png">
+            <img src="images/logo.png">
             <br><br>
             <button type="button" id="Register"       class="btn btn-outline-primary" onclick="register()">Register</button>
             <br>
@@ -37,7 +37,7 @@
             <button type="button" id="showUserScreen" class="btn btn-outline-primary" onclick="showUserScreen()">Show User Screen</button>
         </div>
         <div id="RegisterDiv">
-            <img src="logo.png">
+            <img src="./images/logo.png">
             <form>
                 <div class="form-group" id="EmailInput">
                     <input type="email" class="form-control" placeholder="Enter Email">
@@ -60,7 +60,7 @@
             </form>
         </div>
         <div id="LoginDiv">
-            <img src="logo.png">
+            <img src="./images/logo.png">
             <form>
                 <div class="form-group" id="EmailInput">
                     <input type="email" class="form-control" placeholder="Enter email">
@@ -74,23 +74,15 @@
             </form>
         </div>
         <div id="userScreen">
-            <img src="logo.png">
-            <a href="live.html">LIVE</a>
-            <form action="chat.html">
+            <img src="images/logo.png">
+            <form action="files/liveORchat.html">
                 <div class="form-group" id="ReferralInput">
                     <input type="text" class="form-control" placeholder="Enter Referral Code">
                 </div>
                 <div id="SubmitButton">
-                    <button type="submit" onclick="showliveORchatScreen()" class="btn btn-outline-primary" style="padding-left: 112px; padding-right: 112px;">Submit</button>
+                    <button type="submit" class="btn btn-outline-primary" style="padding-left: 112px; padding-right: 112px;">Submit</button>
                 </div>
             </form>
-        </div>
-        <div id="liveORchat">
-            <img src="logo.png">
-            <br><br>
-            <button type="button" id="Register"       class="btn btn-outline-primary" onclick="register()">View Live Stream</button>
-            <br>
-            <button type="button" id="Login"          class="btn btn-outline-primary" onclick="login()">Chat</button>
         </div>
     </body>
 </html>
