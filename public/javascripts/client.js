@@ -11,14 +11,15 @@ const SDPmediaConstraints = {
   'offerToReceiveVideo': true
 };
 let configuration = { iceServers: [
-  { urls: 'stun:stun.stunprotocol.org:3478' }, 
-  // { urls: 'turn:bturn2.xirsys.com:80?transport=udp',
-  //   username: 'cf3f2d7e-34ee-11e9-83f7-1c77da0cc4bc',
-  //   credential: 'cf3f2e50-34ee-11e9-82e9-78f09928b5b8' },
+  { urls: 'stun:stun.stunprotocol.org:3478' },
   { urls: 'turn:localhost:9999',
     username: 'bombe',
     credential: 'bombe'
-  }] };
+  },
+  { urls: 'turn:bturn2.xirsys.com:80?transport=udp',
+    username: 'cf3f2d7e-34ee-11e9-83f7-1c77da0cc4bc',
+    credential: 'cf3f2e50-34ee-11e9-82e9-78f09928b5b8' },
+  ] };
 let localConnection = new RTCPeerConnection(configuration);
 
 // localConnection.onicecandidate = (event) => {
