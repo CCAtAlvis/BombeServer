@@ -10,6 +10,7 @@ var http = require('http');
 var fs = require('fs');
 var https = require('https');
 
+var httpsServer;
 /**
  * Get port from environment and store in Express.
  */
@@ -31,7 +32,7 @@ if (process.env.NODE_ENV == 'prod') {
   var certificate = fs.readFileSync('/etc/letsencrypt/live/bombe.westindia.cloudapp.azure.com/cert.pem', 'utf8');
   var ca = fs.readFileSync('/etc/letsencrypt/live/bombe.westindia.cloudapp.azure.com/chain.pem', 'utf8');  
   var credentials = {key: privateKey, cert: certificate, ca: ca};
-  var httpsServer = https.createServer(credentials, app);
+  httpsServer = https.createServer(credentials, app);
 }
 
 
@@ -50,6 +51,17 @@ if (process.env.NODE_ENV == 'prod') {
   httpsServer.on('error', onError);
   httpsServer.on('listening', onListening);  
 }
+
+// GET THE WS GOING
+// require and serup express-ws for WebSockets
+const expressWs = require('express-ws');
+expressWs(app, httpsServer);
+
+// initialize WebSockets routing
+const initWS = require('./../controller/wsController');
+initWS(app);
+
+
 
 /**
  * Normalize a port into a number, string, or false.

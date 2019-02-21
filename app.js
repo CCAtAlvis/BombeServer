@@ -12,13 +12,13 @@ const usersRouter = require('./routes/users');
 // create express app
 const app = express();
 
-// require and serup express-ws for WebSockets
-const expressWs = require('express-ws');
-expressWs(app);
+// // require and serup express-ws for WebSockets
+// const expressWs = require('express-ws');
+// expressWs(app, httpsServer);
 
-// initialize WebSockets routing
-const initWS = require('./controller/wsController');
-initWS(app);
+// // initialize WebSockets routing
+// const initWS = require('./controller/wsController');
+// initWS(app);
 
 const TURN = require('./controller/turnController');
 TURN.initTURN();
