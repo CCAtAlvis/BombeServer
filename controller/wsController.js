@@ -18,7 +18,7 @@ if (process.env.NODE_ENV == 'prod') {
 
 // create a normal websocket
 httpServer = http.createServer();
-ws = new WebSocket.Server({ httpServer });
+ws = new WebSocket.Server({ noServer: true });
 
 
 // list of clients
