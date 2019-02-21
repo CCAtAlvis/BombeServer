@@ -1,5 +1,5 @@
 'use strict';
-const wsHost = 'wss://bombe.westindia.cloudapp.azure.com:8000/ws/';
+const wsHost = 'wss://bombe.westindia.cloudapp.azure.com:8443/ws/';
 let wsChannel = 'echo/chetan';
 let wsUri = wsHost + wsChannel;
 const websocket = new WebSocket(wsUri);
