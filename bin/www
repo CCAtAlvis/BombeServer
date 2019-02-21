@@ -52,15 +52,6 @@ if (process.env.NODE_ENV == 'prod') {
   httpsServer.on('listening', onListening);  
 }
 
-// GET THE WS GOING
-// require and serup express-ws for WebSockets
-const expressWs = require('express-ws');
-expressWs(app, httpsServer);
-
-// initialize WebSockets routing
-const initWS = require('./../controller/wsController');
-initWS(app);
-
 /**
  * Normalize a port into a number, string, or false.
  */
