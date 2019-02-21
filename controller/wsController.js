@@ -13,12 +13,12 @@ if (process.env.NODE_ENV == 'prod') {
   var ca = fs.readFileSync('/etc/letsencrypt/live/bombe.westindia.cloudapp.azure.com/chain.pem', 'utf8');  
   var credentials = {key: privateKey, cert: certificate, ca: ca};
   httpsServer = new https.createServer(credentials);
-  wss = new WebSocket.Server({ httpsServer });
+  wss = new WebSocket.Server({ server: httpsServer });
 }
 
 // create a normal websocket
 httpServer = http.createServer();
-ws = new WebSocket.Server({ noServer: true });
+ws = new WebSocket.Server({ server: httpServer });
 
 
 // list of clients
