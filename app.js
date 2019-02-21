@@ -16,9 +16,9 @@ const app = express();
 // const expressWs = require('express-ws');
 // expressWs(app, httpsServer);
 
-// initialize WebSockets routing
-const initWS = require('./controller/wsController');
-initWS(app);
+// // initialize WebSockets routing
+// const initWS = require('./controller/wsController');
+// initWS(app);
 
 const TURN = require('./controller/turnController');
 TURN.initTURN();
