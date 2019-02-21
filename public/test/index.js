@@ -1,5 +1,5 @@
 'use strict';
-const wsHost = 'wss://bombe.herokuapp.com:8000/ws/';
+const wsHost = 'ws://localhost:8000/ws/';
 let wsChannel = 'echo/chetan';
 let wsUri = wsHost + wsChannel;
 const websocket = new WebSocket(wsUri);
