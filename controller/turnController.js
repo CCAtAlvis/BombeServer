@@ -1,22 +1,29 @@
-const Turn = require('node-turn');
+// const Turn = require('node-turn');
 
-const configuration = {
-  listeningPort: 9999,
-  listeningIps: ['52.18.45.95', '172.27.239.209', '172.26.64.1', '192.168.56.1', '192.168.1.104'],
-  minPort: 1000,
-  maxPort: 65535,
-  authMech: "none",
-  // credentials: {
-  //   username: "password",
-  //   bombe: "bombe"
-  // },
-  debugLevel: "INFO",
-}
+// const configuration = {
+//   listeningPort: 9999,
+//   listeningIps: ['52.18.45.95', '172.27.239.209', '172.26.64.1', '192.168.56.1', '192.168.1.104'],
+//   minPort: 1000,
+//   maxPort: 65535,
+//   authMech: "none",
+//   // credentials: {
+//   //   username: "password",
+//   //   bombe: "bombe"
+//   // },
+//   debugLevel: "INFO",
+// }
 
-const server = new Turn(configuration);
+// const server = new Turn(configuration);
+
+// module.exports.initTURN = () => {
+//   console.log(`Starting TURN service at port: ${configuration.listeningPort}`);
+//   server.start();
+//   console.log(`TURN service UP and RUNNING at port: ${configuration.listeningPort}`);
+// }
+
 
 module.exports.initTURN = () => {
-  console.log(`Starting TURN service at port: ${configuration.listeningPort}`);
-  server.start();
-  console.log(`TURN service UP and RUNNING at port: ${configuration.listeningPort}`);
+  // console.log(`Starting TURN service at port: ${configuration.listeningPort}`);
+  // server.start();
+  // console.log(`TURN service UP and RUNNING at port: ${configuration.listeningPort}`);
 }
