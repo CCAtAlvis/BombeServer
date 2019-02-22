@@ -6,6 +6,34 @@ body {
     background-size: cover;
     background-attachment: initial;
 }
+.btnBack {
+    background-color: white; /* Blue background */
+    /* border: 2px dodgerblue solid; Remove borders */
+    /* color: dodgerblue; White text */
+    font-size: 16px; /* Set a font size */
+    cursor: pointer; /* Mouse pointer on hover */
+    margin-left: 20px;
+  }
+.btnBack:hover {
+    background-color: dodgerblue;
+    color: white;
+  }
+#buttonDiv {
+    margin-top:0%;
+    padding-bottom: 5%;
+    background-color:white;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+}
+#callButton {
+    border-radius: 50%;
+    margin-left: 40%;
+    background-color: seagreen;
+}
+#hangupButton {
+    border-radius: 50%;
+    background-color: red;
+}
 #loginCard {
     background-color: white;
     height: 400px;
@@ -69,7 +97,7 @@ img {
     padding-right: 119px;
 }
 #userScreen {
-    display: none;
+    display: block;
     background-color: white;
     height: 400px;
     width: 300px;
@@ -80,7 +108,7 @@ img {
     border: 2px solid skyblue;
 }
 #RegisterDiv {
-    display: none;
+    display: block;
     background-color: white;
     height: 610px;
     width: 300px;
@@ -91,7 +119,7 @@ img {
     border: 2px solid skyblue;
 }
 #LoginDiv {
-    display: none;
+    display: block;
     background-color: white;
     height: 400px;
     width: 300px;
@@ -101,10 +129,15 @@ img {
     border-radius: 20px;
     border: 2px solid skyblue;
 }
-#EmailInput,#ReferralInput {
+#EmailInput {
     padding-left: 10px;
     padding-right: 10px; 
-    padding-top: 40px;
+    padding-top: 10px;
+}
+#ReferralInput {
+    padding-left: 10px;
+    padding-right: 10px; 
+    padding-top: 10px;
 }
 #PasswordInput, #ConfirmPasswordInput, 
 #NameInput, #ContactInput {
@@ -128,7 +161,7 @@ img {
     border: 2px solid skyblue;
 }
 #logoOnly {
-    display: block  ;
+    display: block;
     background-color: white;
     height: 500px;
     width: 500px;
@@ -137,13 +170,18 @@ img {
     margin-top: 180px; 
     border-radius: 20px;
 }
+#logoDiv {
+    background-color: white;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    height: 200px;
+}
 #container {
     display: block;
     position: absolute;
     bottom: 0;
     right: 0;
-    background-color: white;
-    height: 400px;
+    height: 700px;
     width: 534px;
     margin-left: auto;
     margin-right: auto;
@@ -151,13 +189,28 @@ img {
     border-radius: 20px;
     margin-right: 18px;
     margin-bottom: 15px;
-    border: 2px solid white;
 }
-
-video {
+#localVideo {
     height: 399px;
     width: 533px;
     border-radius: 20px;
-    border-right: 2px solid skyblue;
-    border-bottom: 2px solid skyblue;
+    border: 2px solid white;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+}
+#remoteVideo {
+    height: 703px;
+    /* width: 1518px; */
+    width: 933px;
+    border-radius: 20px;
+    border: 2px solid white;
+    background-color: white;
+    background-image: url("../images/logo.png");
+    background-repeat: no-repeat;
+    background-size: initial;
+    background-attachment: initial;
+    background-position: center;    
+    margin-left: 10px;
+    margin-top: 35px;   
 }
