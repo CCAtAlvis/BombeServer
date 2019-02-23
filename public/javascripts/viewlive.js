@@ -4,15 +4,17 @@ let wsChannel = 'echo/chetan';
 let wsUri = wsHost + wsChannel;
 const websocket = new WebSocket(wsUri);
 // const startButton = document.getElementById('startButton');
+// const callButton = document.getElementById('callButton');
+// const hangupButton = document.getElementById('hangupButton');
+// callButton.disabled = true;
+// hangupButton.disabled = true;
 // startButton.addEventListener('click', start);
-const callButton = document.getElementById('callButton');
-const hangupButton = document.getElementById('hangupButton');
-callButton.disabled = true;
-hangupButton.disabled = true;
-callButton.addEventListener('click', call);
-hangupButton.addEventListener('click', hangup);
+// callButton.addEventListener('click', call);
+// hangupButton.addEventListener('click', hangup);
+// const localVideo = document.getElementById('localVideo');
+const requestButton = document.getElementById('requestButton');
+requestButton.addEventListener('click', createRequest);
 let startTime;
-const localVideo = document.getElementById('localVideo');
 const remoteVideo = document.getElementById('remoteVideo');
 let localStream;
 let localConn;
@@ -43,26 +45,41 @@ let configuration = {
 async function start() {
   // console.log('Requesting local stream');
   // startButton.disabled = true;
-  try {
-    const stream = await navigator.mediaDevices.getUserMedia(mediaPermission);
-    // console.log('Received local stream');
-    localVideo.srcObject = stream;
-    localStream = stream;
-    callButton.disabled = false;
-  } catch (e) {
-    alert(`getUserMedia() error: ${e.name}`);
-  }
+    //   try {
+    //     const stream = await navigator.mediaDevices.getUserMedia(mediaPermission);
+    //     // console.log('Received local stream');
+    //     localVideo.srcObject = stream;
+    //     localStream = stream;
+    //     callButton.disabled = false;
+    //   } catch (e) {
+    //     alert(`getUserMedia() error: ${e.name}`);
+    //   }
   try {
     localConn = new RTCPeerConnection(configuration);
     // console.log('Created local peer connection object pc1');
     localConn.addEventListener('icecandidate', e => onIceCandidate(localConn, e));
     localConn.addEventListener('iceconnectionstatechange', e => onIceStateChange(localConn, e));
     localConn.addEventListener('track', gotRemoteStream);
-    localStream.getTracks().forEach(track => localConn.addTrack(track, localStream));
+    // localStream.getTracks().forEach(track => localConn.addTrack(track, localStream));
     console.log('Added local stream to local conn');
+    //createRequest();
   } catch (e) {
     console.log(e);
   }
+}
+async function createRequest() {
+    try {
+        // await (getOtherPc(pc).addIceCandidate(event.candidate));
+        // onAddIceCandidateSuccess(pc);
+        let message = {
+          type: 'request',
+          name: 'arvind',
+          //candidate: event.candidate
+        };
+        websocket.send(JSON.stringify(message));
+      } catch (e) {
+        console.log("COULD not send request..");
+      }
 }
 
 
@@ -73,56 +90,57 @@ async function start() {
 // }
 
 
-async function call () {
-  console.log('Starting call');
-  // callButton.disabled = true;
-  // hangupButton.disabled = false;
-  // startTime = window.performance.now();
-  // const videoTracks = localStream.getVideoTracks();
-  // const audioTracks = localStream.getAudioTracks();
-  // if (videoTracks.length > 0) {
-  //   console.log(`Using video device: ${videoTracks[0].label}`);
-  // }
-  // if (audioTracks.length > 0) {
-  //   console.log(`Using audio device: ${audioTracks[0].label}`);
-  // }
-  // const configuration = getSelectedSdpSemantics();
-  // console.log('RTCPeerConnection configuration:', configuration);
-  // pc2 = new RTCPeerConnection(configuration);
-  // console.log('Created remote peer connection object pc2');
-  // pc2.addEventListener('icecandidate', e => onIceCandidate(pc2, e));
-  // pc2.addEventListener('iceconnectionstatechange', e => onIceStateChange(pc2, e));
-  // pc2.addEventListener('track', gotRemoteStream);
-  try {
-    const offer = await localConn.createOffer(offerOptions);
-    console.log('local conn createOffer done');
-    await onCreateOfferSuccess(offer);
-  } catch (e) {
-    onCreateSessionDescriptionError(e);
-  }
-}
+// async function call () {
+//   // callButton.disabled = true;
+//   // hangupButton.disabled = false;
+//   console.log('Starting call');
+//   // startTime = window.performance.now();
+//   // const videoTracks = localStream.getVideoTracks();
+//   // const audioTracks = localStream.getAudioTracks();
+//   // if (videoTracks.length > 0) {
+//   //   console.log(`Using video device: ${videoTracks[0].label}`);
+//   // }
+//   // if (audioTracks.length > 0) {
+//   //   console.log(`Using audio device: ${audioTracks[0].label}`);
+//   // }
+//   // const configuration = getSelectedSdpSemantics();
+//   // console.log('RTCPeerConnection configuration:', configuration);
+//   // pc2 = new RTCPeerConnection(configuration);
+//   // console.log('Created remote peer connection object pc2');
+//   // pc2.addEventListener('icecandidate', e => onIceCandidate(pc2, e));
+//   // pc2.addEventListener('iceconnectionstatechange', e => onIceStateChange(pc2, e));
+//   // pc2.addEventListener('track', gotRemoteStream);
+//   try {
+//     const offer = await localConn.createOffer(offerOptions);
+//     console.log('local conn createOffer done');
+//     await onCreateOfferSuccess(offer);
+//   } catch (e) {
+//     onCreateSessionDescriptionError(e);
+//   }
+// }
 
 function onCreateSessionDescriptionError (error) {
   console.log(`Failed to create session description:`);
   console.log(error);
 }
 
-async function onCreateOfferSuccess (desc) {
-  try {
-    console.log(desc);
-    await localConn.setLocalDescription(new RTCSessionDescription(desc));
-    // onSetLocalSuccess(localConn);
-    let message = {
-      type: 'offer',
-      name: 'chetan',
-      offer: desc
-    };
-    websocket.send(JSON.stringify(message));
-    console.log('local conn setLocalDescription done');
-  } catch (e) {
-    onSetSessionDescriptionError(e);
-  }
-}
+// async function onCreateOfferSuccess (desc) {
+
+//   try {
+//     console.log(desc);
+//     await localConn.setLocalDescription(new RTCSessionDescription(desc));
+//     // onSetLocalSuccess(localConn);
+//     let message = {
+//       type: 'offer',
+//       name: 'chetan',
+//       offer: desc
+//     };
+//     websocket.send(JSON.stringify(message));
+//     console.log('local conn setLocalDescription done');
+//   } catch (e) {
+//     onSetSessionDescriptionError(e);
+//   }
+// }
 
 function onSetLocalSuccess(pc) {
   console.log(`${getName(pc)} setLocalDescription complete`);
@@ -138,7 +156,7 @@ function onSetSessionDescriptionError(error) {
 }
 
 function gotRemoteStream(e) {
-  console.log('HACKER MAN, M In');
+  console.log('I GOT THE REMOTE STREAM!');
   if (remoteVideo.srcObject !== e.streams[0]) {
     remoteVideo.srcObject = e.streams[0];
     console.log('local conn received remote stream');
@@ -146,18 +164,14 @@ function gotRemoteStream(e) {
 }
 
 async function onIceCandidate(pc, event) {
-  // TODO
-  // send all ice candidates to other client via web sockets
   try {
     // await (getOtherPc(pc).addIceCandidate(event.candidate));
     // onAddIceCandidateSuccess(pc);
-
     let message = {
       type: 'icecandi',
       name: 'jayant',
       candidate: event.candidate
     };
-
     websocket.send(JSON.stringify(message));
   } catch (e) {
     onAddIceCandidateError(pc, e);
@@ -181,13 +195,32 @@ function onIceStateChange(pc, event) {
   // }
 }
 
-function hangup() {
-  console.log('Ending call');
-  localConn.close();
-  localConn = null;
-  hangupButton.disabled = true;
-  callButton.disabled = false;
-}
+// function hangup() {
+//   console.log('Ending call');
+//   localConn.close();
+//   localConn = null;
+//   hangupButton.disabled = true;
+//   callButton.disabled = false;
+// }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // HANDLING WS events
 websocket.addEventListener('open', e => onOpen(e));
@@ -227,17 +260,23 @@ function onMessage (evt) {
   // console.log('RESPONSE from WS: ' + evt.data);
   console.log('GOT RESPONSE from WS:');
   let message = JSON.parse(evt.data);
-
   if (message.type == 'offer') {
     onGetOffer(message.offer, message.name);
   } else if (message.type == 'answer') {
-    onGetAnswer(message.answer, message.name);
+    //onGetAnswer(message.answer, message.name);
   } else if (message.type == 'icecandi') {
     onGetIceCandi(message.candidate, message.name);
-  } else {
+  } else if (message.type == 'request') {
 
   }
 }
+
+
+
+
+
+
+
 async function onGetOffer (offer, name) {
   try {
     await localConn.setRemoteDescription(new RTCSessionDescription(offer));
@@ -245,7 +284,6 @@ async function onGetOffer (offer, name) {
   } catch (e) {
     console.log("error: ",e);
   }
-
   try {
     const answer = await localConn.createAnswer();
     await localConn.setLocalDescription(answer);
@@ -261,17 +299,16 @@ async function onGetOffer (offer, name) {
   }
 };
 
-async function onGetAnswer (answer, name) {
-  try {
-    await localConn.setRemoteDescription(answer);
-    console.log('set remote desc to answer done');
-  } catch (e) {
-    console.log("error: ",e);
-  }
-};
+// async function onGetAnswer (answer, name) {
+//   try {
+//     await localConn.setRemoteDescription(answer);
+//     console.log('set remote desc to answer done');
+//   } catch (e) {
+//     console.log("error: ",e);
+//   }
+// };
 
 async function onGetIceCandi (candi, name) {
   localConn.addIceCandidate(candi);
 }
-
 start();

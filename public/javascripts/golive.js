@@ -4,51 +4,53 @@ let wsChannel = 'echo/chetan';
 let wsUri = wsHost + wsChannel;
 const websocket = new WebSocket(wsUri);
 // const startButton = document.getElementById('startButton');
+//const callButton = document.getElementById('callButton');
+//const hangupButton = document.getElementById('hangupButton');
+// callButton.disabled = true;
+// hangupButton.disabled = true;
 // startButton.addEventListener('click', start);
-const callButton = document.getElementById('callButton');
-const hangupButton = document.getElementById('hangupButton');
-callButton.disabled = true;
-hangupButton.disabled = true;
-callButton.addEventListener('click', call);
-hangupButton.addEventListener('click', hangup);
+// callButton.addEventListener('click', call);
+// hangupButton.addEventListener('click', hangup);
+//const remoteVideo = document.getElementById('remoteVideo');
+// let pc2;
 let startTime;
 const localVideo = document.getElementById('localVideo');
-const remoteVideo = document.getElementById('remoteVideo');
 let localStream;
-let localConn;
-let pc2;
 const mediaPermission = { audio: true, video: true };
 const offerOptions = {
-  mandatory: {
-    'OfferToReceiveAudio': true,
-    'OfferToReceiveVideo': true
+    mandatory: {
+        'OfferToReceiveAudio': true,
+        'OfferToReceiveVideo': true
   },
   'offerToReceiveAudio': true,
   'offerToReceiveVideo': true
 };
 let configuration = {
-  sdpSemantics: "unified-plan", 
-  iceServers: [
-  { urls: 'stun:stun.stunprotocol.org:3478' },
-  // { urls: 'turn:localhost:9999',
-  //   username: 'bombe',
-  //   credential: 'bombe'
-  // },
-  { urls: 'turn:bturn2.xirsys.com:80?transport=udp',
-    username: 'cf3f2d7e-34ee-11e9-83f7-1c77da0cc4bc',
-    credential: 'cf3f2e50-34ee-11e9-82e9-78f09928b5b8' },
-  ] };
-
-
+    sdpSemantics: "unified-plan", 
+    iceServers: [
+        { urls: 'stun:stun.stunprotocol.org:3478' },
+        // { urls: 'turn:localhost:9999',
+        //   username: 'bombe',
+        //   credential: 'bombe'
+        // },
+        { urls: 'turn:bturn2.xirsys.com:80?transport=udp',
+        username: 'cf3f2d7e-34ee-11e9-83f7-1c77da0cc4bc',
+        credential: 'cf3f2e50-34ee-11e9-82e9-78f09928b5b8' },
+    ] };
+let localConn;
+    
+    
 async function start() {
-  // console.log('Requesting local stream');
-  // startButton.disabled = true;
+        // console.log('Requesting local stream');
+        // startButton.disabled = true;
   try {
     const stream = await navigator.mediaDevices.getUserMedia(mediaPermission);
     // console.log('Received local stream');
-    localVideo.srcObject = stream;
+    if (localVideo.srcObject == null) {
+        localVideo.srcObject = stream;
+    }
     localStream = stream;
-    callButton.disabled = false;
+    //callButton.disabled = false;
   } catch (e) {
     alert(`getUserMedia() error: ${e.name}`);
   }
@@ -57,14 +59,13 @@ async function start() {
     // console.log('Created local peer connection object pc1');
     localConn.addEventListener('icecandidate', e => onIceCandidate(localConn, e));
     localConn.addEventListener('iceconnectionstatechange', e => onIceStateChange(localConn, e));
-    localConn.addEventListener('track', gotRemoteStream);
+    //localConn.addEventListener('track', gotRemoteStream);
     localStream.getTracks().forEach(track => localConn.addTrack(track, localStream));
     console.log('Added local stream to local conn');
   } catch (e) {
     console.log(e);
   }
 }
-
 
 // function getSelectedSdpSemantics() {
 //   const sdpSemanticsSelect = document.querySelector('#sdpSemantics');
@@ -74,9 +75,9 @@ async function start() {
 
 
 async function call () {
+  //callButton.disabled = true;
+  //hangupButton.disabled = false;
   console.log('Starting call');
-  // callButton.disabled = true;
-  // hangupButton.disabled = false;
   // startTime = window.performance.now();
   // const videoTracks = localStream.getVideoTracks();
   // const audioTracks = localStream.getAudioTracks();
@@ -102,10 +103,6 @@ async function call () {
   }
 }
 
-function onCreateSessionDescriptionError (error) {
-  console.log(`Failed to create session description:`);
-  console.log(error);
-}
 
 async function onCreateOfferSuccess (desc) {
   try {
@@ -124,26 +121,36 @@ async function onCreateOfferSuccess (desc) {
   }
 }
 
+
+function onCreateSessionDescriptionError (error) {
+    console.log(`Failed to create session description:`);
+    console.log(error);
+}
+function onSetSessionDescriptionError(error) {
+    console.log(`Failed to set session description:`);
+    console.log(error);
+}
 function onSetLocalSuccess(pc) {
   console.log(`${getName(pc)} setLocalDescription complete`);
 }
-
 function onSetRemoteSuccess(pc) {
   console.log(`${getName(pc)} setRemoteDescription complete`);
 }
-
-function onSetSessionDescriptionError(error) {
-  console.log(`Failed to set session description:`);
-  console.log(error);
+function onAddIceCandidateSuccess(pc) {
+    console.log(`${getName(pc)} addIceCandidate success`);
+}
+function onAddIceCandidateError(pc, error) {
+    console.log(`${getName(pc)} failed to add ICE Candidate: ${error.toString()}`);
 }
 
-function gotRemoteStream(e) {
-  console.log('HACKER MAN, M In');
-  if (remoteVideo.srcObject !== e.streams[0]) {
-    remoteVideo.srcObject = e.streams[0];
-    console.log('local conn received remote stream');
-  }
-}
+// function gotRemoteStream(e) {
+//   console.log('HACKER MAN, M In');
+//   if (remoteVideo.srcObject !== e.streams[0]) {
+//     remoteVideo.srcObject = e.streams[0];
+//     console.log('local conn received remote stream');
+//   }
+// }
+
 
 async function onIceCandidate(pc, event) {
   // TODO
@@ -151,27 +158,17 @@ async function onIceCandidate(pc, event) {
   try {
     // await (getOtherPc(pc).addIceCandidate(event.candidate));
     // onAddIceCandidateSuccess(pc);
-
     let message = {
       type: 'icecandi',
       name: 'jayant',
       candidate: event.candidate
     };
-
     websocket.send(JSON.stringify(message));
   } catch (e) {
     onAddIceCandidateError(pc, e);
   }
   // console.log(`ICE candidate:\n${event.candidate ? event.candidate.candidate : '(null)'}`);
   console.log('sent ICE-candi to other client');
-}
-
-function onAddIceCandidateSuccess(pc) {
-  console.log(`${getName(pc)} addIceCandidate success`);
-}
-
-function onAddIceCandidateError(pc, error) {
-  console.log(`${getName(pc)} failed to add ICE Candidate: ${error.toString()}`);
 }
 
 function onIceStateChange(pc, event) {
@@ -181,32 +178,29 @@ function onIceStateChange(pc, event) {
   // }
 }
 
-function hangup() {
-  console.log('Ending call');
-  localConn.close();
-  localConn = null;
-  hangupButton.disabled = true;
-  callButton.disabled = false;
-}
+// function hangup() {
+//   console.log('Ending call');
+//   localConn.close();
+//   localConn = null;
+//   hangupButton.disabled = true;
+//   callButton.disabled = false;
+// }
+
 
 // HANDLING WS events
 websocket.addEventListener('open', e => onOpen(e));
 websocket.addEventListener('close', e => onClose(e));
 websocket.addEventListener('error', e => onError(e));
 websocket.addEventListener('message', e => onMessage(e));
-
 // websocket.onopen = function (evt) {
 //   onOpen(evt);
 // };
-
 // websocket.onclose = function (evt) {
 //   onClose(evt);
 // };
-
 // websocket.onmessage = function (evt) {
 //   onMessage(evt);
 // };
-
 // websocket.onerror = function (evt) {
 //   onError(evt);
 // };
@@ -214,52 +208,52 @@ websocket.addEventListener('message', e => onMessage(e));
 function onOpen (evt) {
   console.log('CONNECTED to WS');
 }
-
 function onClose (evt) {
   console.log('DISCONNECTED from WS');
 }
-
 function onError (evt) {
   console.log('ERROR from WS: ' + evt.data);
 }
-
 function onMessage (evt) {
   // console.log('RESPONSE from WS: ' + evt.data);
   console.log('GOT RESPONSE from WS:');
   let message = JSON.parse(evt.data);
-
   if (message.type == 'offer') {
-    onGetOffer(message.offer, message.name);
+    //onGetOffer(message.offer, message.name);
+
   } else if (message.type == 'answer') {
     onGetAnswer(message.answer, message.name);
   } else if (message.type == 'icecandi') {
     onGetIceCandi(message.candidate, message.name);
+  } else if (message.type == 'request') {
+    call();
   } else {
 
   }
 }
-async function onGetOffer (offer, name) {
-  try {
-    await localConn.setRemoteDescription(new RTCSessionDescription(offer));
-    console.log('set remote desc to offer done');
-  } catch (e) {
-    console.log("error: ",e);
-  }
 
-  try {
-    const answer = await localConn.createAnswer();
-    await localConn.setLocalDescription(answer);
-    let message = {
-      type: 'answer',
-      user: 'chinmay',
-      answer: answer
-    };
-    console.log('create answer and set local desc to answer done');
-    websocket.send(JSON.stringify(message));
-  } catch (e) {
-    console.log(e);
-  }
-};
+// async function onGetOffer (offer, name) {
+//   try {
+//     await localConn.setRemoteDescription(new RTCSessionDescription(offer));
+//     console.log('set remote desc to offer done');
+//   } catch (e) {
+//     console.log("error: ",e);
+//   }
+
+//   try {
+//     const answer = await localConn.createAnswer();
+//     await localConn.setLocalDescription(answer);
+//     let message = {
+//       type: 'answer',
+//       user: 'chinmay',
+//       answer: answer
+//     };
+//     console.log('create answer and set local desc to answer done');
+//     websocket.send(JSON.stringify(message));
+//   } catch (e) {
+//     console.log(e);
+//   }
+// };
 
 async function onGetAnswer (answer, name) {
   try {
