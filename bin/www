@@ -4,22 +4,22 @@
  * Module dependencies.
  */
 
-var app = require('../app');
-var debug = require('debug')('eg:server');
-var http = require('http');
-var fs = require('fs');
-var https = require('https');
+const app = require('../app');
+const debug = require('debug')('eg:server');
+const http = require('http');
+const fs = require('fs');
+const https = require('https');
 
-var httpsServer;
+let httpsServer;
 /**
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || '3000');
+const port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 
 if (process.env.NODE_ENV == 'prod') {
-  var portHttps = 443;
+  const portHttps = 443;
   app.set('portHttps', portHttps);  
 }
 
@@ -28,15 +28,15 @@ if (process.env.NODE_ENV == 'prod') {
  * Create HTTP server.
  */
 if (process.env.NODE_ENV == 'prod') {
-  var privateKey  = fs.readFileSync('/etc/letsencrypt/live/bombe.westindia.cloudapp.azure.com/privkey.pem', 'utf8');
-  var certificate = fs.readFileSync('/etc/letsencrypt/live/bombe.westindia.cloudapp.azure.com/cert.pem', 'utf8');
-  var ca = fs.readFileSync('/etc/letsencrypt/live/bombe.westindia.cloudapp.azure.com/chain.pem', 'utf8');  
-  var credentials = {key: privateKey, cert: certificate, ca: ca};
+  const privateKey  = fs.readFileSync('/etc/letsencrypt/live/bombe.westindia.cloudapp.azure.com/privkey.pem', 'utf8');
+  const certificate = fs.readFileSync('/etc/letsencrypt/live/bombe.westindia.cloudapp.azure.com/cert.pem', 'utf8');
+  const ca = fs.readFileSync('/etc/letsencrypt/live/bombe.westindia.cloudapp.azure.com/chain.pem', 'utf8');  
+  const credentials = {key: privateKey, cert: certificate, ca: ca};
   httpsServer = https.createServer(credentials, app);
 }
 
 
-var server = http.createServer(app);
+const server = http.createServer(app);
 
 /**
  * Listen on provided port, on all network interfaces.
@@ -57,7 +57,7 @@ if (process.env.NODE_ENV == 'prod') {
  */
 
 function normalizePort(val) {
-  var port = parseInt(val, 10);
+  const port = parseInt(val, 10);
 
   if (isNaN(port)) {
     // named pipe
@@ -81,7 +81,7 @@ function onError(error) {
     throw error;
   }
 
-  var bind = typeof port === 'string'
+  const bind = typeof port === 'string'
     ? 'Pipe ' + port
     : 'Port ' + port;
 
@@ -105,8 +105,8 @@ function onError(error) {
  */
 
 function onListening() {
-  var addr = server.address();
-  var bind = typeof addr === 'string'
+  const addr = server.address();
+  const bind = typeof addr === 'string'
     ? 'pipe ' + addr
     : 'port ' + addr.port;
   debug('Listening on ' + bind);

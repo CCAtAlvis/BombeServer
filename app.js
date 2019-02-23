@@ -16,8 +16,18 @@ const app = express();
 const initWS = require('./controller/wsController');
 initWS();
 
-const TURN = require('./controller/turnController');
-TURN.initTURN();
+// // start TURN server
+// const TURN = require('./controller/turnController');
+// TURN.initTURN();
+
+// init middlewares
+const middleware = require('./config/middleware');
+middleware();
+
+// init database
+const database = require('./config/database');
+database();
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
