@@ -14,57 +14,51 @@ const websocket = new WebSocket(wsUri);
 //const remoteVideo = document.getElementById('remoteVideo');
 // let pc2;
 let startTime;
-const localVideo = document.getElementById('localVideo');
-let localStream;
 const mediaPermission = { audio: true, video: true };
 const offerOptions = {
     mandatory: {
         'OfferToReceiveAudio': true,
         'OfferToReceiveVideo': true
-  },
-  'offerToReceiveAudio': true,
-  'offerToReceiveVideo': true
+    },
+    'offerToReceiveAudio': true,
+    'offerToReceiveVideo': true
 };
 let configuration = {
-    sdpSemantics: "unified-plan", 
+    sdpSemantics: "unified-plan",
     iceServers: [
         { urls: 'stun:stun.stunprotocol.org:3478' },
         // { urls: 'turn:localhost:9999',
         //   username: 'bombe',
         //   credential: 'bombe'
         // },
-        { urls: 'turn:bturn2.xirsys.com:80?transport=udp',
-        username: 'cf3f2d7e-34ee-11e9-83f7-1c77da0cc4bc',
-        credential: 'cf3f2e50-34ee-11e9-82e9-78f09928b5b8' },
-    ] };
-let localConn;
-    
-    
+        {
+            urls: 'turn:bturn2.xirsys.com:80?transport=udp',
+            username: 'cf3f2d7e-34ee-11e9-83f7-1c77da0cc4bc',
+            credential: 'cf3f2e50-34ee-11e9-82e9-78f09928b5b8'
+        },
+    ]
+};
+var connections = [];
+// let localConn;
+const localVideo = document.getElementById('localVideo');
+let localStream;
+
+
 async function start() {
-        // console.log('Requesting local stream');
-        // startButton.disabled = true;
-  try {
-    const stream = await navigator.mediaDevices.getUserMedia(mediaPermission);
-    // console.log('Received local stream');
-    if (localVideo.srcObject == null) {
-        localVideo.srcObject = stream;
+    try {
+        console.log('start() with connections[',connections.length-1,']');
+        connections[connections.length - 1] = new RTCPeerConnection(configuration);
+        // console.log('Created local peer connection object pc1');
+        (connections[connections.length - 1]).addEventListener('icecandidate', e => onIceCandidate(connections[connections.length - 1], e));
+        (connections[connections.length - 1]).addEventListener('iceconnectionstatechange', e => onIceStateChange(connections[connections.length - 1], e));
+        //localConn.addEventListener('track', gotRemoteStream);
+        if(connections.length ==1) {
+            localStream.getTracks().forEach(track => (connections[connections.length - 1]).addTrack(track, localStream));
+        }
+        console.log('Added local stream to local connection: connections[',connections.length-1,']');
+    } catch (e) {
+        console.log("Error in start() : ",e);
     }
-    localStream = stream;
-    //callButton.disabled = false;
-  } catch (e) {
-    alert(`getUserMedia() error: ${e.name}`);
-  }
-  try {
-    localConn = new RTCPeerConnection(configuration);
-    // console.log('Created local peer connection object pc1');
-    localConn.addEventListener('icecandidate', e => onIceCandidate(localConn, e));
-    localConn.addEventListener('iceconnectionstatechange', e => onIceStateChange(localConn, e));
-    //localConn.addEventListener('track', gotRemoteStream);
-    localStream.getTracks().forEach(track => localConn.addTrack(track, localStream));
-    console.log('Added local stream to local conn');
-  } catch (e) {
-    console.log(e);
-  }
 }
 
 // function getSelectedSdpSemantics() {
@@ -74,67 +68,72 @@ async function start() {
 // }
 
 
-async function call () {
-  //callButton.disabled = true;
-  //hangupButton.disabled = false;
-  console.log('Starting call');
-  // startTime = window.performance.now();
-  // const videoTracks = localStream.getVideoTracks();
-  // const audioTracks = localStream.getAudioTracks();
-  // if (videoTracks.length > 0) {
-  //   console.log(`Using video device: ${videoTracks[0].label}`);
-  // }
-  // if (audioTracks.length > 0) {
-  //   console.log(`Using audio device: ${audioTracks[0].label}`);
-  // }
-  // const configuration = getSelectedSdpSemantics();
-  // console.log('RTCPeerConnection configuration:', configuration);
-  // pc2 = new RTCPeerConnection(configuration);
-  // console.log('Created remote peer connection object pc2');
-  // pc2.addEventListener('icecandidate', e => onIceCandidate(pc2, e));
-  // pc2.addEventListener('iceconnectionstatechange', e => onIceStateChange(pc2, e));
-  // pc2.addEventListener('track', gotRemoteStream);
-  try {
-    const offer = await localConn.createOffer(offerOptions);
-    console.log('local conn createOffer done');
-    await onCreateOfferSuccess(offer);
-  } catch (e) {
-    onCreateSessionDescriptionError(e);
-  }
+async function call() {
+    //callButton.disabled = true;
+    //hangupButton.disabled = false;
+    // startTime = window.performance.now();
+    // const videoTracks = localStream.getVideoTracks();
+    // const audioTracks = localStream.getAudioTracks();
+    // if (videoTracks.length > 0) {
+    //   console.log(`Using video device: ${videoTracks[0].label}`);
+    // }
+    // if (audioTracks.length > 0) {
+    //   console.log(`Using audio device: ${audioTracks[0].label}`);
+    // }
+    // const configuration = getSelectedSdpSemantics();
+    // console.log('RTCPeerConnection configuration:', configuration);
+    // pc2 = new RTCPeerConnection(configuration);
+    // console.log('Created remote peer connection object pc2');
+    // pc2.addEventListener('icecandidate', e => onIceCandidate(pc2, e));
+    // pc2.addEventListener('iceconnectionstatechange', e => onIceStateChange(pc2, e));
+    // pc2.addEventListener('track', gotRemoteStream);
+    try {
+        let localConn;
+        connections.push(localConn);
+        start();
+        console.log('call() with connections[',connections.length-1,']');
+        const offer = await (connections[connections.length - 1]).createOffer(offerOptions);
+        console.log('connections[',connections.length-1,'] created an offer.');
+        await onCreateOfferSuccess(offer);
+    } catch (e) {
+        onCreateSessionDescriptionError(e);
+    }
 }
 
 
-async function onCreateOfferSuccess (desc) {
-  try {
-    console.log(desc);
-    await localConn.setLocalDescription(new RTCSessionDescription(desc));
-    // onSetLocalSuccess(localConn);
-    let message = {
-      type: 'offer',
-      name: 'chetan',
-      offer: desc
-    };
-    websocket.send(JSON.stringify(message));
-    console.log('local conn setLocalDescription done');
-  } catch (e) {
-    onSetSessionDescriptionError(e);
-  }
+async function onCreateOfferSuccess(desc) {
+    try {
+        console.log('connections[',connections.length-1,'] successfully created an offer.');
+        //console.log("offer: ",desc);
+        await (connections[connections.length - 1]).setLocalDescription(new RTCSessionDescription(desc));
+        console.log('connections[',connections.length-1,'] local desc was set to offer');
+        // onSetLocalSuccess(localConn);
+        let message = {
+            type: 'offer',
+            name: 'patient',
+            offer: desc
+        };
+        websocket.send(JSON.stringify(message));
+        console.log('connections[',connections.length-1,'] sent the offer to requesting client');
+    } catch (e) {
+        onSetSessionDescriptionError(e);
+    }
 }
 
 
-function onCreateSessionDescriptionError (error) {
-    console.log(`Failed to create session description:`);
+function onCreateSessionDescriptionError(error) {
+    console.log('connections[',connections.length-1,'] Failed to create session description:');
     console.log(error);
 }
 function onSetSessionDescriptionError(error) {
-    console.log(`Failed to set session description:`);
+    console.log('connections[',connections.length-1,'] Failed to set session description:');
     console.log(error);
 }
 function onSetLocalSuccess(pc) {
-  console.log(`${getName(pc)} setLocalDescription complete`);
+    console.log(`${getName(pc)} setLocalDescription complete`);
 }
 function onSetRemoteSuccess(pc) {
-  console.log(`${getName(pc)} setRemoteDescription complete`);
+    console.log(`${getName(pc)} setRemoteDescription complete`);
 }
 function onAddIceCandidateSuccess(pc) {
     console.log(`${getName(pc)} addIceCandidate success`);
@@ -153,29 +152,29 @@ function onAddIceCandidateError(pc, error) {
 
 
 async function onIceCandidate(pc, event) {
-  // TODO
-  // send all ice candidates to other client via web sockets
-  try {
-    // await (getOtherPc(pc).addIceCandidate(event.candidate));
-    // onAddIceCandidateSuccess(pc);
-    let message = {
-      type: 'icecandi',
-      name: 'jayant',
-      candidate: event.candidate
-    };
-    websocket.send(JSON.stringify(message));
-  } catch (e) {
-    onAddIceCandidateError(pc, e);
-  }
-  // console.log(`ICE candidate:\n${event.candidate ? event.candidate.candidate : '(null)'}`);
-  console.log('sent ICE-candi to other client');
+    // TODO
+    // send all ice candidates to other client via web sockets
+    try {
+        // await (getOtherPc(pc).addIceCandidate(event.candidate));
+        // onAddIceCandidateSuccess(pc);
+        let message = {
+            type: 'icecandi',
+            name: 'patient',
+            candidate: event.candidate
+        };
+        websocket.send(JSON.stringify(message));
+    } catch (e) {
+        onAddIceCandidateError(pc, e);
+    }
+    // console.log(`ICE candidate:\n${event.candidate ? event.candidate.candidate : '(null)'}`);
+    console.log('connections[',connections.length-1,'] sent ICE-candi to other client');
 }
 
 function onIceStateChange(pc, event) {
-  // if (pc) {
-  //   console.log(`${getName(pc)} ICE state: ${pc.iceConnectionState}`);
-  //   console.log('ICE state change event: ', event);
-  // }
+    // if (pc) {
+    //   console.log(`${getName(pc)} ICE state: ${pc.iceConnectionState}`);
+    //   console.log('ICE state change event: ', event);
+    // }
 }
 
 // function hangup() {
@@ -205,31 +204,30 @@ websocket.addEventListener('message', e => onMessage(e));
 //   onError(evt);
 // };
 
-function onOpen (evt) {
-  console.log('CONNECTED to WS');
+function onOpen(evt) {
+    console.log('CONNECTED to WS');
 }
-function onClose (evt) {
-  console.log('DISCONNECTED from WS');
+function onClose(evt) {
+    console.log('DISCONNECTED from WS');
 }
-function onError (evt) {
-  console.log('ERROR from WS: ' + evt.data);
+function onError(evt) {
+    console.log('ERROR from WS: ' + evt.data);
 }
-function onMessage (evt) {
-  // console.log('RESPONSE from WS: ' + evt.data);
-  console.log('GOT RESPONSE from WS:');
-  let message = JSON.parse(evt.data);
-  if (message.type == 'offer') {
-    //onGetOffer(message.offer, message.name);
+function onMessage(evt) {
+    // console.log('RESPONSE from WS: ' + evt.data);
+    console.log('GOT message from WS: ');
+    let message = JSON.parse(evt.data);
+    if (message.type == 'offer') {
+        //onGetOffer(message.offer, message.name);
+    } else if (message.type == 'answer') {
+        onGetAnswer(message.answer, message.name);
+    } else if (message.type == 'icecandi') {
+        onGetIceCandi(message.candidate, message.name);
+    } else if (message.type == 'request') {
+        call();
+    } else {
 
-  } else if (message.type == 'answer') {
-    onGetAnswer(message.answer, message.name);
-  } else if (message.type == 'icecandi') {
-    onGetIceCandi(message.candidate, message.name);
-  } else if (message.type == 'request') {
-    call();
-  } else {
-
-  }
+    }
 }
 
 // async function onGetOffer (offer, name) {
@@ -255,17 +253,37 @@ function onMessage (evt) {
 //   }
 // };
 
-async function onGetAnswer (answer, name) {
-  try {
-    await localConn.setRemoteDescription(answer);
-    console.log('set remote desc to answer done');
-  } catch (e) {
-    console.log("error: ",e);
-  }
+async function onGetAnswer(answer, name) {
+    try {
+        await (connections[connections.length - 1]).setRemoteDescription(answer);
+        console.log('connections[',connections.length-1,'] set its remote desc to answer');
+    } catch (e) {
+        console.log("error: ", e);
+    }
 };
 
-async function onGetIceCandi (candi, name) {
-  localConn.addIceCandidate(candi);
+async function onGetIceCandi(candi, name) {
+    if (candi !=null && name=='client') {
+        (connections[connections.length - 1]).addIceCandidate(candi);
+        console.log('connections[',connections.length-1,'] GOT ICE-candi and added it');
+    }
 }
-
-start();
+async function init() {
+    // console.log('Requesting local stream');
+    // startButton.disabled = true;
+    try {
+        const stream = await navigator.mediaDevices.getUserMedia(mediaPermission);
+        // console.log('Received local stream');
+        if (localVideo.srcObject == null) {
+            localVideo.srcObject = stream;
+            localStream = stream;
+        }
+        //callButton.disabled = false;
+    } catch (e) {
+        alert(`getUserMedia() error: ${e.name}`);
+    }
+    // let localConn;
+    // connections.push(localConn);
+    // start();    
+}
+init();

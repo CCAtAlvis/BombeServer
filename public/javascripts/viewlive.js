@@ -61,7 +61,7 @@ async function start() {
     localConn.addEventListener('iceconnectionstatechange', e => onIceStateChange(localConn, e));
     localConn.addEventListener('track', gotRemoteStream);
     // localStream.getTracks().forEach(track => localConn.addTrack(track, localStream));
-    console.log('Added local stream to local conn');
+    //console.log('Added local stream to local conn');
     //createRequest();
   } catch (e) {
     console.log(e);
@@ -73,10 +73,11 @@ async function createRequest() {
         // onAddIceCandidateSuccess(pc);
         let message = {
           type: 'request',
-          name: 'arvind',
+          name: 'client',
           //candidate: event.candidate
         };
         websocket.send(JSON.stringify(message));
+        console.log('send the request to client.')
       } catch (e) {
         console.log("COULD not send request..");
       }
@@ -159,7 +160,7 @@ function gotRemoteStream(e) {
   console.log('I GOT THE REMOTE STREAM!');
   if (remoteVideo.srcObject !== e.streams[0]) {
     remoteVideo.srcObject = e.streams[0];
-    console.log('local conn received remote stream');
+    console.log('set remoteVid source to remote stream');
   }
 }
 
@@ -169,7 +170,7 @@ async function onIceCandidate(pc, event) {
     // onAddIceCandidateSuccess(pc);
     let message = {
       type: 'icecandi',
-      name: 'jayant',
+      name: 'client',
       candidate: event.candidate
     };
     websocket.send(JSON.stringify(message));
@@ -177,7 +178,7 @@ async function onIceCandidate(pc, event) {
     onAddIceCandidateError(pc, e);
   }
   // console.log(`ICE candidate:\n${event.candidate ? event.candidate.candidate : '(null)'}`);
-  console.log('sent ICE-candi to other client');
+  console.log('sent ICE-candi to other patient');
 }
 
 function onAddIceCandidateSuccess(pc) {
@@ -258,16 +259,19 @@ function onError (evt) {
 
 function onMessage (evt) {
   // console.log('RESPONSE from WS: ' + evt.data);
-  console.log('GOT RESPONSE from WS:');
+  console.log('GOT msg from WS:');
   let message = JSON.parse(evt.data);
   if (message.type == 'offer') {
+      console.log("Client got offer(GOOD)");
     onGetOffer(message.offer, message.name);
   } else if (message.type == 'answer') {
+    console.log("Client got answer(BAD)");
     //onGetAnswer(message.answer, message.name);
   } else if (message.type == 'icecandi') {
+    console.log("Client got icecandi(GOOD)");
     onGetIceCandi(message.candidate, message.name);
   } else if (message.type == 'request') {
-
+    console.log("Client got request(BAD)");
   }
 }
 
@@ -280,20 +284,21 @@ function onMessage (evt) {
 async function onGetOffer (offer, name) {
   try {
     await localConn.setRemoteDescription(new RTCSessionDescription(offer));
-    console.log('set remote desc to offer done');
+    console.log('Offer set to remote desc');
   } catch (e) {
     console.log("error: ",e);
   }
   try {
     const answer = await localConn.createAnswer();
     await localConn.setLocalDescription(answer);
+    console.log('client created answer and set it to local desc');
     let message = {
       type: 'answer',
-      user: 'chinmay',
+      name: 'client',
       answer: answer
     };
-    console.log('create answer and set local desc to answer done');
     websocket.send(JSON.stringify(message));
+    console.log('answer sent to patient');
   } catch (e) {
     console.log(e);
   }
@@ -309,6 +314,10 @@ async function onGetOffer (offer, name) {
 // };
 
 async function onGetIceCandi (candi, name) {
-  localConn.addIceCandidate(candi);
+  if (candi !=null && name=='patient') {
+        localConn.addIceCandidate(candi);
+        console.log("got ice candidate from patient and added it.")
+        //console.log('connections[',connections.length-1,'] GOT ICE-candi and added it');
+    }
 }
 start();
