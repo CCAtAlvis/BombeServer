@@ -1,10 +1,6 @@
 // require mandatory modules
 const express = require('express');
 
-// require routings
-const indexRouter = require('./routes/index');
-const usersRouter = require('./routes/users');
-
 // create express app
 const app = express();
 
@@ -25,7 +21,7 @@ const database = require('./config/database');
 database();
 
 // routing
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
+const routes = require('./routes/routes');
+routes(app);
 
 module.exports = app;
