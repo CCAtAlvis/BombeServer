@@ -11,6 +11,8 @@ const fs = require('fs');
 const https = require('https');
 
 let httpsServer;
+const portHttps = 443;
+
 /**
  * Get port from environment and store in Express.
  */
@@ -19,7 +21,6 @@ const port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 
 if (process.env.NODE_ENV == 'prod') {
-  const portHttps = 443;
   app.set('portHttps', portHttps);  
 }
 
