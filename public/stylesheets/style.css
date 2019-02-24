@@ -6,6 +6,54 @@ body {
     background-size: cover;
     background-attachment: initial;
 }
+img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 10px; 
+}
+#loginCard {
+    background-color: white;
+    height: 400px;
+    width: 300px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 100px; 
+    border-radius: 20px;
+    border: 2px solid skyblue;
+}
+#Register {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 110px;
+    padding-right: 110px;
+}
+#Login {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 119px;
+    padding-right: 119px;
+}
+#showUserScreen {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 77px;
+    padding-right: 77px;
+}
+#RegisterDiv {
+    display: block;
+    background-color: white;
+    height: 610px;
+    width: 300px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 50px; 
+    border-radius: 20px;
+    border: 2px solid skyblue;
+}
 .btnBack {
     background-color: white; /* Blue background */
     /* border: 2px dodgerblue solid; Remove borders */
@@ -13,28 +61,44 @@ body {
     font-size: 16px; /* Set a font size */
     cursor: pointer; /* Mouse pointer on hover */
     margin-left: 20px;
-  }
+}
 .btnBack:hover {
     background-color: dodgerblue;
     color: white;
-  }
-#buttonDiv {
-    margin-top:0%;
-    padding-bottom: 5%;
-    background-color:white;
-    border-bottom-left-radius: 20px;
-    border-bottom-right-radius: 20px;
 }
-#callButton {
-    border-radius: 50%;
-    margin-left: 40%;
-    background-color: seagreen;
+#EmailInput {
+    padding-left: 10px;
+    padding-right: 10px; 
+    padding-top: 10px;
 }
-#hangupButton {
-    border-radius: 50%;
-    background-color: red;
+#PasswordInput, #ConfirmPasswordInput, 
+#NameInput, #ContactInput {
+    padding-left: 10px;
+    padding-right: 10px; 
+    padding-top: 10px;
 }
-#loginCard {
+#SubmitButton {
+    padding-top: 10px;
+    padding-left: 10px;
+}
+#LoginDiv {
+    display: block;
+    background-color: white;
+    height: 400px;
+    width: 300px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 100px; 
+    border-radius: 20px;
+    border: 2px solid skyblue;
+}
+#ReferralInput {
+    padding-left: 10px;
+    padding-right: 10px; 
+    padding-top: 10px;
+}
+#userScreen {
+    display: block;
     background-color: white;
     height: 400px;
     width: 300px;
@@ -55,25 +119,19 @@ body {
     border: 2px solid skyblue;
     display: block;
 }
-img {
+#GoLiveButton {
     display: block;
     margin-left: auto;
     margin-right: auto;
-    padding-top: 10px; 
+    padding-left: 113px;
+    padding-right: 113px;
 }
-#Register {
+#ViewLiveButton {
     display: block;
     margin-left: auto;
     margin-right: auto;
-    padding-left: 110px;
-    padding-right: 110px;
-}
-#LiveButton {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    padding-left: 81px;
-    padding-right: 81px;
+    padding-left: 80px;
+    padding-right: 80px;
 }
 #ChatButton {
     display: block;
@@ -82,72 +140,21 @@ img {
     padding-left: 123px;
     padding-right: 123px;
 }
-#showUserScreen {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    padding-left: 77px;
-    padding-right: 77px;
+#buttonDiv {
+    margin-top:0%;
+    padding-bottom: 5%;
+    background-color:white;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
 }
-#Login {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    padding-left: 119px;
-    padding-right: 119px;
+#callButton {
+    border-radius: 50%;
+    margin-left: 40%;
+    background-color: seagreen;
 }
-#userScreen {
-    display: block;
-    background-color: white;
-    height: 400px;
-    width: 300px;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 100px; 
-    border-radius: 20px;
-    border: 2px solid skyblue;
-}
-#RegisterDiv {
-    display: block;
-    background-color: white;
-    height: 610px;
-    width: 300px;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 50px; 
-    border-radius: 20px;
-    border: 2px solid skyblue;
-}
-#LoginDiv {
-    display: block;
-    background-color: white;
-    height: 400px;
-    width: 300px;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 100px; 
-    border-radius: 20px;
-    border: 2px solid skyblue;
-}
-#EmailInput {
-    padding-left: 10px;
-    padding-right: 10px; 
-    padding-top: 10px;
-}
-#ReferralInput {
-    padding-left: 10px;
-    padding-right: 10px; 
-    padding-top: 10px;
-}
-#PasswordInput, #ConfirmPasswordInput, 
-#NameInput, #ContactInput {
-    padding-left: 10px;
-    padding-right: 10px; 
-    padding-top: 10px;
-}
-#SubmitButton {
-    padding-top: 10px;
-    padding-left: 10px;
+#hangupButton {
+    border-radius: 50%;
+    background-color: red;
 }
 #chatBig,#live {
     display: block;
