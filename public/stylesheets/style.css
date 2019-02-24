@@ -206,6 +206,36 @@ img {
     right: 0;
     bottom: 0;
 }
+#goLiveLocalVideo {
+    height: 725px;
+    width: 1500px;
+    border-radius: 20px;
+    border-bottom: 2px solid skyblue;
+    border-right: 2px solid skyblue;
+    position: absolute;
+    background-color: white;
+    background-image: url("../images/logo.png");
+    background-repeat: no-repeat;
+    background-size: initial;
+    background-attachment: initial;
+    background-position: center; 
+    /* right: 0;
+    bottom: 0; */
+}
+#viewLiveRemoteVideo {
+    height: 725px;
+    /* width: 1518px; */
+    width: 1500px;
+    border-radius: 20px;
+    border-bottom: 2px solid skyblue ;
+    border-right: 2px solid skyblue ;
+    background-color: white;
+    background-image: url("../images/logo.png");
+    background-repeat: no-repeat;
+    background-size: initial;
+    background-attachment: initial;
+    background-position: center;     
+}
 #remoteVideo {
     height: 703px;
     /* width: 1518px; */

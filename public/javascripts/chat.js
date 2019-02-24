@@ -83,7 +83,7 @@ async function start() {
     try {
         localConn = new RTCPeerConnection(configuration);
         localConn.addEventListener('icecandidate', e => onIceCandidate(localConn, e));
-        localConn.addEventListener('iceconnectionstatechange', e => onIceStateChange(localConn, e));
+        //localConn.addEventListener('iceconnectionstatechange', e => onIceStateChange(localConn, e));
         localConn.addEventListener('track', gotRemoteStream);
         localStream.getTracks().forEach(track => localConn.addTrack(track, localStream));
         console.log('start() : Added localStream to local conn');
@@ -95,6 +95,7 @@ async function start() {
 async function call() {
     try {
         const offer = await localConn.createOffer(offerOptions);
+        hangupButton.disabled = false;
         console.log('call() : Offerer created offer successfully');
         await onCreateOfferSuccess(offer);
     } catch (e) {

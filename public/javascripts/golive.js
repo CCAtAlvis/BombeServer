@@ -29,7 +29,7 @@ let configuration = {
     ]
 };
 var connections = [];
-const localVideo = document.getElementById('localVideo');
+const localVideo = document.getElementById('goLiveLocalVideo');
 let localStream;
 init();
 //-----------------------------------------------------------------END OF INITIALIZATION------------------------------------------------------------------------
@@ -87,7 +87,7 @@ async function onRequest() { /* creates a variable localCOnn,adds it to array,cr
             console.log('onRequest() with connections[',connections.length-1,']');
             (connections[connections.length - 1]) = new RTCPeerConnection(configuration);
             (connections[connections.length - 1]).addEventListener('icecandidate', e => onIceCandidate((connections[connections.length - 1]), e));
-            (connections[connections.length - 1]).addEventListener('iceconnectionstatechange', e => onIceStateChange((connections[connections.length - 1]), e));
+            //(connections[connections.length - 1]).addEventListener('iceconnectionstatechange', e => onIceStateChange((connections[connections.length - 1]), e));
             localStream.getTracks().forEach(track => (connections[connections.length - 1]).addTrack(track, localStream));
             console.log('onRequest() : Added local stream to connections[',connections.length-1,']');
         } catch (e) {

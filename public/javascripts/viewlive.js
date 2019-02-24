@@ -5,9 +5,9 @@ let wsChannel = 'echo/chetan';
 let wsUri = wsHost + wsChannel;
 let websocket = new WebSocket(wsUri);
 let localConn;
-const requestButton = document.getElementById('requestButton');
-requestButton.addEventListener('click', createRequest);
-const remoteVideo = document.getElementById('remoteVideo');
+// const requestButton = document.getElementById('requestButton');
+// requestButton.addEventListener('click', createRequest);
+const remoteVideo = document.getElementById('viewLiveRemoteVideo');
 const mediaPermission = { audio: true, video: true };
 const offerOptions = {
   mandatory: {
@@ -40,6 +40,7 @@ websocket.addEventListener('message', e => onMessage(e));
 
 function onOpen (evt) {
   console.log('CONNECTED to WS');
+  createRequest();
 }
 
 function onClose (evt) {
@@ -75,12 +76,13 @@ async function init() {
   try {
     localConn = new RTCPeerConnection(configuration);
     localConn.addEventListener('icecandidate', e => onIceCandidate(localConn, e));
-    localConn.addEventListener('iceconnectionstatechange', e => onIceStateChange(localConn, e));
+    //localConn.addEventListener('iceconnectionstatechange', e => onIceStateChange(localConn, e));
     localConn.addEventListener('track', gotRemoteStream);
     console.log('init() : created localConn with all eventListeners')
   } catch (e) {
     console.log('init() : error - ',e);
   }
+  //setTimeout(createRequest,1000);
 }
 
 async function createRequest() {
