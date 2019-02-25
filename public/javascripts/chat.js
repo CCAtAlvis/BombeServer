@@ -133,7 +133,7 @@ async function onGetOffer(offer, name) {
         console.log('Answerer setLocalDesc to answer')
         let message = {
             type: 'answer',
-            user: 'answerer',
+            name: 'answerer',
             answer: answer
         };
         websocket.send(JSON.stringify(message));
