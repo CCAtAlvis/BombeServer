@@ -43,11 +43,12 @@ websocket.addEventListener('error', e => onError(e));
 websocket.addEventListener('message', e => onMessage(e));
 function onOpen(evt) {
     console.log('CONNECTED to WS');
-    msg = {
+    let msg = {
         type: 'new-connection',
         name: 'patient',
         id: patID
-    }
+    };
+    websocket.send(JSON.stringify(msg));
 }
 function onClose(evt) {
     console.log('DISCONNECTED from WS');
@@ -61,7 +62,7 @@ function onMessage(evt) {
     if (message.type == 'offer' && message.name == 'client') {
         //onGetOffer(message.offer, message.name); //patient ignores offers from clients and patients
     } else if (message.type == 'answer' && message.name == 'client') {
-        onGetAnswer(message.answer, message.name);
+        onGetAnswer(message.answer, message.name,message.from);
     } else if (message.type == 'icecandi' && message.name == 'client') {
         onGetIceCandi(message.candidate, message.name);
     } else if (message.type == 'request' && message.name == 'client') {
@@ -89,18 +90,19 @@ async function onRequest(clientID) { /* creates a variable localCOnn,adds it to 
     console.log('.'); console.log('.'); console.log('.'); console.log('.'); console.log('.'); console.log('.'); console.log('.');
     try {
         let localConn;
-        connections.push(localConn);
         clients.push(clientID);
         try {
-            console.log('onRequest() with connections[',connections.length-1,']');
-            (connections[connections.length - 1]) = new RTCPeerConnection(configuration);
-            (connections[connections.length - 1]).addEventListener('icecandidate', e => onIceCandidate((connections[connections.length - 1]), e,clients[connections.length-1]));
+            //console.log('onRequest() with connections[',connections.length-1,']');
+            localConn = new RTCPeerConnection(configuration);
+            localConn.addEventListener('icecandidate', e => onIceCandidate(e,clientID));
             //(connections[connections.length - 1]).addEventListener('iceconnectionstatechange', e => onIceStateChange((connections[connections.length - 1]), e));
-            localStream.getTracks().forEach(track => (connections[connections.length - 1]).addTrack(track, localStream));
-            console.log('onRequest() : Added local stream to connections[',connections.length-1,']');
+            localStream.getTracks().forEach(track => localConn.addTrack(track, localStream));
+            //console.log('onRequest() : Added local stream to connections[',connections.length-1,']');
         } catch (e) {
-            console.log("onRequest() : Error in onRequest() : ",e);
+            //console.log("onRequest() : Error in onRequest() : ",e);
         }
+        //console.log('onRequest() with connections[',connections.length-1,']');
+        connections.push(localConn);
         console.log('onRequest() with connections[',connections.length-1,']');
         let offer = await (connections[connections.length - 1]).createOffer(offerOptions);
         await onCreateOfferSuccess(offer,clientID);
@@ -111,9 +113,10 @@ async function onRequest(clientID) { /* creates a variable localCOnn,adds it to 
 
 async function onCreateOfferSuccess(desc,clientID) {
     try {
-        console.log('connections[',connections.length-1,'] successfully created an offer.');
-        await (connections[connections.length - 1]).setLocalDescription(new RTCSessionDescription(desc));
-        console.log('connections[',connections.length-1,'] local desc was set to offer');
+        let index = clients.indexOf(clientID);
+        console.log('connections[',index,'] successfully created an offer.');
+        await (connections[index]).setLocalDescription(new RTCSessionDescription(desc));
+        console.log('connections[',index,'] local desc was set to offer');
         let message = {
             type: 'offer',
             name: 'patient',
@@ -122,22 +125,23 @@ async function onCreateOfferSuccess(desc,clientID) {
             from : patID
         };
         websocket.send(JSON.stringify(message));
-        console.log('connections[',connections.length-1,'] sent the offer to requesting person.');
+        console.log('connections[',index,'] sent the offer to requesting person.');
     } catch (e) {
         onSetSessionDescriptionError(e);
     }
 }
 
-async function onGetAnswer(answer, name) {
+async function onGetAnswer(answer, name,clientID) {
     try {
-        await (connections[connections.length - 1]).setRemoteDescription(answer);
-        console.log('connections[',connections.length-1,'] set its remote desc to answer');
+        let index = clients.indexOf(clientID);
+        console.log('connections[',index,'] set its remote desc to answer');
+        await (connections[index]).setRemoteDescription(answer);
     } catch (e) {
         console.log("error: ", e);
     }
 };
 
-async function onIceCandidate(pc, event,clientID) {
+async function onIceCandidate(event,clientID) {
     try {
         let message = {
             type: 'icecandi',

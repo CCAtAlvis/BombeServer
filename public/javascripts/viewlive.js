@@ -2,6 +2,8 @@
 //-----------------------------------------------------------------INITIALIZATION------------------------------------------------------------------------
 const wsHost = 'wss://bombe.westindia.cloudapp.azure.com:8443/ws/';
 let wsChannel = 'echo/chetan';
+let patID = 'Pchetan123456';
+let clientID = 'c1234567890';
 let wsUri = wsHost + wsChannel;
 let websocket = new WebSocket(wsUri);
 let localConn;
@@ -97,6 +99,8 @@ async function createRequest() {
         let message = {
           type: 'request',
           name: 'client',
+          to: patID,
+          from: clientID
         };
         websocket.send(JSON.stringify(message));
         console.log('createRequest() : Sent the request to all.')
@@ -119,7 +123,9 @@ async function onGetOffer (offer, name) {
     let message = {
       type: 'answer',
       name: 'client',
-      answer: answer
+      answer: answer,
+      to : patID,
+      from : clientID
     };
     websocket.send(JSON.stringify(message));
     console.log('answer sent to all');
@@ -134,7 +140,9 @@ async function onIceCandidate(pc, event) {
     let message = {
       type: 'icecandi',
       name: 'client',
-      candidate: event.candidate
+      candidate: event.candidate,
+      to : patID,
+      from: clientID
     };
     websocket.send(JSON.stringify(message));
   } catch (e) {
