@@ -1,72 +1,30 @@
-<!-- <!DOCTYPE html>
-<html>
-  <head>
-    <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-  </head>
-  <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
-  </body>
-</html> -->
-
 <!DOCTYPE html>
-<html>
-   <meta charset = "utf-8" />
-   <title>WebSocket Test</title>
+<html lang="en">
 
-   <script language = "javascript" type = "text/javascript">
-      var wsUri = "ws://localhost:8000/echo";
-      var output;
-		
-      function init() {
-         output = document.getElementById("output");
-         testWebSocket();
-      }
-		
-      function testWebSocket() {
-         websocket = new WebSocket(wsUri);
-			
-         websocket.onopen = function(evt) {
-            onOpen(evt)
-         };
-			
-         websocket.onclose = function(evt) {
-            onClose(evt)
-         };
-			
-         websocket.onerror = function(evt) {
-            onError(evt)
-         };
-      }
-		
-      function onOpen(evt) {
-         writeToScreen("CONNECTED");
-         doSend("WebSocket rocks");
-      }
-		
-      function onClose(evt) {
-         writeToScreen("DISCONNECTED");
-      }
-		
-      function onError(evt) {
-         writeToScreen('<span style = "color: red;">ERROR:</span> ' + evt.data);
-      } 
-		
-      function doSend(message) {
-         writeToScreen("SENT: " + message); websocket.send(message);
-      }
-		
-      function writeToScreen(message) {
-         var pre = document.createElement("p"); 
-         pre.style.wordWrap = "break-word"; 
-         pre.innerHTML = message; output.appendChild(pre);
-      }
-		
-      window.addEventListener("load", init, false);
-   </script>
-	
-   <h2>WebSocket Test</h2>
-   <div id = "output"></div>
-	
+<head>
+  <title>
+    I-SEE-YOU
+  </title>
+  <meta name="version" content="0.1.2">
+  <meta name="git-commit" content="6e1699e9a7697b1db15b348ebd3d2d1643a1e348">
+  <link rel="stylesheet" type="text/css" href="/stylesheets/style.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+    integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+</head>
+
+<body>
+  <div id="loginCard">
+    <img src="/images/logo.png">
+    <br><br>
+    <button type="button" id="Register" class="btn btn-outline-primary"
+      onclick="window.location.href='/users/register'">Register</button>
+    <br>
+    <button type="button" id="Login" class="btn btn-outline-primary"
+      onclick="window.location.href='/users/login'">Login</button>
+    <br>
+    <!-- <button type="button" id="showUserScreen" class="btn btn-outline-primary"
+      onclick="window.location.href='./users/user'">Show User Screen</button> -->
+  </div>
+</body>
+
 </html>

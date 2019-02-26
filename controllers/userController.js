@@ -32,7 +32,11 @@ const login = (req, res) => {
 }
 
 const viewLogin = (req, res) => {
-  res.send('hehe');
+  if(req.session.user) {
+    res.redirect('/users')
+  } else {
+    res.render('users/login');
+  }
 }
 
 
@@ -76,7 +80,11 @@ const register = (req, res) => {
 }
 
 const viewRegister = (req, res) => {
-
+  if(req.session.user) {
+    res.redirect('/users')
+  } else {
+    res.render('users/register');
+  }
 }
 
 const logout = (req, res) => {
