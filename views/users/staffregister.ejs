@@ -35,7 +35,14 @@
         <input name="repassword" type="password" class="form-control" placeholder="Confirm Password">
       </div>
 
-      <input type="hidden" name="role" value="user">
+      <div class="form-group">
+        <label for="roleInput">Select Role</label>
+        <select name="role" class="form-control" id="roleInput">
+          <option value="doctor">Doctor</option>
+          <option value="nurse">Nurse</option>
+          <option value="staff">Staff</option>
+        </select>
+      </div>
 
       <div id="SubmitButton">
         <button type="submit" class="btn btn-outline-primary"

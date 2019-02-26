@@ -1,5 +1,9 @@
 const User = require('../models/User');
 
+const index = (req, res) => {
+
+}
+
 const login = (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
@@ -19,7 +23,7 @@ const login = (req, res) => {
             throw err;
           }
 
-          res.redirect('/users/');
+          res.redirect('/users');
         });
 
       } else {
@@ -33,7 +37,7 @@ const login = (req, res) => {
 
 const viewLogin = (req, res) => {
   if(req.session.user) {
-    res.redirect('/users')
+    res.redirect('/users');
   } else {
     res.render('users/login');
   }
@@ -46,6 +50,7 @@ const register = (req, res) => {
   const contact = req.body.contact;
   const password = req.body.password;
   const repassword = req.body.repassword;
+  const role = req.body.role;
 
   if (password !== repassword) {
     console.log('password not same');
@@ -58,7 +63,7 @@ const register = (req, res) => {
     name: name,
     contact: contact,
     password: password,
-    role: 'user'
+    role: role
   });
 
   user.save((err, doc) => {
@@ -74,14 +79,14 @@ const register = (req, res) => {
         throw err;
       }
 
-      res.redirect('/users/');
+      res.redirect('/users');
     });
   })
 }
 
 const viewRegister = (req, res) => {
   if(req.session.user) {
-    res.redirect('/users')
+    res.redirect('/users');
   } else {
     res.render('users/register');
   }
@@ -92,10 +97,20 @@ const logout = (req, res) => {
   res.redirect('/');
 }
 
+const viewRegisterStaff = (req, res) => {
+  if(req.session.user) {
+    res.redirect('/users');
+  } else {
+    res.render('users/staffregister');
+  }
+}
+
 module.exports = {
+  index,
   login,
   viewLogin,
   register,
   viewRegister,
+  viewRegisterStaff,
   logout,
 }
