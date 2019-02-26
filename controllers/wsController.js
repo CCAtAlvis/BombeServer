@@ -20,70 +20,62 @@ if (process.env.NODE_ENV == 'prod') {
 httpServer = http.createServer();
 ws = new WebSocket.Server({ server: httpServer });
 
-
 // list of clients
 let wsclients = [];
 
+const onMessage = (message) => {
+  let msg = JSON.parse(message);
 
-// TODO
-// properly merge both WSS and WS!
-// SUPER DAMN IMPORTANT
+  // msg = {
+  //   type: 'new-connection',
+  //   name: 'patient',
+  //   id: 'unique-id'
+  // }
+
+  if (msg.type == 'new-connection') {
+    msg['ws'] = ws;
+    wsclients.push(msg);
+  // } else if (msg.type == 'offer' || )
+  } else {
+    let msgFor = msg.to;
+    for (let i in wsclients) {
+      let c = wsclients[i];
+      if (c.readyState === c.OPEN) {
+        if (c.id == msgFor) {
+          c.send(message);
+          break;
+        }
+      } else {
+        // TODO:
+        // splice the array here
+      }
+    }
+  }
+
+  console.log(message);
+}
 
 // handle WSS
 if (process.env.NODE_ENV == 'prod') {
   wss.on('connection', (ws) => {
-    // TODO:
-    // proper handling of ws clients by inserting in DB
-    wsclients.push(ws);
     console.log('client connected');
-    console.log(ws._socket.remoteAddress);
 
     ws.on('message', (message) => {
-      console.log(message);
-      // console.log('sending to all clients');
-
-      // TODO
-      // fetch clients from DB
-
-      wsclients.forEach(c => {
-        if (c.readyState === c.OPEN && c !== ws) {
-          c.send(message);
-        } else {
-          // TODO:
-          // splice the array here
-        }
-      });
+      onMessage(message);
     });
   });
 }
 
 // handle WS
 ws.on('connection', (ws) => {
-  // TODO:
-  // proper handling of ws clients by inserting in DB
-  wsclients.push(ws);
   console.log('client connected');
-  console.log(ws._socket.remoteAddress);
 
   ws.on('message', (message) => {
-    console.log(message);
-    // console.log('sending to all clients');
-
-    // TODO
-    // fetch clients from DB
-
-    wsclients.forEach(c => {
-      if (c.readyState === c.OPEN && c !== ws) {
-        c.send(message);
-      } else {
-        // TODO:
-        // splice the array here
-      }
-    });
+    onMessage(message);
   });
 });
 
-
+// init WebSockets
 const initWS = () => {
   // app.use("/ws", router);
   httpServer.listen(8000);
