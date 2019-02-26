@@ -24,7 +24,7 @@ ws = new WebSocket.Server({ server: httpServer });
 let wsclients = [];
 let clients = [];
 
-const onMessage = (message) => {
+const onMessage = (ws, message) => {
   let msg = JSON.parse(message);
 
   // msg = {
@@ -62,7 +62,7 @@ if (process.env.NODE_ENV == 'prod') {
     console.log('client connected');
 
     ws.on('message', (message) => {
-      onMessage(message);
+      onMessage(ws, message);
     });
   });
 }
@@ -72,7 +72,7 @@ ws.on('connection', (ws) => {
   console.log('client connected');
 
   ws.on('message', (message) => {
-    onMessage(message);
+    onMessage(ws, message);
   });
 });
 
