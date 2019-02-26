@@ -41,7 +41,11 @@ const initMiddleware = (app) => {
     secret: 'keyboard cat',
     resave: false,
     saveUninitialized: false,
-    cookie: { secure: true },
+    cookie: {
+      path: '/',
+      httpOnly: false,
+      maxAge: 3600*24*365
+     },
     store: new MongoStore({
       mongooseConnection: mongoose.connection,
       ttl: 3600*24*365,
