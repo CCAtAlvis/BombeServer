@@ -3,6 +3,7 @@
 const wsHost = 'wss://bombe.westindia.cloudapp.azure.com:8443/ws/';
 let wsChannel = 'echo/chetan';
 let wsUri = wsHost + wsChannel;
+let patID = 'Pchetan123456';
 const websocket = new WebSocket(wsUri);
 const mediaPermission = { audio: true, video: true };
 const offerOptions = {
@@ -29,6 +30,7 @@ let configuration = {
     ]
 };
 var connections = [];
+var clients = [];
 const localVideo = document.getElementById('goLiveLocalVideo');
 let localStream;
 init();
@@ -41,6 +43,11 @@ websocket.addEventListener('error', e => onError(e));
 websocket.addEventListener('message', e => onMessage(e));
 function onOpen(evt) {
     console.log('CONNECTED to WS');
+    msg = {
+        type: 'new-connection',
+        name: 'patient',
+        id: patID
+    }
 }
 function onClose(evt) {
     console.log('DISCONNECTED from WS');
@@ -58,7 +65,7 @@ function onMessage(evt) {
     } else if (message.type == 'icecandi' && message.name == 'client') {
         onGetIceCandi(message.candidate, message.name);
     } else if (message.type == 'request' && message.name == 'client') {
-        onRequest();
+        onRequest(message.from);
     } else {
 
     }
@@ -78,15 +85,16 @@ async function init() { /* Adds local stream from camera and mic to LOCALVIDEO D
     } 
 }
 
-async function onRequest() { /* creates a variable localCOnn,adds it to array,creates an offer*/
+async function onRequest(clientID) { /* creates a variable localCOnn,adds it to array,creates an offer*/
     console.log('.'); console.log('.'); console.log('.'); console.log('.'); console.log('.'); console.log('.'); console.log('.');
     try {
         let localConn;
         connections.push(localConn);
+        clients.push(clientID);
         try {
             console.log('onRequest() with connections[',connections.length-1,']');
             (connections[connections.length - 1]) = new RTCPeerConnection(configuration);
-            (connections[connections.length - 1]).addEventListener('icecandidate', e => onIceCandidate((connections[connections.length - 1]), e));
+            (connections[connections.length - 1]).addEventListener('icecandidate', e => onIceCandidate((connections[connections.length - 1]), e,clients[connections.length-1]));
             //(connections[connections.length - 1]).addEventListener('iceconnectionstatechange', e => onIceStateChange((connections[connections.length - 1]), e));
             localStream.getTracks().forEach(track => (connections[connections.length - 1]).addTrack(track, localStream));
             console.log('onRequest() : Added local stream to connections[',connections.length-1,']');
@@ -95,13 +103,13 @@ async function onRequest() { /* creates a variable localCOnn,adds it to array,cr
         }
         console.log('onRequest() with connections[',connections.length-1,']');
         let offer = await (connections[connections.length - 1]).createOffer(offerOptions);
-        await onCreateOfferSuccess(offer);
+        await onCreateOfferSuccess(offer,clientID);
     } catch (e) {
         onCreateSessionDescriptionError(e);
     }
 }
 
-async function onCreateOfferSuccess(desc) {
+async function onCreateOfferSuccess(desc,clientID) {
     try {
         console.log('connections[',connections.length-1,'] successfully created an offer.');
         await (connections[connections.length - 1]).setLocalDescription(new RTCSessionDescription(desc));
@@ -109,7 +117,9 @@ async function onCreateOfferSuccess(desc) {
         let message = {
             type: 'offer',
             name: 'patient',
-            offer: desc
+            offer: desc,
+            to : clientID,
+            from : patID
         };
         websocket.send(JSON.stringify(message));
         console.log('connections[',connections.length-1,'] sent the offer to requesting person.');
@@ -127,12 +137,14 @@ async function onGetAnswer(answer, name) {
     }
 };
 
-async function onIceCandidate(pc, event) {
+async function onIceCandidate(pc, event,clientID) {
     try {
         let message = {
             type: 'icecandi',
             name: 'patient',
-            candidate: event.candidate
+            candidate: event.candidate,
+            to: clientID,
+            from : patID
         };
         websocket.send(JSON.stringify(message));
     } catch (e) {
