@@ -1,7 +1,12 @@
 const User = require('../models/User');
 
 const index = (req, res) => {
-
+  console.log('show the index here');
+  if(!req.session.user) {
+    res.render('users/login');
+  } else {
+    res.send('hello user!');
+  }
 }
 
 const login = (req, res) => {
