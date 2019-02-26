@@ -48,6 +48,11 @@ websocket.addEventListener('error', e => onError(e));
 websocket.addEventListener('message', e => onMessage(e));
 function onOpen(evt) {
     console.log('CONNECTED to WS');
+    let message = {
+        type : 'new-connection',
+        name : '',
+        id : 'a'
+    }
 }
 function onClose(evt) {
     console.log('DISCONNECTED from WS');
@@ -111,7 +116,8 @@ async function onCreateOfferSuccess(desc) {
             type: 'offer',
             //name: 'chetan',
             name: 'offerer',
-            offer: desc
+            offer: desc,
+            id: 'o'
         };
         websocket.send(JSON.stringify(message));
         console.log('Offerer sent the message to answerer.');
@@ -134,7 +140,8 @@ async function onGetOffer(offer, name) {
         let message = {
             type: 'answer',
             name: 'answerer',
-            answer: answer
+            answer: answer,
+            id : 'a'
         };
         websocket.send(JSON.stringify(message));
     } catch (e) {
@@ -156,7 +163,9 @@ async function onIceCandidate(pc, event) {
         let message = {
             type: 'icecandi',
             name: 'ICEmessenger',
-            candidate: event.candidate
+            candidate: event.candidate,
+            to : 'o',
+            from: 'a'
         };
         websocket.send(JSON.stringify(message));
     } catch (e) {
