@@ -123,7 +123,7 @@ async function onGetOffer (offer, name) {
     };
     websocket.send(JSON.stringify(message));
     console.log('answer sent to all');
-    websocket.close();
+    // websocket.close();
   } catch (e) {
     console.log(e);
   }
