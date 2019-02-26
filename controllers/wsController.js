@@ -22,6 +22,7 @@ ws = new WebSocket.Server({ server: httpServer });
 
 // list of clients
 let wsclients = [];
+let clients = [];
 
 const onMessage = (message) => {
   let msg = JSON.parse(message);
@@ -33,21 +34,21 @@ const onMessage = (message) => {
   // }
 
   if (msg.type == 'new-connection') {
-    msg['ws'] = ws;
-    wsclients.push(msg);
+    wsclients.push(ws);
+    clients.push(msg.id);
   // } else if (msg.type == 'offer' || )
   } else {
     let msgFor = msg.to;
-    for (let i in wsclients) {
-      let c = wsclients[i].ws;
-      if (c.readyState === c.OPEN) {
-        if (c.id == msgFor) {
+    for (let i in clients) {
+      if (clients[i] === msgFor) {
+        let c = wsclients[i];
+        if (c.readyState === c.OPEN) {
           c.send(message);
           break;
-        }
-      } else {
-        // TODO:
-        // splice the array here
+        } else {
+          // TODO:
+          // splice the array here
+        }  
       }
     }
   }
