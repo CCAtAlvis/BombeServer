@@ -4,7 +4,9 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const createError = require('http-errors');
-
+const mongoose = require('mongoose');
+const session = require('express-session');
+const MongoStore = require('connect-mongo')(session);
 
 const initMiddleware = (app) => {
   dotenv.config();
@@ -19,10 +21,38 @@ const initMiddleware = (app) => {
   app.use(cookieParser());
   app.use(express.static(path.join(__dirname, '../public')));
 
-  // catch 404 and forward to error handler
-  app.use(function (req, res, next) {
-    next(createError(404));
-  });
+  // usage variables
+  // app.use((req, res, next) => {
+	// 	res.locals.req = req;
+	// 	res.locals.session = req.session;
+	// 	res.locals.toastMessage = req.flash('toastMessage');
+  //   res.locals.toastStatus = req.flash('toastStatus');
+    
+	// 	if (res.locals.toastMessage != "" && res.locals.toastStatus != "") {
+	// 	  console.log('Flash Message: '+res.locals.toastMessage+' '+res.locals.toastStatus);
+	// 	}
+    
+  //   next();
+  // });
+
+  // Handling session 
+  // session config
+  const sessionConfig = {
+    secret: 'keyboard cat',
+    resave: false,
+    saveUninitialized: false,
+    cookie: { secure: true },
+    store: new MongoStore({
+      mongooseConnection: mongoose.connection,
+      ttl: 3600*24*365,
+      autoRemove: 'interval',
+      autoRemoveInterval: 10, // 10 minutes, default
+      touchAfter: 24 * 3600, // time period in seconds
+      collection: 'sessions'
+    })
+  };
+
+  app.use(session(sessionConfig));
 
   // error handler
   app.use(function (err, req, res, next) {
