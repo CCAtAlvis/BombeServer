@@ -58,11 +58,11 @@ function onError(evt) {
 function onMessage(evt) {
     let message = JSON.parse(evt.data);
     console.log('localConn got a ',message.type,' from ',message.name);
-    if (message.type == 'offer') {
+    if (message.type == 'offer' &&(message.name=='offerer'||message.name=='answerer')) {
         onGetOffer(message.offer, message.name);
-    } else if (message.type == 'answer') {
+    } else if (message.type == 'answer' &&(message.name=='offerer'||message.name=='answerer')) {
         onGetAnswer(message.answer, message.name);
-    } else if (message.type == 'icecandi') {
+    } else if (message.type == 'icecandi' &&(message.name=='offerer'||message.name=='answerer')) {
         onGetIceCandi(message.candidate, message.name);
     } else {
 
