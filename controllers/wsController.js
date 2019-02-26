@@ -39,7 +39,7 @@ const onMessage = (message) => {
   } else {
     let msgFor = msg.to;
     for (let i in wsclients) {
-      let c = wsclients[i];
+      let c = wsclients[i].ws;
       if (c.readyState === c.OPEN) {
         if (c.id == msgFor) {
           c.send(message);

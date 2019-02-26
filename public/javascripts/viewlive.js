@@ -42,6 +42,13 @@ websocket.addEventListener('message', e => onMessage(e));
 
 function onOpen (evt) {
   console.log('CONNECTED to WS');
+  let message = {
+    type: 'new-connection',
+    name: 'client',
+    id: clientID
+  }
+
+  websocket.send(JSON.stringify(message));
   createRequest();
 }
 
