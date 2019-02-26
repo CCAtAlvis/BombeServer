@@ -91,6 +91,7 @@ async function onRequest(clientID) { /* creates a variable localCOnn,adds it to 
     try {
         let localConn;
         clients.push(clientID);
+        let index = clients.reverse().indexOf(clientID);;
         try {
             //console.log('onRequest() with connections[',connections.length-1,']');
             localConn = new RTCPeerConnection(configuration);
@@ -102,9 +103,10 @@ async function onRequest(clientID) { /* creates a variable localCOnn,adds it to 
             //console.log("onRequest() : Error in onRequest() : ",e);
         }
         //console.log('onRequest() with connections[',connections.length-1,']');
-        connections.push(localConn);
-        console.log('onRequest() with connections[',connections.length-1,']');
-        let offer = await (connections[connections.length - 1]).createOffer(offerOptions);
+        connections.splice(index,0,localConn);
+        // connections.push(localConn);
+        console.log('onRequest() with connections[',index,']');
+        let offer = await (connections[index]).createOffer(offerOptions);
         await onCreateOfferSuccess(offer,clientID);
     } catch (e) {
         onCreateSessionDescriptionError(e);
@@ -113,7 +115,7 @@ async function onRequest(clientID) { /* creates a variable localCOnn,adds it to 
 
 async function onCreateOfferSuccess(desc,clientID) {
     try {
-        let index = clients.indexOf(clientID);
+        let index = clients.reverse().indexOf(clientID);
         console.log('connections[',index,'] successfully created an offer.');
         await (connections[index]).setLocalDescription(new RTCSessionDescription(desc));
         console.log('connections[',index,'] local desc was set to offer');
@@ -133,7 +135,7 @@ async function onCreateOfferSuccess(desc,clientID) {
 
 async function onGetAnswer(answer, name,clientID) {
     try {
-        let index = clients.indexOf(clientID);
+        let index = clients.reverse().indexOf(clientID);
         console.log('connections[',index,'] set its remote desc to answer');
         await (connections[index]).setRemoteDescription(answer);
     } catch (e) {
