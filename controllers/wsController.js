@@ -40,7 +40,7 @@ const onMessage = (ws, message) => {
   } else {
     let msgFor = msg.to;
     for (let i in clients) {
-      if (clients[i] === msgFor) {
+      if (clients[i] == msgFor) {
         let c = wsclients[i];
         if (c.readyState === c.OPEN) {
           c.send(message);
@@ -56,6 +56,13 @@ const onMessage = (ws, message) => {
   console.log(message);
 }
 
+const onClose = (ws) => {
+  let index = wsclients.indexOf(ws);
+  wsclients.splice(index, 1);
+  clients.splice(index, 1);
+  console.log("removed WS at index:", index);
+}
+
 // handle WSS
 if (process.env.NODE_ENV == 'prod') {
   wss.on('connection', (ws) => {
@@ -63,6 +70,10 @@ if (process.env.NODE_ENV == 'prod') {
 
     ws.on('message', (message) => {
       onMessage(ws, message);
+    });
+
+    ws.on('close', () => {
+      onClose(ws);
     });
   });
 }
@@ -73,6 +84,10 @@ ws.on('connection', (ws) => {
 
   ws.on('message', (message) => {
     onMessage(ws, message);
+  });
+
+  ws.on('close', () => {
+    onClose(ws);
   });
 });
 
