@@ -21,10 +21,19 @@ const initMiddleware = (app) => {
   app.use(cookieParser());
   app.use(express.static(path.join(__dirname, '../public')));
 
-  // catch 404 and forward to error handler
-  app.use(function (req, res, next) {
-    next(createError(404));
-  });
+  // usage variables
+  // app.use((req, res, next) => {
+	// 	res.locals.req = req;
+	// 	res.locals.session = req.session;
+	// 	res.locals.toastMessage = req.flash('toastMessage');
+  //   res.locals.toastStatus = req.flash('toastStatus');
+    
+	// 	if (res.locals.toastMessage != "" && res.locals.toastStatus != "") {
+	// 	  console.log('Flash Message: '+res.locals.toastMessage+' '+res.locals.toastStatus);
+	// 	}
+    
+  //   next();
+  // });
 
   // Handling session 
   // session config
