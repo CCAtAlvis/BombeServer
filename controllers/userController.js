@@ -3,9 +3,10 @@ const User = require('../models/User');
 const index = (req, res) => {
   console.log('show the index here');
   if(!req.session.user) {
-    res.render('users/login');
+    res.redirect('/users/login');
   } else {
-    res.send('hello user!');
+    // res.send('hello user!');
+    res.render('users/index');
   }
 }
 
@@ -102,20 +103,11 @@ const logout = (req, res) => {
   res.redirect('/');
 }
 
-const viewRegisterStaff = (req, res) => {
-  if(req.session.user) {
-    res.redirect('/users');
-  } else {
-    res.render('users/staffregister');
-  }
-}
-
 module.exports = {
   index,
   login,
   viewLogin,
   register,
   viewRegister,
-  viewRegisterStaff,
   logout,
 }

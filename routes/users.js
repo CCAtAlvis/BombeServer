@@ -13,6 +13,4 @@ router.get('/register', userController.viewRegister);
 
 router.get('/logout', userController.logout);
 
-router.get('/staff/register', userController.viewRegisterStaff);
-
 module.exports = router;
