@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>
+    I-SEE-YOU: REGISTER
+  </title>
+  <link rel="stylesheet" type="text/css" href="/stylesheets/style.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+    integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
+    integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+</head>
+
+<body>
+  <div id="RegisterDiv">
+    <img src="/images/logo.png">
+    <button type="button" class="btn btn-outline-primary" onclick="window.location.href='/'"
+      style="margin-left:12px;"><i class="fas fa-arrow-left"></i></button>
+
+    <form action="/users/verify" method="POST">
+      <div class="form-group" id="otpInput">
+        <input name="otp" type="text" class="form-control" placeholder="Enter OTP">
+      </div>
+
+      <div id="SubmitButton">
+        <button type="submit" class="btn btn-outline-primary"
+          style="padding-left: 109px; padding-right: 109px;">Verify</button>
+      </div>
+    </form>
+
+  </div>
+</body>
+
+</html>
