@@ -7,4 +7,5 @@ router.get('/', staffController.index);
 
 router.get('/register', staffController.viewRegisterStaff);
 
+router.post('/createPatient',staffController.createPatient);
 module.exports = router;
