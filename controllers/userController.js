@@ -11,29 +11,62 @@ const index = (req, res) => {
 }
 
 const login = (req, res) => {
-  const email = req.body.email;
+  const phone = req.body.contact;
   const password = req.body.password;
   // console.log(email, password);
 
-  User.findOne({email: email}, (err, doc) => {
+  User.findOne({phone: phone}, (err, doc) => {
     if (err) {
       throw err;
     }
-
     if (doc) {
       // console.log(doc);
-      if(doc.password === password) {
-        req.session.user = doc;
-        req.session.save((err) => {
-          if (err) {
-            throw err;
-          }
-
-          res.redirect('/users');
-        });
-
+      if (doc.active) {
+        if(doc.password === password) {
+          req.session.user = doc;
+          req.session.save((err) => {
+            if (err) {
+              throw err;
+            }
+            res.redirect('/users');
+          });
+  
+        } else {
+          console.log('username or passowrd incorrect');
+        }
       } else {
-        console.log('username or passowrd incorrect');
+        console.log('Account activated!');
+      }
+      
+    } else {
+      console.log('no such user');
+    }
+  });
+}
+
+const viewVerify = (req, res) => {
+  if (req.session.user) {
+    res.redirect('/users');
+  }
+  else {
+    res.render('users/verify');
+  }
+}
+
+const verify  = (req, res) => {
+  const id = req.session.user._id;
+  const otp = req.body.otp;
+
+  User.findById({_id: id}, (err, doc) => {
+    if (err) {
+      throw err;
+    }
+    if (doc) {
+      // console.log(doc);
+      if(doc.otp === otp) {
+        res.redirect('/users');
+      } else {
+        console.log('Incorrect OTP');
       }
     } else {
       console.log('no such user');
@@ -51,25 +84,28 @@ const viewLogin = (req, res) => {
 
 
 const register = (req, res) => {
-  const email = req.body.email;
+  // const email = req.body.email;
   const name = req.body.name;
   const contact = req.body.contact;
   const password = req.body.password;
-  const repassword = req.body.repassword;
+  // const repassword = req.body.repassword;
   const role = req.body.role;
 
-  if (password !== repassword) {
-    console.log('password not same');
-    res.send('password not same');
-    return;
-  }
+  // if (password !== repassword) {
+  //   console.log('password not same');
+  //   res.send('password not same');
+  //   return;
+  // }
+  let otp = Math.random()*100000;
+  otp = parseInt(otp);
 
   const user = new User({
-    email: email,
+    // email: email,
     name: name,
     contact: contact,
     password: password,
-    role: role
+    role: role,
+    otp: otp
   });
 
   user.save((err, doc) => {
@@ -84,8 +120,9 @@ const register = (req, res) => {
       if (err) {
         throw err;
       }
-
-      res.redirect('/users');
+      //TO DO SEND OTP USING APIs
+      // change /users to /verify
+      res.redirect('/verify');
     });
   })
 }
@@ -110,4 +147,6 @@ module.exports = {
   register,
   viewRegister,
   logout,
+  verify,
+  viewVerify
 }

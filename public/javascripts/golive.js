@@ -21,7 +21,7 @@ let configuration = {
         // { urls: 'turn:localhost:9999',
         //   username: 'bombe',
         //   credential: 'bombe'
-        // },
+        // },     
         {
             urls: 'turn:bturn2.xirsys.com:80?transport=udp',
             username: 'cf3f2d7e-34ee-11e9-83f7-1c77da0cc4bc',
