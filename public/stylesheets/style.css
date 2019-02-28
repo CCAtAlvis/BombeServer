@@ -46,8 +46,10 @@ img {
 #RegisterDiv {
     display: block;
     background-color: white;
-    height: 610px;
-    width: 300px;
+    min-height: 610px;
+    min-width: 300px;
+    max-width: 400px;
+    padding: 30px;
     margin-left: auto;
     margin-right: auto;
     margin-top: 50px; 

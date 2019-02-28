@@ -8,6 +8,10 @@ const userSchema = new mongoose.Schema({
   name: {
     type: String,
   },
+  password: {
+    type: String,
+    required: true
+  },
   email: {
     type: String,
     unique: true
@@ -29,7 +33,7 @@ const userSchema = new mongoose.Schema({
   role: {
     type: String,
     required: true,
-    enum: ['patient', 'user', 'staff', 'doctor', 'developer']
+    enum: ['patient', 'user', 'staff', 'doctor', 'nurse','developer']
   },
   app: {
     deviceToken: {

@@ -1,39 +1,62 @@
 const User = require('../models/User');
 
+const index = (req, res) => {
+  console.log('show the index here');
+  if(!req.session.user) {
+    res.redirect('/users/login');
+  } else {
+    // res.send('hello user!');
+    res.render('users/index');
+  }
+}
+
 const login = (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
-  console.log(email, password);
+  // console.log(email, password);
 
-  User.findOne({email: email, password: password})
-  .then((err, doc) => {
+  User.findOne({email: email}, (err, doc) => {
     if (err) {
       throw err;
     }
 
     if (doc) {
-      // TODO:
-      // save user session
+      // console.log(doc);
+      if(doc.password === password) {
+        req.session.user = doc;
+        req.session.save((err) => {
+          if (err) {
+            throw err;
+          }
+
+          res.redirect('/users');
+        });
+
+      } else {
+        console.log('username or passowrd incorrect');
+      }
     } else {
-      console.log("no such user");
+      console.log('no such user');
     }
   });
 }
 
 const viewLogin = (req, res) => {
-  res.send('hehe');
+  if(req.session.user) {
+    res.redirect('/users');
+  } else {
+    res.render('users/login');
+  }
 }
+
 
 const register = (req, res) => {
-
-}
-
-const viewRegister = (req, res) => {
   const email = req.body.email;
   const name = req.body.name;
   const contact = req.body.contact;
   const password = req.body.password;
   const repassword = req.body.repassword;
+  const role = req.body.role;
 
   if (password !== repassword) {
     console.log('password not same');
@@ -46,25 +69,45 @@ const viewRegister = (req, res) => {
     name: name,
     contact: contact,
     password: password,
-    role: 'user'
+    role: role
   });
 
-  user.save()
-  .then((err, doc) => {
+  user.save((err, doc) => {
     if (err) {
       res.send('some error try again later');
       throw err;
     }
 
-    console.log(doc);
-    res.json(doc);
+    // console.log(doc);
+    req.session.user = doc;
+    req.session.save((err) => {
+      if (err) {
+        throw err;
+      }
+
+      res.redirect('/users');
+    });
   })
 }
 
+const viewRegister = (req, res) => {
+  if(req.session.user) {
+    res.redirect('/users');
+  } else {
+    res.render('users/register');
+  }
+}
+
+const logout = (req, res) => {
+  req.session.destroy();
+  res.redirect('/');
+}
 
 module.exports = {
+  index,
   login,
   viewLogin,
   register,
-  viewRegister
+  viewRegister,
+  logout,
 }
