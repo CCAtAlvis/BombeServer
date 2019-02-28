@@ -19,17 +19,14 @@ const userSchema = new mongoose.Schema({
   dateOfBirth: {
     type: Date,
   },
-  imageUrl: {
-    type: String,
-  },
   contact: {
     type: Number,
     minlength: 10,
     maxlength: 10
   },
-  address: {
-    type: String
-  },
+  // address: {
+  //   type: String
+  // },
   role: {
     type: String,
     required: true,
@@ -40,8 +37,12 @@ const userSchema = new mongoose.Schema({
       type: String
     }
   },
-  tos: {
+  otp: {
+    type: String
+  },
+  active: {
     type: Boolean,
+    required: true,
     default: false
   }
 }, {
