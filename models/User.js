@@ -14,7 +14,6 @@ const userSchema = new mongoose.Schema({
   },
   email: {
     type: String,
-    unique: true
   },
   dateOfBirth: {
     type: Date,
@@ -22,7 +21,8 @@ const userSchema = new mongoose.Schema({
   contact: {
     type: Number,
     minlength: 10,
-    maxlength: 10
+    maxlength: 10,
+    unique: true
   },
   // address: {
   //   type: String
