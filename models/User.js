@@ -30,7 +30,7 @@ const userSchema = new mongoose.Schema({
   role: {
     type: String,
     required: true,
-    enum: ['patient', 'user', 'staff', 'doctor', 'nurse','developer']
+    enum: ['user', 'doctor', 'nurse','developer','other-staff']
   },
   app: {
     deviceToken: {
