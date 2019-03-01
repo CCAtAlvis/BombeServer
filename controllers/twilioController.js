@@ -14,11 +14,14 @@ const sendOTP = (otp, to) => {
     from: from,
     to: to
   })
-  .then(message => {
-    console.log(message.sid)
+  .then((err, message) => {
+    if (err) {
+      throw err;
+    }
+    console.log(message);
   });
 }
-// sendMessage();
+// sendOTP(1234, to);
 
 module.exports = {
   sendOTP
