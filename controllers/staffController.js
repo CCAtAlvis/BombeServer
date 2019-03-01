@@ -25,6 +25,8 @@ const createPatient = (req, res) => {
   const gender = req.body.gender;
   const contact = req.body.contact;
   const email = req.body.email;
+  
+
 }
 
 module.exports = {
