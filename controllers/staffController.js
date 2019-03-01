@@ -110,14 +110,6 @@ const login = (req, res) => {
 //   //delete the patient with the above reference code
 // }
 
-const viewLogin = (req, res) => {
-  if(req.session.user) {
-    res.redirect('/staff');
-  } else {
-    res.render('staff/login');
-  }
-}
-
 module.exports = {
   index,
   viewRegisterStaff,
