@@ -29,6 +29,23 @@ const login = (req, res) => {
   });
 }
 
+const test = (req, res) => {
+  const body = req.body;
+  const query = req.query;
+
+  const response = {
+    status: 'success',
+    message: 'success hua ne! aur kya chahiye',
+    data: {
+      body: body,
+      query: query
+    }
+  }
+
+  res.json(response);
+}
+
 module.exports = {
-  login
+  login,
+  test
 }
