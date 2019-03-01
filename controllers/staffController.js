@@ -70,45 +70,45 @@ const login = (req, res) => {
   });
 }
 
-// const updatePatient = (req, res) => {
-//   const code = req.body.Code;
-//   User.findOne({code: code}, (err, doc) => {
-//     if (err) {
-//       throw err;
-//     }
-//     if (doc) {
-//       // console.log(doc);
-//       req.session.user = doc;
-//     } else {
-//       console.log('no such patient');
-//       res.render('staff/updatPatient', {error:'No such patient'});
-//     }
-//   });
-//   const trustedUser = req.body.trustedUser;
-//   const doctorAssigned = req.body.doctorAssigned;
-//   const name = req.body.name;
-//   const gender = req.body.gender;
-//   const contact = req.body.contact;
-//   const email = req.body.email;
-//   //update a patient with the above details and add them to database
-// }
+const updatePatient = (req, res) => {
+  const code = req.body.Code;
+  User.findOne({code: code}, (err, doc) => {
+    if (err) {
+      throw err;
+    }
+    if (doc) {
+      // console.log(doc);
+      req.session.user = doc;
+    } else {
+      console.log('no such patient');
+      res.render('staff/updatPatient', {error:'No such patient'});
+    }
+  });
+  const trustedUser = req.body.trustedUser;
+  const doctorAssigned = req.body.doctorAssigned;
+  const name = req.body.name;
+  const gender = req.body.gender;
+  const contact = req.body.contact;
+  const email = req.body.email;
+  //update a patient with the above details and add them to database
+}
 
-// const deletePatient = (req, res) => {
-//   const code = req.body.Code;
-//   User.findOne({code: code}, (err, doc) => {
-//     if (err) {
-//       throw err;
-//     }
-//     if (doc) {
-//       // console.log(doc);
-//       req.session.user = doc;
-//     } else {
-//       console.log('no such patient');
-//       res.render('staff/updatPatient', {error:'No such patient'});
-//     }
-//   });
-//   //delete the patient with the above reference code
-// }
+const deletePatient = (req, res) => {
+  const code = req.body.Code;
+  User.findOne({code: code}, (err, doc) => {
+    if (err) {
+      throw err;
+    }
+    if (doc) {
+      // console.log(doc);
+      req.session.user = doc;
+    } else {
+      console.log('no such patient');
+      res.render('staff/updatPatient', {error:'No such patient'});
+    }
+  });
+  //delete the patient with the above reference code
+}
 
 module.exports = {
   index,
