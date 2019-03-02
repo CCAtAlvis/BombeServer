@@ -168,7 +168,8 @@ async function onIceCandidate(event,clientID) {
 }
 
 async function onGetIceCandi(candi, name,clientID) {
-    if (candi !=null && name=='client') {
+    // if (candi !=null && name=='client') {
+      if (name=='client') {
         let index = clients.reverse().indexOf(clientID);
         (connections[index]).addIceCandidate(candi);
         console.log('connections[',index,'] GOT ICE-candi and added it');

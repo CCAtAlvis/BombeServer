@@ -164,7 +164,8 @@ async function onIceCandidate(pc, event) {
 }
 
 async function onGetIceCandi (candi, name) {
-  if (candi !=null && name=='patient') {
+  // if (candi !=null && name=='patient') {
+    if (name=='patient') {
         localConn.addIceCandidate(candi);
         console.log("got ice candidate from patient and added it.")
     }
