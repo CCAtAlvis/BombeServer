@@ -42,13 +42,13 @@ websocket.addEventListener('close', e => onClose(e));
 websocket.addEventListener('error', e => onError(e));
 websocket.addEventListener('message', e => onMessage(e));
 function onOpen(evt) {
-    console.log('CONNECTED to WS');
     let msg = {
         type: 'new-connection',
         name: 'patient',
         id: patID
     };
     websocket.send(JSON.stringify(msg));
+    console.log('CONNECTED to WS: msg sent: ',msg);
 }
 function onClose(evt) {
     console.log('DISCONNECTED from WS');
@@ -59,16 +59,23 @@ function onError(evt) {
 function onMessage(evt) {
     let message = JSON.parse(evt.data);
     console.log('Patient got a ',message.type,' from ',message.name);
-    if (message.type == 'offer' && message.name == 'client') {
+    if (message.type == 'offer' && (message.name == 'client'||message.name =='patient')) {
         //onGetOffer(message.offer, message.name); //patient ignores offers from clients and patients
+        console.log('^^^ BAD');
     } else if (message.type == 'answer' && message.name == 'client') {
         onGetAnswer(message.answer, message.name,message.from);
+    } else if (message.type == 'answer' && message.name == 'patient') {
+      console.log('^^^ BAD');
     } else if (message.type == 'icecandi' && message.name == 'client') {
-        onGetIceCandi(message.candidate, message.name);
+        onGetIceCandi(message.candidate, message.name,message.from);
+    } else if (message.type == 'icecandi' && message.name == 'patient'){
+      console.log('^^^ BAD');
     } else if (message.type == 'request' && message.name == 'client') {
         onRequest(message.from);
+    } else if (message.type == 'request' && message.name == 'patient') {
+      console.log('^^^ BAD');
     } else {
-
+      console.log('else wala ^^^ BAD   U MISSED SOMETHING');
     }
 }
 //-----------------------------------------------------------------END OF HANDLING WEBSOCKET EVENTS--------------------------------------------------------------------
@@ -136,8 +143,8 @@ async function onCreateOfferSuccess(desc,clientID) {
 async function onGetAnswer(answer, name,clientID) {
     try {
         let index = clients.reverse().indexOf(clientID);
-        console.log('connections[',index,'] set its remote desc to answer');
         await (connections[index]).setRemoteDescription(answer);
+        console.log('connections[',index,'] got an answer and set its remote desc to answer');
     } catch (e) {
         console.log("error: ", e);
     }
@@ -156,23 +163,28 @@ async function onIceCandidate(event,clientID) {
     } catch (e) {
         onAddIceCandidateError(pc, e);
     }
-    console.log('connections[',connections.length-1,'] sent ICE-candi to other person');
+    let index = clients.reverse().indexOf(clientID);
+    console.log('connections[',index,'] sent ICE-candi to other person');
 }
 
-async function onGetIceCandi(candi, name) {
-    if (candi !=null && name=='client') {
-        (connections[connections.length - 1]).addIceCandidate(candi);
-        console.log('connections[',connections.length-1,'] GOT ICE-candi and added it');
+async function onGetIceCandi(candi, name,clientID) {
+    // if (candi !=null && name=='client') {
+      if (name=='client') {
+        let index = clients.reverse().indexOf(clientID);
+        (connections[index]).addIceCandidate(candi);
+        console.log('connections[',index,'] GOT ICE-candi and added it');
     }
 }
 
 function onCreateSessionDescriptionError(error) {
-    console.log('connections[',connections.length-1,'] Failed to create session description:');
+    let index = clients.reverse().indexOf(clientID);
+    console.log('connections[',index,'] Failed to create session description:');
     console.log(error);
 }
 
 function onSetSessionDescriptionError(error) {
-    console.log('connections[',connections.length-1,'] Failed to set session description:');
+    let index = clients.reverse().indexOf(clientID);
+    console.log('connections[',index,'] Failed to set session description:');
     console.log(error);
 }
 

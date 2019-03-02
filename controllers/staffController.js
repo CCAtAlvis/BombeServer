@@ -1,56 +1,99 @@
 const User = require('../models/User');
+const Patient = require('../models/Patient');
 
 const index = (req, res) => {
-  let role = req.session.user.role;
-  if (role === 'doctor') {
-    
-  } else if (role === 'nurse') {
+  if (typeof req.session.user === 'undefined') {
+    //user is not registered/loggedIn
+    res.redirect('/staff/login');
+  } else {
+    const role = req.session.user.role;
+    const hospCode = req.session.user.role;
 
-  } else if (role === 'other-staff') {
+    let condidions = {
+      hospCode: hospCode,   
+    };
 
+    if (role === 'other-staff') {
+      Patient.find(condidions, (err, docs) => {
+        if (err) {
+          throw err;
+        }
+
+        if (docs) {
+          res.render('staff/other', {patients: docs});
+        } else {
+          res.render('staff/other');
+        }
+      });
+    } else {
+      if (role === 'doctor') {
+        res.send('todo: doctor');
+      } else if (role === 'nurse') {
+        res.send('todo: nurse');
+      } else {
+        res.redirect('/', { error: 'Unauth Access!' });
+      }
+    }
   }
 }
 
 const viewRegisterStaff = (req, res) => {
-  if (req.session.user) {
+  if (typeof req.session.user !== 'undefined') {
+    //staff is registered/loggedIn
     res.redirect('/staff');
-  } else {
+  } else if((typeof req.session.user === 'undefined')) {
+    //user is not registered/loggedIn
     res.render('staff/staffregister');
+  } else {
+    //user has to login
+    // res.render('users/login');
   }
 }
 
-const createPatient = (req, res) => {
-  const code = req.body.Code;
-  const trustedUser = req.body.trustedUser;
-  const doctorAssigned = req.body.doctorAssigned;
-  const name = req.body.name;
-  const gender = req.body.gender;
-  const contact = req.body.contact;
+const register = (req, res) => {
   const email = req.body.email;
-  //create a patient with the above details and add them to database
-  let user = new User({
-    code: code,
-    trustedUser: trustedUser,
-    doctorAssigned: doctorAssigned,
+  const name = req.body.name;
+  const contact = req.body.contact;
+  const password = req.body.password;
+  const hospCode = req.body.hospCode;
+  const role = req.body.role;
+
+  const user = new User({
+    email: email,
     name: name,
-    gender: gender,
     contact: contact,
-    email: email
-  })
-  user.save()
-     .then(doc => {
-       console.log(doc)
-     })
-     .catch(err => {
-       console.error(err)
-     })
+    password: password,
+    role: role,
+    hospCode: hospCode,
+    verified: true
+  });
+
+  user.save((err, doc) => {
+    if (err) {
+      res.send('some error try again later');
+      throw err;
+    }
+    req.session.user = doc;
+    req.session.save((err) => {
+      if (err) {
+        throw err;
+      }
+
+      res.redirect('/staff');
+    });
+  }); 
 }
 
 const viewLogin = (req, res) => {
-  if(req.session.user) {
-    res.redirect('/staff');
+  if (!(typeof req.session.user === 'undefined')) {
+    //staff is registered/loggedIn
+    res.render('staff/index');
+  } else if((typeof req.session.user === 'undefined')) {
+    //user is not registered/loggedIn
+    res.redirect('/staff/login');
   } else {
-    res.render('staff/login');
+    //user has to login
+    // res.render('users/login');
   }
 }
 
@@ -60,10 +103,11 @@ const login = (req, res) => {
   const password = req.body.password;
   // console.log(email, password);
 
-  User.findOne({phone: phone}, (err, doc) => {
+  User.findOne({ phone: phone }, (err, doc) => {
     if (err) {
       throw err;
     }
+
     if (doc) {
       // console.log(doc);
       if(doc.password === password) {
@@ -86,6 +130,48 @@ const login = (req, res) => {
   });
 }
 
+
+
+
+
+
+
+
+
+
+
+const createPatient = (req, res) => {
+  const hospCode = req.session.user.hospCode;
+  const code = req.body.refID;
+  const trustedUser = req.body.trustedUser;
+  const doctorAssigned = req.body.doctor;
+  const name = req.body.name;
+  const gender = req.body.gender;
+  const contact = req.body.contact;
+  const email = req.body.email;
+
+  //create a patient with the above details and add them to database
+  let patient = new Patient({
+    refCode: code,
+    trustedUser: trustedUser,
+    doctor: doctorAssigned,
+    name: name,
+    contact: contact,
+    gender: gender,
+    email: email,
+    hospCode: hospCode
+  });
+
+  patient.save()
+    .then(doc => {
+      console.log(doc)
+      res.redirect('/staff');
+    })
+    .catch(err => {
+      console.error(err)
+    })
+}
+
 const viewupdatePatient = (req, res) => {
   const code = req.body.Code;
   User.findOne({code: code}, (err, doc) => {
@@ -93,24 +179,26 @@ const viewupdatePatient = (req, res) => {
       throw err;
     }
     if (doc) {
-      res.redirect('/staff/updatePatient');
+      res.render('staff/updatePatient',{patient:doc});
       //we need to pass the doc to /staff/updatePatient.
     } else {
       console.log('no such patient');
-      res.render('staff/index', {error:'No such patient'});
+      res.render('staff/updatePatient', {error:'No such patient'});
     }
   });
 }
 
 const updatePatient = (req,res) => {
-
   const trustedUser = req.body.trustedUser;
   const doctorAssigned = req.body.doctorAssigned;
   const name = req.body.name;
   const gender = req.body.gender;
   const contact = req.body.contact;
   const email = req.body.email;
-  //update a patient with the above details and add them to database
+  const code = req.body.Code;
+  User.findByIdAndUpdate({},(err, doc) => {
+
+  });
 }
 
 const deletePatient = (req, res) => {
@@ -127,43 +215,16 @@ const deletePatient = (req, res) => {
       res.render('staff/updatPatient', {error:'No such patient'});
     }
   });
-  //delete the patient with the above reference code
-}
-
-const register = (req, res) => {
-  const name = req.body.name;
-  const contact = req.body.contact;
-  const password = req.body.password;
-  const role = req.body.role;
-  const user = new User({
-    // email: email,
-    name: name,
-    contact: contact,
-    password: password,
-    role: role
-  });
-  user.save((err, doc) => {
-    if (err) {
-      res.send('some error try again later');
-      throw err;
-    }
-    req.session.user = doc;
-    req.session.save((err) => {
-      if (err) {
-        throw err;
-      }
-      res.redirect('/staff');
-    });
-  })
+  //soft delete the patient with the above reference code
 }
 
 module.exports = {
   index,
+  register,
   viewRegisterStaff,
   createPatient,
   login,
   viewLogin,
   viewupdatePatient,
   deletePatient,
-  register
 }

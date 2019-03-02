@@ -13,6 +13,10 @@ const patientSchema = new mongoose.Schema({
     minlength: 10,
     maxlength: 10
   },
+  hospCode: {
+    type: String,
+    required: true
+  },
   email: {
     type: String,
   },
@@ -22,11 +26,15 @@ const patientSchema = new mongoose.Schema({
   //     required: true
   //   }
   // }],
+  // trustedUser: {
+  //   userCotact: {
+  //     type: String,
+  //     required: true
+  //   }
+  // },
   trustedUser: {
-    userCotact: {
-      type: String,
-      required: true
-    }
+    type: String,
+    required: true
   },
   doctor: {
     type: String,
