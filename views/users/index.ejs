@@ -1,44 +1,41 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-  <title>
-    I-SEE-YOU
-  </title>
-  <meta name="version" content="0.1.2">
-  <meta name="git-commit" content="6e1699e9a7697b1db15b348ebd3d2d1643a1e348">
-  <link rel="stylesheet" type="text/css" href="/stylesheets/style.css">
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
-    integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-</head>
+<%- include('../layout/head'); -%>
 
 <body>
+  <section>
+    <div class="container-fluid">
+      <div class="row">
 
-  <% if (typeof userPatients !== 'undefined') {
-    for(let i=0; i<userPatients.length; i++) {
-      let p = userPatients[i];
-  %>
+        <%- include('../layout/staffSidebar'); -%>
+        
+        <div class="col-md-10 " id="target">
+          <div class="row mx-5 my-5">
+      
 
-  <% }
-  } %>
+          <% if (typeof userPatients !== 'undefined') {
+              for(let i=0; i<userPatients.length; i++) {
+                let p = userPatients[i];
+          %>
+            <p><%= p%> - </p>
+          <% }
+          } %>
 
-  <br>
-  <div class="addRefCode">
-    <form action="/action/addRefCode" method="POST">
-      <input type="text" name="refCode" id="refCode">
-      <input type="submit" value="Connect">
-    </form>
+        <div class="addRefCode">
+          <form action="/action/addRefCode" method="POST">
+            <input type="text" name="refCode" id="refCode">
+            <input type="submit" value="Connect">
+          </form>
+        </div>
+
+        <% if (typeof docPatients !== 'undefined') { %>
+        <hr>
+        <% for(let i=0; i<docPatients.length; i++) {
+            let p = docPatients[i];
+        %>
+          <h1><%= p%></h1>
+        <% }
+        } %>
+    </div>
   </div>
-
-  <% if (typeof docPatients !== 'undefined') { %>
-  <hr>
-  <%
-    for(let i=0; i<docPatients.length; i++) {
-      let p = docPatients[i];
-  %>
-
-  <% }
-  } %>
 
 </body>
 

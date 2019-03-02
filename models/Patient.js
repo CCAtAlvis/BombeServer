@@ -34,12 +34,12 @@ const patientSchema = new mongoose.Schema({
   //   }
   // },
   trustedUser: {
-    type: String,
-    required: true
+    type: Number,
+    unique: true
   },
   doctor: {
-    type: String,
-    required: true
+    type: Number,
+    unique: true
   },
   refCode: {
     type: String,
@@ -47,9 +47,9 @@ const patientSchema = new mongoose.Schema({
   },
   users: [{
     userCotact: {
-      type: String,
-      required: true
-    },
+      type: Number,
+      unique: true
+      },
     name: {
       type: String,
     },

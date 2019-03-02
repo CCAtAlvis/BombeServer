@@ -22,11 +22,12 @@ const index = (req, res) => {
   } else if(!(typeof req.session.user === 'undefined') && req.session.user.verified ) {
     //user is registered/loggedIn and is verified
     let contact = req.session.user.contact;
-    User.find({'users.userContact': contact,'users.permission':true}, (err, docs) => {
+    Patient.find({trustedUser: contact}, (err, docs) => {
       if (err) {
         throw err;
       }
       if (docs) {
+        console.log(docs);
         res.render('users/index',{userPatients:docs});
       } else {
         res.render('users/index');
@@ -155,6 +156,40 @@ const logout = (req, res) => {
   res.redirect('/');
 }
 
+
+
+
+// /users/connect
+const viewConnect = (req, res) => {
+  res.render('users/connect');
+}
+
+const connect = (req, res) => {
+  // TODO:
+}
+
+
+// /users/requests
+const viewRequests = (req, res) => {
+  res.render('users/requests');
+}
+
+const requests = (req, res) => {
+  // TODO:
+}
+
+
+// /users/permissions
+const viewPermissions = (req, res) => {
+  res.render('users/permissions');
+}
+
+const permissions = (req, res) => {
+  // TODO:
+}
+
+
+
 module.exports = {
   index,
   login,
@@ -163,5 +198,14 @@ module.exports = {
   viewRegister,
   logout,
   verify,
-  viewVerify
+  viewVerify,
+
+  viewConnect,
+  connect,
+
+  viewPermissions,
+  permissions,
+
+  viewRequests,
+  requests
 }

@@ -16,4 +16,13 @@ router.get('/verify', userController.viewVerify);
 
 router.get('/logout', userController.logout);
 
+router.get('/connect', userController.viewConnect);
+router.post('/connect', userController.connect);
+
+router.get('/requests', userController.viewRequests);
+router.post('/requests', userController.requests);
+
+router.post('/permissions', userController.permissions);
+router.get('/permissions', userController.viewPermissions);
+
 module.exports = router;
