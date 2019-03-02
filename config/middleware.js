@@ -23,15 +23,15 @@ const initMiddleware = (app) => {
 
   // usage variables
   // app.use((req, res, next) => {
-	// 	res.locals.req = req;
-	// 	res.locals.session = req.session;
-	// 	res.locals.toastMessage = req.flash('toastMessage');
-  //   res.locals.toastStatus = req.flash('toastStatus');
-    
-	// 	if (res.locals.toastMessage != "" && res.locals.toastStatus != "") {
-	// 	  console.log('Flash Message: '+res.locals.toastMessage+' '+res.locals.toastStatus);
-	// 	}
-    
+  // 	res.locals.req = req;
+  // 	res.locals.session = req.session;
+  // 	res.locals.toastMessage = req.flash('toastMessage');
+  //  res.locals.toastStatus = req.flash('toastStatus');
+
+  // 	if (res.locals.toastMessage != "" && res.locals.toastStatus != "") {
+  // 	  console.log('Flash Message: '+res.locals.toastMessage+' '+res.locals.toastStatus);
+  // 	}
+
   //   next();
   // });
 
@@ -44,11 +44,11 @@ const initMiddleware = (app) => {
     cookie: {
       path: '/',
       httpOnly: false,
-      maxAge: 3600*24*365
-     },
+      maxAge: 3600 * 24 * 365
+    },
     store: new MongoStore({
       mongooseConnection: mongoose.connection,
-      ttl: 3600*24*365,
+      ttl: 3600 * 24 * 365,
       autoRemove: 'interval',
       autoRemoveInterval: 10, // 10 minutes, default
       touchAfter: 24 * 3600, // time period in seconds

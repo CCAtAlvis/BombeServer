@@ -6,7 +6,7 @@ const addRefCode = (req, res) => {
   const userId = req.session.user._id;
   const name = req.session.user.name;
 
-  Patient.findOne({refCode: refCode}, (err, doc) => {
+  Patient.findOne({ refCode: refCode }, (err, doc) => {
     if (err) {
       throw err;
     }
@@ -16,7 +16,7 @@ const addRefCode = (req, res) => {
       let flag = true;
       for (let i = 0; i < doc.users.length; i++) {
         const element = doc.users[i];
-        
+
         if (element.userId.toString() == userId.toString()) {
           flag = false;
           break;
@@ -30,7 +30,7 @@ const addRefCode = (req, res) => {
           permission: false
         }
 
-        Patient.findByIdAndUpdate({_id: doc._id}, update, {upsert: true}, (err, doc) => {
+        Patient.findByIdAndUpdate({ _id: doc._id }, update, { upsert: true }, (err, doc) => {
           if (err) {
             throw err;
           }

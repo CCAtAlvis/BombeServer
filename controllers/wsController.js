@@ -8,10 +8,10 @@ let httpsServer, httpServer;
 
 // create a secure web socket
 if (process.env.NODE_ENV == 'prod') {
-  var privateKey  = fs.readFileSync('/etc/letsencrypt/live/bombe.westindia.cloudapp.azure.com/privkey.pem', 'utf8');
-  var certificate = fs.readFileSync('/etc/letsencrypt/live/bombe.westindia.cloudapp.azure.com/cert.pem', 'utf8');
-  var ca = fs.readFileSync('/etc/letsencrypt/live/bombe.westindia.cloudapp.azure.com/chain.pem', 'utf8');  
-  var credentials = {key: privateKey, cert: certificate, ca: ca};
+  const privateKey  = fs.readFileSync('/etc/letsencrypt/live/bombe.westindia.cloudapp.azure.com/privkey.pem', 'utf8');
+  const certificate = fs.readFileSync('/etc/letsencrypt/live/bombe.westindia.cloudapp.azure.com/cert.pem', 'utf8');
+  const ca = fs.readFileSync('/etc/letsencrypt/live/bombe.westindia.cloudapp.azure.com/chain.pem', 'utf8');  
+  const credentials = {key: privateKey, cert: certificate, ca: ca};
   httpsServer = new https.createServer(credentials);
   wss = new WebSocket.Server({ server: httpsServer });
 }

@@ -21,7 +21,7 @@ const port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 
 if (process.env.NODE_ENV == 'prod') {
-  app.set('portHttps', portHttps);  
+  app.set('portHttps', portHttps);
 }
 
 
@@ -29,10 +29,10 @@ if (process.env.NODE_ENV == 'prod') {
  * Create HTTP server.
  */
 if (process.env.NODE_ENV == 'prod') {
-  const privateKey  = fs.readFileSync('/etc/letsencrypt/live/bombe.westindia.cloudapp.azure.com/privkey.pem', 'utf8');
+  const privateKey = fs.readFileSync('/etc/letsencrypt/live/bombe.westindia.cloudapp.azure.com/privkey.pem', 'utf8');
   const certificate = fs.readFileSync('/etc/letsencrypt/live/bombe.westindia.cloudapp.azure.com/cert.pem', 'utf8');
-  const ca = fs.readFileSync('/etc/letsencrypt/live/bombe.westindia.cloudapp.azure.com/chain.pem', 'utf8');  
-  const credentials = {key: privateKey, cert: certificate, ca: ca};
+  const ca = fs.readFileSync('/etc/letsencrypt/live/bombe.westindia.cloudapp.azure.com/chain.pem', 'utf8');
+  const credentials = { key: privateKey, cert: certificate, ca: ca };
   httpsServer = https.createServer(credentials, app);
 }
 
@@ -50,7 +50,7 @@ server.on('listening', onListening);
 if (process.env.NODE_ENV == 'prod') {
   httpsServer.listen(portHttps);
   httpsServer.on('error', onError);
-  httpsServer.on('listening', onListening);  
+  httpsServer.on('listening', onListening);
 }
 
 /**

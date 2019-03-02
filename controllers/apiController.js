@@ -15,7 +15,7 @@ const login = (req, res) => {
   const password = req.query.password;
   console.log(email, password);
 
-  User.findOne({email: email}, (err, doc) => {
+  User.findOne({ email: email }, (err, doc) => {
     if (err) {
       throw err;
     }
