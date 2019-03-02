@@ -121,11 +121,11 @@ const viewLogin = (req, res) => {
 
 //renders loggedIn/userIndex if number and password are correct else shows error.
 const login = (req, res) => {
-  const phone = req.body.contact;
+  const contact = req.body.contact;
   const password = req.body.password;
   // console.log(email, password);
 
-  User.findOne({ phone: phone }, (err, doc) => {
+  User.findOne({ contact: contact }, (err, doc) => {
     if (err) {
       throw err;
     }
@@ -142,8 +142,8 @@ const login = (req, res) => {
         });
 
       } else {
-        console.log('Phone Number or password incorrect');
-        res.render('staff/login', {error:'Phone Number or password incorrect'});
+        console.log('Contact Number or password incorrect');
+        res.render('staff/login', {error:'Contact Number or password incorrect'});
       }
     } else {
       console.log('no such staff');
