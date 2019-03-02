@@ -18,19 +18,19 @@ router.get('/updatePatient', staffController.viewupdatePatient);
 router.post('/updatePatient', staffController.updatePatient);
 router.post('/deletePatient', staffController.deletePatient);
 
-router.get('/doctor/clipboard', staffController );
-router.post('/doctor/clipboard', staffController );
-router.get('/doctor/details', staffController );
-router.post('/doctor/details', staffController );
+router.get('/doctor/clipboard', staffController.viewDoctorClipboard );
+router.post('/doctor/clipboard', staffController.doctorClipboard );
+router.get('/doctor/details', staffController.viewDoctorPatientDetails );
+router.post('/doctor/details', staffController.doctorPatientDetails );
 
-router.get('/nurse/clipboard', staffController );
-router.post('/nurse/clipboard', staffController );
-router.get('/nurse/details', staffController );
-router.post('/nurse/details', staffController );
+router.get('/nurse/clipboard', staffController.viewNurseClipboard );
+router.post('/nurse/clipboard', staffController.nurseClipboard );
+router.get('/nurse/details', staffController.viewNursePatientDetails );
+router.post('/nurse/details', staffController.nursePatientDetails );
 
-router.get('/other/clipboard', staffController );
-router.post('/other/clipboard', staffController );
-router.get('/other/details', staffController );
-router.post('/other/details', staffController );
+router.get('/other/clipboard', staffController.viewOtherClipboard );
+router.post('/other/clipboard', staffController.otherClipboard );
+router.get('/other/details', staffController.viewOtherPatientDetails );
+router.post('/other/details', staffController.otherPatientDetails );
 
 module.exports = router;
