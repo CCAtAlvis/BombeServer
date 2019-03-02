@@ -11,8 +11,6 @@ const patientSchema = new mongoose.Schema({
   },
   contact: {
     type: Number,
-    minlength: 10,
-    maxlength: 10
   },
   hospCode: {
     type: String,
@@ -35,20 +33,17 @@ const patientSchema = new mongoose.Schema({
   // },
   trustedUser: {
     type: Number,
-    unique: true
   },
   doctor: {
     type: Number,
-    unique: true
   },
   refCode: {
     type: String,
     required: true
   },
   users: [{
-    userCotact: {
+    userContact: {
       type: Number,
-      unique: true
       },
     name: {
       type: String,
