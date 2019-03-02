@@ -55,7 +55,8 @@ const createPatient = (req, res) => {
     name: name,
     gender: gender,
     contact: contact,
-    email: email
+    email: email,
+    verified: true
   })
   user.save()
      .then(doc => {
