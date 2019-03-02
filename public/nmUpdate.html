@@ -4,13 +4,24 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" >
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" ></script>    
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
    
     <link rel="stylesheet" type="text/css" href="./stylesheets/style.css">
-
+  <script>
+    function handleEdit(){
+      document.getElementById('name').disabled = false;
+      document.getElementById('email').disabled = false;
+      document.getElementById('gender').disabled = false;
+      document.getElementById('contact').disabled = false;
+      document.getElementById('doctor').disabled = false;
+      document.getElementById('trusteduser').disabled = false;
+      document.getElementById('save').hidden = false;
+      document.getElementById('edit').hidden = true;
+      return false;
+    }
+  </script>
     <title>Staff Page</title>
 </head>
 <body>
@@ -27,51 +38,120 @@
                 </div>
 
                 <div class="col-md-10 ">
-                    <div class="accordion" id="accordionExample">
-                        <div class="card">
-                          <div class="card-header" id="headingOne">
-                            <h2 class="mb-0">
-                              <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                Collapsible Group Item #1
-                              </button>
-                            </h2>
-                          </div>
-                      
-                          <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
-                            <div class="card-body">
-                              Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-                            </div>
-                          </div>
+
+                    <div id="accordion" class="mx-4 my-4">
+
+                      <div class="card">
+                        <div class="card-header">
+                          <a class="card-link" data-toggle="collapse" href="#collapseOne">
+                            Patient Name
+                          </a>
                         </div>
-                        <div class="card">
-                          <div class="card-header" id="headingTwo">
-                            <h2 class="mb-0">
-                              <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                Collapsible Group Item #2
-                              </button>
-                            </h2>
-                          </div>
-                          <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
-                            <div class="card-body">
-                              Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-                            </div>
-                          </div>
-                        </div>
-                        <div class="card">
-                          <div class="card-header" id="headingThree">
-                            <h2 class="mb-0">
-                              <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                                Collapsible Group Item #3
-                              </button>
-                            </h2>
-                          </div>
-                          <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
-                            <div class="card-body">
-                              Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-                            </div>
+                        <div id="collapseOne" class="collapse show" data-parent="#accordion">
+                          <div class="card-body">
+                              <form style="width:60%;text-align:center;display: inline-block" action="/users/register" method="POST">
+                                              
+                                <div class="form-group" id="NameInput">
+                                    <input name="name" id="name" type="text" class="form-control" value="Patient Name" disabled>
+                                </div>
+                                <div class="form-group" id="EmailInput">
+                                        <input name="email" id="email" type="email" class="form-control" value="Email ID" disabled>
+                                </div>
+                                <div class="form-group" id="GenderInput">
+                                        <select class="form-control" id="gender" name="Gender" value="Gender" disabled>
+                                                <option value="male">Select Gender</option>
+                                                <option value="male">Male</option>
+                                                <option value="female">Female</option>
+                                                <option value="others">Others</option>
+                                                </select>
+                                    </div>
+                                <div class="form-group" id="ContactInput">
+                                    <input name="contact" id="contact" type="text" class="form-control" value="Patient's Contact Number" disabled>
+                                </div>
+                                <div class="form-group" id="RefIDInput">
+                                        <input name="refID" type="text" class="form-control" value="Reference ID" disabled>
+                                    </div>
+                                <div class="form-group" id="DocAssignedInput">
+                                    <input name="doctor" id="doctor" type="text" class="form-control" value="Assigned Doctor's ID" disabled>
+                                </div>
+                                <div class="form-group" id="TrustedUserInput">
+                                    <input name="trusteduser" id="trusteduser" type="text" class="form-control" value="Trusted User's Phone Number" disabled>
+                                </div>                
+                                <div id="EditButton">
+                                    <button id="edit" onclick="return handleEdit()" class="btn btn-outline-primary" style="display: block;margin: auto;">Edit</button>
+                                </div>
+                                <div id="SaveButton">
+                                    <button id="save" hidden onclick="" class="btn btn-outline-primary" style="display: block;margin: auto;">Save</button>
+                                </div>
+                            </form>
                           </div>
                         </div>
                       </div>
+
+                      <div class="card">
+                        <div class="card-header">
+                          <a class="collapsed card-link" data-toggle="collapse" href="#collapseTwo">
+                            Collapsible Group Item #2
+                          </a>
+                        </div>
+                        <div id="collapseTwo" class="collapse" data-parent="#accordion">
+                          <div class="card-body">
+                            Lorem ipsum..
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="card">
+                        <div class="card-header">
+                          <a class="collapsed card-link" data-toggle="collapse" href="#collapseThree">
+                            Collapsible Group Item #3
+                          </a>
+                        </div>
+                        <div id="collapseThree" class="collapse" data-parent="#accordion">
+                          <div class="card-body">
+                            Lorem ipsum..
+                          </div>
+                        </div>
+                      </div>
+
+                    </div>
+                    <!--
+                    <form style="width:60%;text-align:center;display: inline-block" action="/users/register" method="POST">
+                                              
+                      <div class="form-group" id="NameInput">
+                          <input name="name" id="name" type="text" class="form-control" value="Patient Name" disabled>
+                      </div>
+                      <div class="form-group" id="EmailInput">
+                              <input name="email" id="email" type="email" class="form-control" value="Email ID" disabled>
+                      </div>
+                      <div class="form-group" id="GenderInput">
+                              <select class="form-control" id="gender" name="Gender" value="Gender" disabled>
+                                      <option value="male">Select Gender</option>
+                                      <option value="male">Male</option>
+                                      <option value="female">Female</option>
+                                      <option value="others">Others</option>
+                                      </select>
+                          </div>
+                      <div class="form-group" id="ContactInput">
+                          <input name="contact" id="contact" type="text" class="form-control" value="Patient's Contact Number" disabled>
+                      </div>
+                      <div class="form-group" id="RefIDInput">
+                              <input name="refID" type="text" class="form-control" value="Reference ID" disabled>
+                          </div>
+                      <div class="form-group" id="DocAssignedInput">
+                          <input name="doctor" id="doctor" type="text" class="form-control" value="Assigned Doctor's ID" disabled>
+                      </div>
+                      <div class="form-group" id="TrustedUserInput">
+                          <input name="trusteduser" id="trusteduser" type="text" class="form-control" value="Trusted User's Phone Number" disabled>
+                      </div>                
+                      <div id="EditButton">
+                          <button id="edit" onclick="return handleEdit()" class="btn btn-outline-primary" style="display: block;margin: auto;">Edit</button>
+                      </div>
+                      <div id="SaveButton">
+                          <button id="save" hidden onclick="" class="btn btn-outline-primary" style="display: block;margin: auto;">Save</button>
+                      </div>
+                  </form>
+                -->
                 <!--
                   <section class="my-4 mx-4 px-3 py-3">
 
