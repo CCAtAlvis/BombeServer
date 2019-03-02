@@ -131,6 +131,10 @@ const login = (req, res) => {
   });
 }
 
+const logout = (req, res) => {
+  req.session.destroy();
+  res.redirect('/');
+}
 
 
 
@@ -223,9 +227,10 @@ module.exports = {
   index,
   register,
   viewRegisterStaff,
-  createPatient,
   login,
   viewLogin,
+  logout,
+  createPatient,
   viewupdatePatient,
   deletePatient,
 }
