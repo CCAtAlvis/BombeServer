@@ -21,14 +21,15 @@ const index = (req, res) => {
 
         if (docs) {
           console.log(docs);
-          res.render('staff/other', {patients: docs});
+          res.render('staff/other/other', {patients: docs});
         } else {
-          res.render('staff/other');
+          res.render('staff/other/other');
         }
       });
     } else {
       if (role === 'doctor') {
         console.log('todo: doctor');
+        condidions.doctor = req.session.user.contact;
 
         Patient.find(condidions, (err, docs) => {
           if (err) {
@@ -37,9 +38,9 @@ const index = (req, res) => {
   
           if (docs) {
             console.log(docs);
-            res.render('staff/doctor', {patients: docs});
+            res.render('staff/doctor/doctor', {patients: docs});
           } else {
-            res.render('staff/doctor');
+            res.render('staff/doctor/doctor');
           }
         });
       } else if (role === 'nurse') {
@@ -52,9 +53,9 @@ const index = (req, res) => {
   
           if (docs) {
             console.log(docs);
-            res.render('staff/nurse', {patients: docs});
+            res.render('staff/nurse/nurse', {patients: docs});
           } else {
-            res.render('staff/nurse');
+            res.render('staff/nurse/nurse');
           }
         });
       } else {
@@ -120,11 +121,11 @@ const viewLogin = (req, res) => {
 
 //renders loggedIn/userIndex if number and password are correct else shows error.
 const login = (req, res) => {
-  const phone = req.body.contact;
+  const contact = req.body.contact;
   const password = req.body.password;
   // console.log(email, password);
 
-  User.findOne({ phone: phone }, (err, doc) => {
+  User.findOne({ contact: contact }, (err, doc) => {
     if (err) {
       throw err;
     }
@@ -141,8 +142,8 @@ const login = (req, res) => {
         });
 
       } else {
-        console.log('Phone Number or password incorrect');
-        res.render('staff/login', {error:'Phone Number or password incorrect'});
+        console.log('Contact Number or password incorrect');
+        res.render('staff/login', {error:'Contact Number or password incorrect'});
       }
     } else {
       console.log('no such staff');
@@ -221,13 +222,22 @@ const updatePatient = (req,res) => {
   const contact = req.body.contact;
   const email = req.body.email;
   const code = req.body.Code;
+<<<<<<< HEAD
 
   console.log(req.body);
   res.json(req.body);
 
   User.findByIdAndUpdate({},(err, doc) => {
+=======
+>>>>>>> 0d6ef6ca765de0e3ef54c288998e41ee04f1601f
 
-  });
+  console.log(req.body);
+  console.log(req.query);
+  res.json(req.body);
+
+  // User.findByIdAndUpdate({},(err, doc) => {
+
+  // });
 }
 
 const deletePatient = (req, res) => {
@@ -247,6 +257,143 @@ const deletePatient = (req, res) => {
   //soft delete the patient with the above reference code
 }
 
+
+
+
+
+
+
+
+const doctorClipboard = (req, res) => {}
+const viewDoctorClipboard = (req, res) => {
+  const condidions = {
+    hospCode: req.session.user.hospCode,
+    doctor: req.session.user.contact
+  };
+
+  Patient.find(condidions, (err, docs) => {
+    if (err) {
+      throw err;
+    }
+
+    if (docs) {
+      console.log(docs);
+      res.render('staff/doctor/doctor', {patients: docs});
+    } else {
+      res.render('staff/doctor/doctor');
+    }
+  });
+}
+const doctorPatientDetails = (req, res) => {}
+const viewDoctorPatientDetails = (req, res) => {
+  const condidions = {
+    hospCode: req.session.user.hospCode,
+    doctor: req.session.user.contact
+  };
+
+  Patient.find(condidions, (err, docs) => {
+    if (err) {
+      throw err;
+    }
+
+    if (docs) {
+      console.log(docs);
+      res.render('staff/doctor/doctor', {patients: docs});
+    } else {
+      res.render('staff/doctor/doctor');
+    }
+  });
+}
+
+
+const nurseClipboard = (req, res) => {}
+const viewNurseClipboard = (req, res) => {
+  const condidions = {
+    hospCode: req.session.user.hospCode,
+  };
+
+  Patient.find(condidions, (err, docs) => {
+    if (err) {
+      throw err;
+    }
+
+    if (docs) {
+      console.log(docs);
+      res.render('staff/nurse/nurse', {patients: docs});
+    } else {
+      res.render('staff/nurse/nurse');
+    }
+  });
+}
+const nursePatientDetails = (req, res) => {}
+const viewNursePatientDetails = (req, res) => {
+  const condidions = {
+    hospCode: req.session.user.hospCode,
+  };
+
+  Patient.find(condidions, (err, docs) => {
+    if (err) {
+      throw err;
+    }
+
+    if (docs) {
+      console.log(docs);
+      res.render('staff/nurse/nurse', {patients: docs});
+    } else {
+      res.render('staff/nurse/nurse');
+    }
+  });
+}
+
+
+const otherClipboard = (req, res) => {}
+const viewOtherClipboard = (req, res) => {
+  const condidions = {
+    hospCode: req.session.user.hospCode,
+  };
+
+  Patient.find(condidions, (err, docs) => {
+    if (err) {
+      throw err;
+    }
+
+    if (docs) {
+      console.log(docs);
+      res.render('staff/other/other', {patients: docs});
+    } else {
+      res.render('staff/other/other');
+    }
+  });
+}
+const otherPatientDetails = (req, res) => {}
+const viewOtherPatientDetails = (req, res) => {
+  const condidions = {
+    hospCode: req.session.user.hospCode,
+  };
+
+  Patient.find(condidions, (err, docs) => {
+    if (err) {
+      throw err;
+    }
+
+    if (docs) {
+      console.log(docs);
+      res.render('staff/other/other', {patients: docs});
+    } else {
+      res.render('staff/other/other');
+    }
+  });
+}
+
+
+
+
+
+
+
+
+
+
 module.exports = {
   index,
   register,
@@ -258,4 +405,21 @@ module.exports = {
   viewupdatePatient,
   updatePatient,
   deletePatient,
+
+
+  doctorClipboard,
+  viewDoctorClipboard,
+  doctorPatientDetails,
+  viewDoctorPatientDetails,
+
+
+  nurseClipboard,
+  viewNurseClipboard,
+  nursePatientDetails,
+  viewNursePatientDetails,
+
+  otherClipboard,
+  viewOtherClipboard,
+  otherPatientDetails,
+  viewOtherPatientDetails,
 }
