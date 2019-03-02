@@ -62,6 +62,14 @@ const patientSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
     required: true
+  },
+  visitFloor: {
+    type: Number,
+    default: 16,
+  },
+  visitCeil: {
+    type: Number,
+    default: 20,
   }
 }, {
   timestamps: true

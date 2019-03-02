@@ -284,20 +284,20 @@ const viewOtherPatientDetails = (req, res) => {
 
     if (docs) {
       console.log(docs);
-      res.render('staff/staff/other', { patients: docs });
+      res.render('staff/staff/details', { patients: docs });
     } else {
-      res.render('staff/staff/other');
+      res.render('staff/staff/details');
     }
   });
 }
 
 const viewCreatePatient = (req, res) => {
-  res.render('staff/other/create');
+  res.render('staff/staff/create');
 }
 
 const createPatient = (req, res) => {
   const hospCode = req.session.user.hospCode;
-  const code = req.body.refID;
+  const code = req.body.refCode;
   const trustedUser = req.body.trustedUser;
   const doctorAssigned = req.body.doctor;
   const name = req.body.name;
