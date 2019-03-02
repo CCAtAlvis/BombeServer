@@ -1,4 +1,5 @@
 const User = require('../models/User');
+const Patient = require('../models/Patient');
 
 const renderView = (req, res, view) => {
   if ((typeof req.session.user !== 'undefined') && (typeof req.session.user.active !== 'undefined') && !req.session.user.active) {
@@ -20,7 +21,17 @@ const index = (req, res) => {
     res.redirect('/users/verify');
   } else if(!(typeof req.session.user === 'undefined') && req.session.user.active ) {
     //user is registered/loggedIn and is verified
-    res.render('users');
+    let contact = req.session.user.contact;
+    User.find({'users.userContact': contact,'users.permission':true}, (err, docs) => {
+      if (err) {
+        throw err;
+      }
+      if (docs) {
+        res.render('users/index',{userPatients:docs});
+      } else {
+        res.render('users/index');
+      }
+    });
   } else {
     //user has to login
     res.redirect('/users/login');
