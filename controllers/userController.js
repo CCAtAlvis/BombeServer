@@ -55,7 +55,8 @@ const register = (req, res) => {
     contact: contact,
     password: password,
     role: role,
-    otp: otp
+    otp: otp,
+    verified: true
   });
 
   user.save((err, doc) => {
@@ -69,7 +70,7 @@ const register = (req, res) => {
         throw err;
       }
       //user has registered so now he will verify account
-      res.redirect('/verify');
+      res.redirect('/users');
     });
   });
 }

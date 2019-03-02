@@ -1,33 +1,65 @@
 const User = require('../models/User');
 
-const message = () => {
-  let message = {
-    status: 'success',
-    message: 'yeeee its success',
-    data: 'le data le'
+const sendJSON = (status, message, data, res) => {
+  let msg = {
+    status: status,
+    message: message,
+    data: data
   }
 
-  return message;
+  res.json(msg);
+  return false;
 }
 
 const login = (req, res) => {
-  const email = req.body.email;
-  const password = req.query.password;
-  console.log(email, password);
+  const contact = req.body.contact;
+  const password = req.body.password;
 
-  User.findOne({ email: email }, (err, doc) => {
+  User.findOne({contact: contact}, (err, doc) => {
     if (err) {
-      throw err;
+      console.log(err);
+      sendJSON('error', 'some error with db', err, res);
     }
 
     if (doc) {
       if (doc.password === password) {
+        sendJSON('success', 'yeeee its success', doc, res);
       } else {
+        // console.log('Phone Number or password incorrect');
+        sendJSON('error', 'Phone Number or password incorrect', 'Phone Number or password incorrect', res);
       }
     } else {
-    }
+      // console.log('no such user exist!');
+      sendJSON('error', 'no such user exist', 'no such user exist', res);
+   }
   });
 }
+
+const register = (req, res) => {
+  const name = req.body.name;
+  const contact = req.body.contact;
+  const password = req.body.password;
+  const role = 'user';
+
+  const user = new User({
+    name: name,
+    contact: contact,
+    password: password,
+    role: role,
+    verified: true
+  });
+
+  user.save((err, doc) => {
+    if (err) {
+      console.log(err);
+      sendJSON('error', 'some error try again later', 'some error try again later', res);
+      // throw err;
+    }
+
+    sendJSON('success', 'user registered', doc, res);
+  });
+}
+
 
 const test = (req, res) => {
   const body = req.body;
