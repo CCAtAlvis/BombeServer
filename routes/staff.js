@@ -14,5 +14,10 @@ router.get('/register', staffController.viewRegisterStaff);
 router.post('/register', staffController.register);
 
 router.post('/createPatient', staffController.createPatient);
+router.get('/updatePatient/:id', staffController.viewupdatePatient);
+router.post('/updatePatient/:id', staffController.updatPatient);
+router.post('/deletePatient/:id', staffController.deletePatient);
+
+// router.get('', )
 
 module.exports = router;
