@@ -103,7 +103,7 @@ async function onRequest(clientID) { /* creates a variable localCOnn,adds it to 
             //console.log('onRequest() with connections[',connections.length-1,']');
             localConn = new RTCPeerConnection(configuration);
             localConn.addEventListener('icecandidate', e => onIceCandidate(e,clientID));
-            //(connections[connections.length - 1]).addEventListener('iceconnectionstatechange', e => onIceStateChange((connections[connections.length - 1]), e));
+            localConn.addEventListener('iceconnectionstatechange', e => onIceStateChange(localConn, e));
             localStream.getTracks().forEach(track => localConn.addTrack(track, localStream));
             //console.log('onRequest() : Added local stream to connections[',connections.length-1,']');
         } catch (e) {
@@ -206,6 +206,12 @@ function onSetSessionDescriptionError(error) {
 //     //   console.log('ICE state change event: ', event);
 //     // }
 // }
+function onIceStateChange(localConn, event) {
+  if (localConn) {
+    console.log(`localConn ICE state: ${localConn.iceConnectionState}`);
+    console.log('ICE state change event: ', event);
+  }
+}
 // function getSelectedSdpSemantics() {
 //   const sdpSemanticsSelect = document.querySelector('#sdpSemantics');
 //   const option = sdpSemanticsSelect.options[sdpSemanticsSelect.selectedIndex];

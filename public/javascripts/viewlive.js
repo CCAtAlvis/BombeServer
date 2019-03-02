@@ -90,7 +90,7 @@ async function init() {
   try {
     localConn = new RTCPeerConnection(configuration);
     localConn.addEventListener('icecandidate', e => onIceCandidate(localConn, e));
-    //localConn.addEventListener('iceconnectionstatechange', e => onIceStateChange(localConn, e));
+    localConn.addEventListener('iceconnectionstatechange', e => onIceStateChange(localConn, e));
     localConn.addEventListener('track', gotRemoteStream);
     console.log('init() : created localConn with all eventListeners')
   } catch (e) {
@@ -183,12 +183,12 @@ function onCreateSessionDescriptionError (error) {
   console.log(`Failed to create session description:`);
   console.log(error);
 }
-// function onIceStateChange(pc, event) {
-//   // if (pc) {
-//   //   console.log(`${getName(pc)} ICE state: ${pc.iceConnectionState}`);
-//   //   console.log('ICE state change event: ', event);
-//   // }
-// }
+function onIceStateChange(localConn, event) {
+  if (localConn) {
+    console.log(`localConn ICE state: ${localConn.iceConnectionState}`);
+    console.log('ICE state change event: ', event);
+  }
+}
 // function hangup() {
 //   console.log('Ending call');
 //   localConn.close();
