@@ -2,20 +2,40 @@ const User = require('../models/User');
 
 const index = (req, res) => {
   let role = req.session.user.role;
-  if (role === 'doctor') {
+  // if (role === 'doctor') {
     
-  } else if (role === 'nurse') {
+  // } else if (role === 'nurse') {
 
-  } else if (role === 'other-staff') {
+  // } else if (role === 'other-staff') {
 
+  // }
+  if (!(typeof req.session.user === 'undefined')) {
+    //staff is registered/loggedIn
+    res.render('staff/index');
+  } else if((typeof req.session.user === 'undefined')) {
+    //user is not registered/loggedIn
+    res.redirect('/staff/login');
+  } else {
+    //user has to login
+    // res.render('users/login');
   }
 }
 
 const viewRegisterStaff = (req, res) => {
-  if (req.session.user) {
-    res.redirect('/staff');
+  // if (req.session.user) {
+  //   res.redirect('/staff');
+  // } else {
+  //   res.render('staff/staffregister');
+  // }
+  if (!(typeof req.session.user === 'undefined')) {
+    //staff is registered/loggedIn
+    res.render('staff/index');
+  } else if((typeof req.session.user === 'undefined')) {
+    //user is not registered/loggedIn
+    res.redirect('/staff/register');
   } else {
-    res.render('staff/staffregister');
+    //user has to login
+    // res.render('users/login');
   }
 }
 
@@ -47,10 +67,20 @@ const createPatient = (req, res) => {
 }
 
 const viewLogin = (req, res) => {
-  if(req.session.user) {
-    res.redirect('/staff');
+  // if(req.session.user) {
+  //   res.redirect('/staff');
+  // } else {
+  //   res.render('staff/login');
+  // }
+  if (!(typeof req.session.user === 'undefined')) {
+    //staff is registered/loggedIn
+    res.render('staff/index');
+  } else if((typeof req.session.user === 'undefined')) {
+    //user is not registered/loggedIn
+    res.redirect('/staff/login');
   } else {
-    res.render('staff/login');
+    //user has to login
+    // res.render('users/login');
   }
 }
 
@@ -93,11 +123,11 @@ const viewupdatePatient = (req, res) => {
       throw err;
     }
     if (doc) {
-      res.redirect('/staff/updatePatient');
+      res.render('staff/updatePatient',{patient:doc});
       //we need to pass the doc to /staff/updatePatient.
     } else {
       console.log('no such patient');
-      res.render('staff/index', {error:'No such patient'});
+      res.render('staff/updatePatient', {error:'No such patient'});
     }
   });
 }
@@ -110,7 +140,10 @@ const updatePatient = (req,res) => {
   const gender = req.body.gender;
   const contact = req.body.contact;
   const email = req.body.email;
-  //update a patient with the above details and add them to database
+  const code = req.body.Code;
+  User.findByIdAndUpdate({},(err, doc) => {
+
+  });
 }
 
 const deletePatient = (req, res) => {
@@ -127,7 +160,7 @@ const deletePatient = (req, res) => {
       res.render('staff/updatPatient', {error:'No such patient'});
     }
   });
-  //delete the patient with the above reference code
+  //soft delete the patient with the above reference code
 }
 
 const register = (req, res) => {
