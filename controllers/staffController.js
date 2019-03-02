@@ -65,15 +65,12 @@ const index = (req, res) => {
 }
 
 const viewRegisterStaff = (req, res) => {
-  if (typeof req.session.user !== 'undefined') {
+  if (typeof req.session.user === 'undefined') {
+    //user is not registered/loggedIn
+    res.render('staff/register');
+  } else {
     //staff is registered/loggedIn
     res.redirect('/staff');
-  } else if((typeof req.session.user === 'undefined')) {
-    //user is not registered/loggedIn
-    res.render('staff/staffregister');
-  } else {
-    //user has to login
-    // res.render('users/login');
   }
 }
 
@@ -112,15 +109,12 @@ const register = (req, res) => {
 }
 
 const viewLogin = (req, res) => {
-  if (!(typeof req.session.user === 'undefined')) {
-    //staff is registered/loggedIn
-    res.render('staff/index');
-  } else if((typeof req.session.user === 'undefined')) {
+  if (typeof req.session.user === 'undefined') {
     //user is not registered/loggedIn
-    res.redirect('/staff/login');
+    res.render('staff/login');
   } else {
-    //user has to login
-    // res.render('users/login');
+    //staff is registered/loggedIn
+    res.redirect('/staff');
   }
 }
 
