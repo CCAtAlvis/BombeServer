@@ -28,7 +28,7 @@ const createPatient = (req, res) => {
   const contact = req.body.contact;
   const email = req.body.email;
   //create a patient with the above details and add them to database
-  let msg = new User({
+  let user = new User({
     code: code,
     trustedUser: trustedUser,
     doctorAssigned: doctorAssigned,
@@ -37,7 +37,7 @@ const createPatient = (req, res) => {
     contact: contact,
     email: email
   })
-  msg.save()
+  user.save()
      .then(doc => {
        console.log(doc)
      })
@@ -86,20 +86,24 @@ const login = (req, res) => {
   });
 }
 
-const updatePatient = (req, res) => {
+const viewupdatePatient = (req, res) => {
   const code = req.body.Code;
   User.findOne({code: code}, (err, doc) => {
     if (err) {
       throw err;
     }
     if (doc) {
-      // console.log(doc);
-      req.session.user = doc;
+      res.redirect('/staff/updatePatient');
+      //we need to pass the doc to /staff/updatePatient.
     } else {
       console.log('no such patient');
-      res.render('staff/updatPatient', {error:'No such patient'});
+      res.render('staff/index', {error:'No such patient'});
     }
   });
+}
+
+const updatePatient = (req,res) => {
+
   const trustedUser = req.body.trustedUser;
   const doctorAssigned = req.body.doctorAssigned;
   const name = req.body.name;
@@ -159,7 +163,7 @@ module.exports = {
   createPatient,
   login,
   viewLogin,
-  updatePatient,
+  viewupdatePatient,
   deletePatient,
   register
 }
