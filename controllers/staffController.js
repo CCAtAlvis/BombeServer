@@ -222,14 +222,6 @@ const updatePatient = (req,res) => {
   const contact = req.body.contact;
   const email = req.body.email;
   const code = req.body.Code;
-<<<<<<< HEAD
-
-  console.log(req.body);
-  res.json(req.body);
-
-  User.findByIdAndUpdate({},(err, doc) => {
-=======
->>>>>>> 0d6ef6ca765de0e3ef54c288998e41ee04f1601f
 
   console.log(req.body);
   console.log(req.query);

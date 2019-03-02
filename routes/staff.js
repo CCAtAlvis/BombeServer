@@ -14,15 +14,9 @@ router.get('/register', staffController.viewRegisterStaff);
 router.post('/register', staffController.register);
 
 router.post('/createPatient', staffController.createPatient);
-<<<<<<< HEAD
-router.get('/updatePatient/:id', staffController.viewupdatePatient);
-router.post('/updatePatient', staffController.updatePatient);
-router.post('/deletePatient/:id', staffController.deletePatient);
-=======
 router.get('/updatePatient', staffController.viewupdatePatient);
 router.post('/updatePatient', staffController.updatePatient);
 router.post('/deletePatient', staffController.deletePatient);
->>>>>>> 0d6ef6ca765de0e3ef54c288998e41ee04f1601f
 
 router.get('/doctor/clipboard', staffController.viewDoctorClipboard );
 router.post('/doctor/clipboard', staffController.doctorClipboard );
