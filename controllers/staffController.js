@@ -141,9 +141,10 @@ const login = (req, res) => {
 
 
 const createPatient = (req, res) => {
-  const code = req.body.Code;
+  const hospCode = req.session.user.hospCode;
+  const code = req.body.refID;
   const trustedUser = req.body.trustedUser;
-  const doctorAssigned = req.body.doctorAssigned;
+  const doctorAssigned = req.body.doctor;
   const name = req.body.name;
   const gender = req.body.gender;
   const contact = req.body.contact;
@@ -152,12 +153,13 @@ const createPatient = (req, res) => {
   //create a patient with the above details and add them to database
   let patient = new Patient({
     refCode: code,
-    trustedUser: {userContact: trustedUser},
+    trustedUser: trustedUser,
     doctor: doctorAssigned,
     name: name,
     contact: contact,
     gender: gender,
-    email: email
+    email: email,
+    hospCode: hospCode
   });
 
   patient.save()
