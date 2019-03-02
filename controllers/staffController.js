@@ -21,9 +21,9 @@ const index = (req, res) => {
 
         if (docs) {
           console.log(docs);
-          res.render('staff/other', {patients: docs});
+          res.render('staff/other/other', {patients: docs});
         } else {
-          res.render('staff/other');
+          res.render('staff/other/other');
         }
       });
     } else {
@@ -270,9 +270,9 @@ const viewDoctorClipboard = (req, res) => {
 
     if (docs) {
       console.log(docs);
-      res.render('staff/other', {patients: docs});
+      res.render('staff/doctor/doctor', {patients: docs});
     } else {
-      res.render('staff/other');
+      res.render('staff/doctor/doctor');
     }
   });
 }
@@ -290,9 +290,9 @@ const viewDoctorPatientDetails = (req, res) => {
 
     if (docs) {
       console.log(docs);
-      res.render('staff/other', {patients: docs});
+      res.render('staff/doctor/doctor', {patients: docs});
     } else {
-      res.render('staff/other');
+      res.render('staff/doctor/doctor');
     }
   });
 }
@@ -311,9 +311,9 @@ const viewNurseClipboard = (req, res) => {
 
     if (docs) {
       console.log(docs);
-      res.render('staff/other', {patients: docs});
+      res.render('staff/nurse/nurse', {patients: docs});
     } else {
-      res.render('staff/other');
+      res.render('staff/nurse/nurse');
     }
   });
 }
@@ -330,9 +330,9 @@ const viewNursePatientDetails = (req, res) => {
 
     if (docs) {
       console.log(docs);
-      res.render('staff/other', {patients: docs});
+      res.render('staff/nurse/nurse', {patients: docs});
     } else {
-      res.render('staff/other');
+      res.render('staff/nurse/nurse');
     }
   });
 }
@@ -351,9 +351,9 @@ const viewOtherClipboard = (req, res) => {
 
     if (docs) {
       console.log(docs);
-      res.render('staff/other', {patients: docs});
+      res.render('staff/other/other', {patients: docs});
     } else {
-      res.render('staff/other');
+      res.render('staff/other/other');
     }
   });
 }
@@ -370,9 +370,9 @@ const viewOtherPatientDetails = (req, res) => {
 
     if (docs) {
       console.log(docs);
-      res.render('staff/other', {patients: docs});
+      res.render('staff/other/other', {patients: docs});
     } else {
-      res.render('staff/other');
+      res.render('staff/other/other');
     }
   });
 }
