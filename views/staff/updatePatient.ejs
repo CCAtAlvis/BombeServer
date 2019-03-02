@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" >
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" ></script>    
+   
+    <link rel="stylesheet" type="text/css" href="./stylesheets/style.css">
+  <script>
+    function handleEdit(){
+      document.getElementById('name').disabled = false;
+      document.getElementById('email').disabled = false;
+      document.getElementById('gender').disabled = false;
+      document.getElementById('contact').disabled = false;
+      document.getElementById('doctor').disabled = false;
+      document.getElementById('trusteduser').disabled = false;
+      document.getElementById('save').hidden = false;
+      document.getElementById('edit').hidden = true;
+      return false;
+    }
+    function handleSave(){
+      document.getElementById('name').disabled = true;
+      document.getElementById('email').disabled = true;
+      document.getElementById('gender').disabled = true;
+      document.getElementById('contact').disabled = true;
+      document.getElementById('doctor').disabled = true;
+      document.getElementById('trusteduser').disabled = true;
+      document.getElementById('save').hidden = true;
+      document.getElementById('edit').hidden = false;
+      return false;
+    }
+  </script>
+    <title>Staff Page</title>
+</head>
+<body>
+    <section>
+        <div class="container-fluid">
+            <div class="row">
+
+                <div class="col-md-2 px-5 py-5" id="sidebar">
+                    <img class="pb-5" src="images/logo.png">
+                    <a href="paitentList.html">Connect to Patient</a>
+                    <a href="permission.html">Permission</a>
+                    <a href="#">Settings</a>
+                    <a href="#">Logout</a>
+                </div>
+                <% if(typeof patients !== 'undefined'){
+                  for(let i=0; i<patients.length; i++){
+                    let p = patients[i];
+                    %>
+                <div class="col-md-10 ">
+
+                    <div id="accordion" class="mx-4 my-4">
+
+                      <div class="card">
+                        <div class="card-header">
+                          <a class="card-link" data-toggle="collapse" href="#collapseOne">
+                            <%=p.name%>
+                          </a>
+                        </div>
+                        <div id="collapseOne" class="collapse" data-parent="#accordion">
+                          <div class="card-body">
+                              <form style="width:60%;text-align:center;display: inline-block" action="/users/register" method="POST">
+                                              
+                                <div class="form-group" id="NameInput">
+                                    <input name="name" id="name" type="text" class="form-control" value="<%=p.name%>" disabled>
+                                </div>
+                                <div class="form-group" id="EmailInput">
+                                        <input name="email" id="email" type="email" class="form-control" value="<%=p.email%>" disabled>
+                                </div>
+                                <div class="form-group" id="GenderInput">
+                                        <select class="form-control" id="gender" name="Gender" value="<%=gender%>" disabled>
+                                                <option value="male">Select Gender</option>
+                                                <option value="male">Male</option>
+                                                <option value="female">Female</option>
+                                                <option value="others">Others</option>
+                                                </select>
+                                    </div>
+                                <div class="form-group" id="ContactInput">
+                                    <input name="contact" id="contact" type="text" class="form-control" value="<%=contact%>" disabled>
+                                </div>
+                                <div class="form-group" id="RefIDInput">
+                                        <input name="refID" type="text" class="form-control" value="<%=refCode%>" disabled>
+                                    </div>
+                                <div class="form-group" id="DocAssignedInput">
+                                    <input name="doctor" id="doctor" type="text" class="form-control" value="<%=doctor%>" disabled>
+                                </div>
+                                <div class="form-group" id="TrustedUserInput">
+                                    <input name="trusteduser" id="trusteduser" type="text" class="form-control" value="<%=trustedUser%>" disabled>
+                                </div>                
+                                <div id="EditButton">
+                                    <button id="edit" onclick="return handleEdit()" class="btn btn-outline-primary" style="display: block;margin: auto;">Edit</button>
+                                </div>
+                                <div id="SaveButton">
+                                    <button id="save" hidden onclick="return handleSave()" class="btn btn-outline-primary" style="display: block;margin: auto;">Save</button>
+                                </div>
+                            </form>
+
+                          </div>
+                        </div>
+                      </div>
+
+                    </div>
+                </div>
+
+                <%    }
+                    }
+                    %>
+
+            </div>
+        </div>
+    </section>
+</body>
+</html>
