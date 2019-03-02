@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const patientSchema = new mongoose.Schema({
   name: {
     type: String,
+    default: 'John Doe'
   },
   gender: {
     type: String,
