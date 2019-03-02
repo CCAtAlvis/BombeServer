@@ -258,6 +258,6 @@ module.exports = {
   logout,
   createPatient,
   viewupdatePatient,
-  updatPatient,
+  updatePatient,
   deletePatient,
 }
