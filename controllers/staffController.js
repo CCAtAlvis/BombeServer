@@ -28,6 +28,22 @@ const createPatient = (req, res) => {
   const contact = req.body.contact;
   const email = req.body.email;
   //create a patient with the above details and add them to database
+  let msg = new User({
+    code: code,
+    trustedUser: trustedUser,
+    doctorAssigned: doctorAssigned,
+    name: name,
+    gender: gender,
+    contact: contact,
+    email: email
+  })
+  msg.save()
+     .then(doc => {
+       console.log(doc)
+     })
+     .catch(err => {
+       console.error(err)
+     })
 }
 
 const viewLogin = (req, res) => {
@@ -118,6 +134,33 @@ const viewLogin = (req, res) => {
   }
 }
 
+const register = (req, res) => {
+  const name = req.body.name;
+  const contact = req.body.contact;
+  const password = req.body.password;
+  const role = req.body.role;
+  const user = new User({
+    // email: email,
+    name: name,
+    contact: contact,
+    password: password,
+    role: role
+  });
+  user.save((err, doc) => {
+    if (err) {
+      res.send('some error try again later');
+      throw err;
+    }
+    req.session.user = doc;
+    req.session.save((err) => {
+      if (err) {
+        throw err;
+      }
+      res.redirect('/staff');
+    });
+  })
+}
+
 module.exports = {
   index,
   viewRegisterStaff,
@@ -126,4 +169,5 @@ module.exports = {
   viewLogin,
   updatePatient,
   deletePatient,
+  register
 }
