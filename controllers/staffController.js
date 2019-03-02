@@ -29,6 +29,7 @@ const index = (req, res) => {
     } else {
       if (role === 'doctor') {
         console.log('todo: doctor');
+        condidions.doctor = req.session.user.contact;
 
         Patient.find(condidions, (err, docs) => {
           if (err) {
@@ -37,9 +38,9 @@ const index = (req, res) => {
   
           if (docs) {
             console.log(docs);
-            res.render('staff/doctor', {patients: docs});
+            res.render('staff/doctor/doctor', {patients: docs});
           } else {
-            res.render('staff/doctor');
+            res.render('staff/doctor/doctor');
           }
         });
       } else if (role === 'nurse') {
@@ -52,9 +53,9 @@ const index = (req, res) => {
   
           if (docs) {
             console.log(docs);
-            res.render('staff/nurse', {patients: docs});
+            res.render('staff/nurse/nurse', {patients: docs});
           } else {
-            res.render('staff/nurse');
+            res.render('staff/nurse/nurse');
           }
         });
       } else {
@@ -221,9 +222,14 @@ const updatePatient = (req,res) => {
   const contact = req.body.contact;
   const email = req.body.email;
   const code = req.body.Code;
-  User.findByIdAndUpdate({},(err, doc) => {
 
-  });
+  console.log(req.body);
+  console.log(req.query);
+  res.json(req.body);
+
+  // User.findByIdAndUpdate({},(err, doc) => {
+
+  // });
 }
 
 const deletePatient = (req, res) => {
@@ -243,6 +249,143 @@ const deletePatient = (req, res) => {
   //soft delete the patient with the above reference code
 }
 
+
+
+
+
+
+
+
+const doctorClipboard = (req, res) => {}
+const viewDoctorClipboard = (req, res) => {
+  const condidions = {
+    hospCode: req.session.user.hospCode,
+    doctor: req.session.user.contact
+  };
+
+  Patient.find(condidions, (err, docs) => {
+    if (err) {
+      throw err;
+    }
+
+    if (docs) {
+      console.log(docs);
+      res.render('staff/other', {patients: docs});
+    } else {
+      res.render('staff/other');
+    }
+  });
+}
+const doctorPatientDetails = (req, res) => {}
+const viewDoctorPatientDetails = (req, res) => {
+  const condidions = {
+    hospCode: req.session.user.hospCode,
+    doctor: req.session.user.contact
+  };
+
+  Patient.find(condidions, (err, docs) => {
+    if (err) {
+      throw err;
+    }
+
+    if (docs) {
+      console.log(docs);
+      res.render('staff/other', {patients: docs});
+    } else {
+      res.render('staff/other');
+    }
+  });
+}
+
+
+const nurseClipboard = (req, res) => {}
+const viewNurseClipboard = (req, res) => {
+  const condidions = {
+    hospCode: req.session.user.hospCode,
+  };
+
+  Patient.find(condidions, (err, docs) => {
+    if (err) {
+      throw err;
+    }
+
+    if (docs) {
+      console.log(docs);
+      res.render('staff/other', {patients: docs});
+    } else {
+      res.render('staff/other');
+    }
+  });
+}
+const nursePatientDetails = (req, res) => {}
+const viewNursePatientDetails = (req, res) => {
+  const condidions = {
+    hospCode: req.session.user.hospCode,
+  };
+
+  Patient.find(condidions, (err, docs) => {
+    if (err) {
+      throw err;
+    }
+
+    if (docs) {
+      console.log(docs);
+      res.render('staff/other', {patients: docs});
+    } else {
+      res.render('staff/other');
+    }
+  });
+}
+
+
+const otherClipboard = (req, res) => {}
+const viewOtherClipboard = (req, res) => {
+  const condidions = {
+    hospCode: req.session.user.hospCode,
+  };
+
+  Patient.find(condidions, (err, docs) => {
+    if (err) {
+      throw err;
+    }
+
+    if (docs) {
+      console.log(docs);
+      res.render('staff/other', {patients: docs});
+    } else {
+      res.render('staff/other');
+    }
+  });
+}
+const otherPatientDetails = (req, res) => {}
+const viewOtherPatientDetails = (req, res) => {
+  const condidions = {
+    hospCode: req.session.user.hospCode,
+  };
+
+  Patient.find(condidions, (err, docs) => {
+    if (err) {
+      throw err;
+    }
+
+    if (docs) {
+      console.log(docs);
+      res.render('staff/other', {patients: docs});
+    } else {
+      res.render('staff/other');
+    }
+  });
+}
+
+
+
+
+
+
+
+
+
+
 module.exports = {
   index,
   register,
@@ -254,4 +397,21 @@ module.exports = {
   viewupdatePatient,
   updatePatient,
   deletePatient,
+
+
+  doctorClipboard,
+  viewDoctorClipboard,
+  doctorPatientDetails,
+  viewDoctorPatientDetails,
+
+
+  nurseClipboard,
+  viewNurseClipboard,
+  nursePatientDetails,
+  viewNursePatientDetails,
+
+  otherClipboard,
+  viewOtherClipboard,
+  otherPatientDetails,
+  viewOtherPatientDetails,
 }
