@@ -52,7 +52,7 @@ function onOpen(evt) {
     console.log('CONNECTED to WS');
     let message = {
         type : 'new-connection',
-        name : '',
+        name : 'chatter',
         id : from
     }
     websocket.send(JSON.stringify(message));
@@ -94,7 +94,7 @@ async function start() {
     try {
         localConn = new RTCPeerConnection(configuration);
         localConn.addEventListener('icecandidate', e => onIceCandidate(localConn, e));
-        //localConn.addEventListener('iceconnectionstatechange', e => onIceStateChange(localConn, e));
+        localConn.addEventListener('iceconnectionstatechange', e => onIceStateChange(localConn, e));
         localConn.addEventListener('track', gotRemoteStream);
         localStream.getTracks().forEach(track => localConn.addTrack(track, localStream));
         console.log('start() : Added localStream to local conn');
@@ -190,9 +190,10 @@ async function onGetIceCandi(candi, name) {
 }
 
 function gotRemoteStream(e) {
+    console.log('I GOT THE REMOTE STREAM!');
     if (remoteVideo.srcObject !== e.streams[0]) {
         remoteVideo.srcObject = e.streams[0];
-        console.log('localconn received remote stream');
+        console.log('LOCALCONN received remote stream');
     }
 }
 
@@ -230,9 +231,9 @@ function onSetSessionDescriptionError(error) {
 // function onAddIceCandidateError(pc, error) {
 //     console.log(`${getName(pc)} failed to add ICE Candidate: ${error.toString()}`);
 // }
-// function onIceStateChange(pc, event) {
-//     // if (pc) {
-//     //   console.log(`${getName(pc)} ICE state: ${pc.iceConnectionState}`);
-//     //   console.log('ICE state change event: ', event);
-//     // }
-// }
+function onIceStateChange(localConn, event) {
+  if (localConn) {
+    console.log(`localConn ICE state: ${localConn.iceConnectionState}`);
+    console.log('ICE state change event: ', event);
+  }
+} 

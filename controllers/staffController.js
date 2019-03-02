@@ -7,10 +7,10 @@ const index = (req, res) => {
     res.redirect('/staff/login');
   } else {
     const role = req.session.user.role;
-    const hospCode = req.session.user.role;
+    const hospCode = req.session.user.hospCode;
 
     let condidions = {
-      hospCode: hospCode,   
+      hospCode: hospCode,
     };
 
     if (role === 'other-staff') {
@@ -20,6 +20,7 @@ const index = (req, res) => {
         }
 
         if (docs) {
+          console.log(docs);
           res.render('staff/other', {patients: docs});
         } else {
           res.render('staff/other');
@@ -27,9 +28,35 @@ const index = (req, res) => {
       });
     } else {
       if (role === 'doctor') {
-        res.send('todo: doctor');
+        console.log('todo: doctor');
+
+        Patient.find(condidions, (err, docs) => {
+          if (err) {
+            throw err;
+          }
+  
+          if (docs) {
+            console.log(docs);
+            res.render('staff/doctor', {patients: docs});
+          } else {
+            res.render('staff/doctor');
+          }
+        });
       } else if (role === 'nurse') {
-        res.send('todo: nurse');
+        console.log('todo: nurse');
+
+        Patient.find(condidions, (err, docs) => {
+          if (err) {
+            throw err;
+          }
+  
+          if (docs) {
+            console.log(docs);
+            res.render('staff/nurse', {patients: docs});
+          } else {
+            res.render('staff/nurse');
+          }
+        });
       } else {
         res.redirect('/', { error: 'Unauth Access!' });
       }
@@ -130,6 +157,10 @@ const login = (req, res) => {
   });
 }
 
+const logout = (req, res) => {
+  req.session.destroy();
+  res.redirect('/');
+}
 
 
 
@@ -222,9 +253,11 @@ module.exports = {
   index,
   register,
   viewRegisterStaff,
-  createPatient,
   login,
   viewLogin,
+  logout,
+  createPatient,
   viewupdatePatient,
+  updatPatient,
   deletePatient,
 }
