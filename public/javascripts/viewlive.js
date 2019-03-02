@@ -175,7 +175,7 @@ function gotRemoteStream(e) {
   console.log('I GOT THE REMOTE STREAM!');
   if (remoteVideo.srcObject !== e.streams[0]) {
     remoteVideo.srcObject = e.streams[0];
-    console.log('set remoteVid source to remote stream');
+    console.log('LOCALCONN set remoteVid source to remote stream');
   }
 }
 

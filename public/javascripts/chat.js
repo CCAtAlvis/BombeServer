@@ -52,7 +52,7 @@ function onOpen(evt) {
     console.log('CONNECTED to WS');
     let message = {
         type : 'new-connection',
-        name : '',
+        name : 'chatter',
         id : from
     }
     websocket.send(JSON.stringify(message));
@@ -190,9 +190,10 @@ async function onGetIceCandi(candi, name) {
 }
 
 function gotRemoteStream(e) {
+    console.log('I GOT THE REMOTE STREAM!');
     if (remoteVideo.srcObject !== e.streams[0]) {
         remoteVideo.srcObject = e.streams[0];
-        console.log('localconn received remote stream');
+        console.log('LOCALCONN received remote stream');
     }
 }
 

@@ -57,7 +57,12 @@ const patientSchema = new mongoose.Schema({
       default: false,
       required: true
     }
-  }]
+  }],
+  pubStream: {
+    type: Boolean,
+    default: false,
+    required: true
+  }
 }, {
   timestamps: true
 });
