@@ -40,10 +40,14 @@ const userSchema = new mongoose.Schema({
   otp: {
     type: String
   },
-  active: {
+  verified: {
     type: Boolean,
     required: true,
     default: false
+  },
+  hospCode: {
+    type: String,
+    default: 'MUM'
   }
 }, {
   timestamps: true
