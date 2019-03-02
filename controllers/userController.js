@@ -1,11 +1,11 @@
 const User = require('../models/User');
 
 const viewRegister = (req, res) => {
-  if (!req.session.user.active && !(req.session.user === undefined)) {
-    //user is registered but is not active
+  if (!(typeof req.session.user === 'undefined') && !req.session.user.active) {
+    //user is registered but is not verified
     res.render('users/verify');
-  } else if(req.session.user.active && !(req.session.user === undefined)) {
-    //user is registered and is active
+  } else if(!(typeof req.session.user === 'undefined') && req.session.user.active ) {
+    //user is registered and is verified
     res.redirect('/users');
   } else {
     //user has not registered yet
@@ -47,20 +47,40 @@ const register = (req, res) => {
 
 //if no user logged in ,show login page else userIndex page
 const index = (req, res) => {
-  if(!req.session.user) {
-    res.redirect('/users/login');
+  // if(!req.session.user) {
+  //   res.redirect('/users/login');
+  // } else {
+  //   res.render('users/index');
+  // }
+  if (!(typeof req.session.user === 'undefined') && !req.session.user.active) {
+    //user is registered/loggedIn but is not verified
+    res.render('users/verify');
+  } else if(!(typeof req.session.user === 'undefined') && req.session.user.active ) {
+    //user is registered/loggedIn and is verified
+    res.redirect('/users');
   } else {
-    res.render('users/index');
+    //user has to login
+    res.render('users/login');
   }
 }
 
 //OTP verification 
 const viewVerify = (req, res) => {
-  if (req.session.user.active) {
-    res.redirect('/users');
-  }
-  else {
+  // if (req.session.user.active) {
+  //   res.redirect('/users');
+  // }
+  // else if(!req.session.user.active) {
+  //   res.render('users/verify');
+  // }
+  if (!(typeof req.session.user === 'undefined') && !req.session.user.active) {
+    //user is registered/loggedIn but is not verified
     res.render('users/verify');
+  } else if(!(typeof req.session.user === 'undefined') && req.session.user.active ) {
+    //user is registered/loggedIn and is verified
+    res.redirect('/users');
+  } else {
+    //user has to login
+    // res.render('users/login');
   }
 }
 
@@ -88,11 +108,24 @@ const verify  = (req, res) => {
 }
 
 const viewLogin = (req, res) => {
-  if (!req.session.user.active && !(req.session.user === undefined)) {
+  // if (!(typeof req.session.user === 'undefined') && !req.session.user.active) {
+  //   //user is registered but is not verified
+  //   res.render('users/verify');
+  // } else if(!(typeof req.session.user === 'undefined') && req.session.user.active) {
+  //   //user is registered but is verified
+  //   res.redirect('/users');
+  // } else {
+  //   //user has not registered yet
+  //   res.render('users/login');
+  // }
+  if (!(typeof req.session.user === 'undefined') && !req.session.user.active) {
+    //user is registered/loggedIn but is not verified
     res.render('users/verify');
-  } else if(req.session.user.active) {
+  } else if(!(typeof req.session.user === 'undefined') && req.session.user.active ) {
+    //user is registered/loggedIn and is verified
     res.redirect('/users');
   } else {
+    //user has to login
     res.render('users/login');
   }
 }
