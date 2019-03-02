@@ -53,10 +53,12 @@ const viewRegisterStaff = (req, res) => {
 const register = (req, res) => {
   const name = req.body.name;
   const contact = req.body.contact;
-  const password = req.body.password;
-  const role = req.body.role;
-
-  const user = new User({
+  const email = req.body.email;
+  //create a patient with the above details and add them to database
+  let patient = new Patient({
+    refCode: code,
+    trustedUser: {userContact: trustedUser},
+    doctor: doctorAssigned,
     name: name,
     contact: contact,
     password: password,
