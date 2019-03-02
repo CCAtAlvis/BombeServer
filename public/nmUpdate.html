@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" >
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" ></script>    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+   
+    <link rel="stylesheet" type="text/css" href="./stylesheets/style.css">
+
+    <title>Staff Page</title>
+</head>
+<body>
+    <section>
+        <div class="container-fluid">
+            <div class="row">
+
+                <div class="col-md-2 px-5 py-5" id="sidebar">
+                    <img class="pb-5" src="images/logo.png">
+                    <a href="paitentList.html">Connect to Patient</a>
+                    <a href="permission.html">Permission</a>
+                    <a href="#">Settings</a>
+                    <a href="#">Logout</a>
+                </div>
+
+                <div class="col-md-10 ">
+                    <div class="accordion" id="accordionExample">
+                        <div class="card">
+                          <div class="card-header" id="headingOne">
+                            <h2 class="mb-0">
+                              <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                Collapsible Group Item #1
+                              </button>
+                            </h2>
+                          </div>
+                      
+                          <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+                            <div class="card-body">
+                              Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                            </div>
+                          </div>
+                        </div>
+                        <div class="card">
+                          <div class="card-header" id="headingTwo">
+                            <h2 class="mb-0">
+                              <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                Collapsible Group Item #2
+                              </button>
+                            </h2>
+                          </div>
+                          <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+                            <div class="card-body">
+                              Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                            </div>
+                          </div>
+                        </div>
+                        <div class="card">
+                          <div class="card-header" id="headingThree">
+                            <h2 class="mb-0">
+                              <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                Collapsible Group Item #3
+                              </button>
+                            </h2>
+                          </div>
+                          <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
+                            <div class="card-body">
+                              Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                <!--
+                  <section class="my-4 mx-4 px-3 py-3">
+
+                  <div class="panel-group px-3 py-3" id="accordian" style="background-color:white">
+                    <div class="panel-heading">
+                      <h4 class="panel-title">
+                        <a style="text-decoration:none" data-toggle="collapse" data-parent="#accordion" href="#collapse1">
+                          Patient Name
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="collapse1" class="panel-collapse collapse in">
+                      <div class="panel-body">
+                          <form action="/users/register" method="POST">
+                                            
+                            <div class="form-group" id="NameInput">
+                                <input name="name" type="text" class="form-control" value="Patient Name" disabled>
+                            </div>
+                            <div class="form-group" id="EmailInput">
+                                    <input name="email" type="email" class="form-control" value="Email ID" disabled>
+                            </div>
+                            <div class="form-group" id="GenderInput">
+                                    <select class="form-control" name="Gender" value="Gender" disabled>
+                                            <option value="male">Select Gender</option>
+                                            <option value="male">Male</option>
+                                            <option value="female">Female</option>
+                                            <option value="others">Others</option>
+                                            </select>
+                                </div>
+                            <div class="form-group" id="ContactInput">
+                                <input name="contact" type="text" class="form-control" value="Patient's Contact Number" disabled>
+                            </div>
+                            <div class="form-group" id="RefIDInput">
+                                    <input name="refID" type="text" class="form-control" value="Reference ID" disabled>
+                                </div>
+                            <div class="form-group" id="DocAssignedInput">
+                                <input name="doctor" type="text" class="form-control" value="Assigned Doctor's ID" disabled>
+                            </div>
+                            <div class="form-group" id="TrustedUserInput">
+                                <input name="trusteduser" type="text" class="form-control" value="Trusted User's Phone Number" disabled>
+                            </div>                
+                            <div id="EditButton">
+                                <button type="submit" class="btn btn-outline-primary" style="display: block;margin: auto;">Edit</button>
+                            </div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="panel-group px-3 py-3" id="accordian" style="background-color:white">
+                      <div class="panel-heading">
+                        <h4 class="panel-title">
+                          <a style="text-decoration:none" data-toggle="collapse" data-parent="#accordion" href="#collapse2">
+                            Patient Name
+                          </a>
+                        </h4>
+                      </div>
+                      <div id="collapse2" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <form action="/users/register" method="POST">
+                                              
+                              <div class="form-group" id="NameInput">
+                                  <input name="name" type="text" class="form-control" value="Patient Name" disabled>
+                              </div>
+                              <div class="form-group" id="EmailInput">
+                                      <input name="email" type="email" class="form-control" value="Email ID" disabled>
+                              </div>
+                              <div class="form-group" id="GenderInput">
+                                      <select class="form-control" name="Gender" value="Gender" disabled>
+                                              <option value="male">Select Gender</option>
+                                              <option value="male">Male</option>
+                                              <option value="female">Female</option>
+                                              <option value="others">Others</option>
+                                              </select>
+                                  </div>
+                              <div class="form-group" id="ContactInput">
+                                  <input name="contact" type="text" class="form-control" value="Patient's Contact Number" disabled>
+                              </div>
+                              <div class="form-group" id="RefIDInput">
+                                      <input name="refID" type="text" class="form-control" value="Reference ID" disabled>
+                                  </div>
+                              <div class="form-group" id="DocAssignedInput">
+                                  <input name="doctor" type="text" class="form-control" value="Assigned Doctor's ID" disabled>
+                              </div>
+                              <div class="form-group" id="TrustedUserInput">
+                                  <input name="trusteduser" type="text" class="form-control" value="Trusted User's Phone Number" disabled>
+                              </div>                
+                              <div id="EditButton">
+                                  <button type="submit" class="btn btn-outline-primary" style="display: block;margin: auto;">Edit</button>
+                              </div>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+
+                </section> -->
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>
