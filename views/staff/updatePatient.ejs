@@ -21,7 +21,7 @@
       document.getElementById('edit').hidden = true;
       return false;
     }
-    function handleSave(e,element){
+    function handleSave(e,ele){
       e.preventDefault();
       document.getElementById('name').disabled = true;
       document.getElementById('email').disabled = true;
@@ -31,25 +31,21 @@
       document.getElementById('trusteduser').disabled = true;
       document.getElementById('save').hidden = true;
       document.getElementById('edit').hidden = false;
-      var id = element.getAttribute('data-id');
-      console.log("id");
+      var id = ele.getAttribute('data-id');
       console.log(id);
-      console.log($('input[name=email].'+id).val());
       var formData={
         '_id' : id,
         'name' : $('input[name=name].'+id).val(),
-        'email' : $('.'+id+' input[name=email]').val(),
-        'gender' : $('.'+id+' input[name=gender]').val(),
-        'contact' : $('.'+id+' input[name=contact]').val(),
-        'refID' : $('.'+id+' input[name=refID]').val(),
-        'doctor' : $('.'+id+' input[name=doctor]').val(),
-        'trusteduser' : $('.'+id+' input[name=trusteduser]').val(),
-
+        'email' : $('input[name=email].'+id).val(),
+        'gender' : $('input[name=gender].'+id).val(),
+        'contact' : $('input[name=contact].'+id).val(),
+        'refCode' : $('input[name=refID].'+id).val(),
+        'doctor' : $('input[name=doctor]'.id).val(),
+        'trustedUser' : $('input[name=trusteduser].'+id).val(),
       }
-      console.log(formData);
       $.ajax({
         type : 'POST',
-        url :  'http://localhost:3000/staff/updatePatient',
+        url :  '/staff/updatePatient',
         data : formData,
         dataType : 'json',
         encode : true
@@ -74,7 +70,10 @@
                     <a href="#">Settings</a>
                     <a href="#">Logout</a>
                 </div>
-
+                <% if(typeof patients !== 'undefined'){
+                  for(let i=0; i<patients.length; i++){
+                    let p = patients[i];
+                    %>
                 <div class="col-md-10 ">
 
                     <div id="accordion" class="mx-4 my-4">
@@ -82,21 +81,21 @@
                       <div class="card">
                         <div class="card-header">
                           <a class="card-link" data-toggle="collapse" href="#collapseOne">
-                            Patient Name
+                            <%=p.name%>
                           </a>
                         </div>
                         <div id="collapseOne" class="collapse" data-parent="#accordion">
                           <div class="card-body">
-                              <form style="width:60%;text-align:center;display: inline-block" action="/users/register" method="POST">
-                                              
+                              <form style="width:60%;text-align:center;display: inline-block" action="/staff/updatePatient" method="POST">
+                                <input class="<%=p._id%>" type="hidden" name="_id" value="<%=p._id%>">
                                 <div class="form-group" id="NameInput">
-                                    <input name="name" id="name" type="text" class="abc form-control" value="Patient Name" disabled>
+                                    <input name="name" id="name" type="text" class="form-control <%=p._id%>" value="<%=p.name%>" disabled>
                                 </div>
                                 <div class="form-group" id="EmailInput">
-                                        <input name="email" id="email" type="email" class="abc form-control" value="Email ID" disabled>
+                                        <input name="email" id="email" type="email" class="form-control <%=p._id%>" value="<%=p.email%>" disabled>
                                 </div>
                                 <div class="form-group" id="GenderInput">
-                                        <select class="abc form-control" id="gender" name="Gender" value="Gender" disabled>
+                                        <select class="form-control <%=p._id%>" id="gender" name="gender" value="<%=gender%>" disabled>
                                                 <option value="male">Select Gender</option>
                                                 <option value="male">Male</option>
                                                 <option value="female">Female</option>
@@ -104,56 +103,36 @@
                                                 </select>
                                     </div>
                                 <div class="form-group" id="ContactInput">
-                                    <input name="contact" id="contact" type="text" class="abc form-control" value="Patient's Contact Number" disabled>
+                                    <input name="contact" id="contact" type="text" class="form-control <%=p._id%>" value="<%=contact%>" disabled>
                                 </div>
                                 <div class="form-group" id="RefIDInput">
-                                        <input name="refID" type="text" class="form-control" value="Reference ID" disabled>
+                                        <input name="refID" type="text" class="form-control <%=p._id%>" value="<%=refCode%>" disabled>
                                     </div>
                                 <div class="form-group" id="DocAssignedInput">
-                                    <input name="doctor" id="doctor" type="text" class="form-control" value="Assigned Doctor's ID" disabled>
+                                    <input name="doctor" id="doctor" type="text" class="form-control <%=p._id%>" value="<%=doctor%>" disabled>
                                 </div>
                                 <div class="form-group" id="TrustedUserInput">
-                                    <input name="trusteduser" id="trusteduser" type="text" class="form-control" value="Trusted User's Phone Number" disabled>
+                                    <input name="trusteduser" id="trusteduser" type="text" class="form-control <%=p._id%>" value="<%=trustedUser%>" disabled>
                                 </div>                
                                 <div id="EditButton">
                                     <button id="edit" onclick="return handleEdit()" class="btn btn-outline-primary" style="display: block;margin: auto;">Edit</button>
                                 </div>
                                 <div id="SaveButton">
-                                    <button id="save" hidden onclick="return handleSave(event,this)" data-id="abc" class="btn btn-outline-primary" style="display: block;margin: auto;">Save</button>
+                                    <button id="save" hidden onclick="return handleSave(event,this)" data-id="<%=p._id%>" class="btn btn-outline-primary" style="display: block;margin: auto;">Save</button>
                                 </div>
                             </form>
-                          </div>
-                        </div>
-                      </div>
 
-                      <div class="card">
-                        <div class="card-header">
-                          <a class="collapsed card-link" data-toggle="collapse" href="#collapseTwo">
-                            Collapsible Group Item #2
-                          </a>
-                        </div>
-                        <div id="collapseTwo" class="collapse" data-parent="#accordion">
-                          <div class="card-body">
-                            Lorem ipsum..
-                          </div>
-                        </div>
-                      </div>
-
-                      <div class="card">
-                        <div class="card-header">
-                          <a class="collapsed card-link" data-toggle="collapse" href="#collapseThree">
-                            Collapsible Group Item #3
-                          </a>
-                        </div>
-                        <div id="collapseThree" class="collapse" data-parent="#accordion">
-                          <div class="card-body">
-                            Lorem ipsum..
                           </div>
                         </div>
                       </div>
 
                     </div>
                 </div>
+
+                <%    }
+                    }
+                    %>
+
             </div>
         </div>
     </section>

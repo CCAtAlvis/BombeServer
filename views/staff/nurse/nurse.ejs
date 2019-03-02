@@ -1,0 +1,41 @@
+<%- include('../../layout/head'); -%>
+
+<body>
+  <section>
+    <div class="container-fluid">
+      <div class="row">
+
+        <%- include('../../layout/nurseSidebar'); -%>
+
+        <div class="col-md-10 " id="target">
+          <div class="row mx-5 my-5">
+            <% if (typeof patients !== 'undefined'){
+                    for(let i=0; i<patients.length; i++){
+                      let p = patients[i];
+                  %>
+            <div class="col-4 mb-5">
+              <div class="card text-center">
+                <div class="card-body">
+                  <h5 class="card-title"><%= p.name%></h5>
+                  <h6 class="card-subtitle"><%= p.refCode%></h6>
+                  <p class="card-text"><%=p.visitCeil%>-<%=p.visitFloor%></p>
+                  <a href="#" class="btn btn-primary">Live Stream</a>
+                  <a href="#" class="btn btn-primary">Video Call</a>
+                  <a href="#" class="btn btn-primary">Enable/Disable</a>
+                </div>
+              </div>
+            </div>
+
+            <%
+                }
+              }
+             %>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+</body>
+
+</html>
