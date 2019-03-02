@@ -9,32 +9,121 @@
 
         <div class="col-md-10 " id="target">
           <div class="row mx-5 my-5">
-            <% if (typeof patients !== 'undefined'){
-                    for(let i=0; i<patients.length; i++){
-                      let p = patients[i];
-                  %>
-            <div class="col-4 mb-5">
-              <div class="card text-center">
-                <div class="card-body">
-                  <h5 class="card-title"><%= p.name%></h5>
-                  <h6 class="card-subtitle"><%= p.refCode%></h6>
-                  <p class="card-text"><%= p.visitCeil%>-<%= p.visitFloor%>
-                  </p>
-                  <a href="#" class="btn btn-primary">Edit</a>
+            <% if(typeof patients !== 'undefined'){
+              for(let i=0; i<patients.length; i++){
+                let p = patients[i];
+                %>
+            <div class="col-md-10 ">
+
+                <div id="accordion" class="mx-4 my-4">
+
+                  <div class="card">
+                    <div class="card-header">
+                      <a class="card-link" data-toggle="collapse" href="#collapseOne">
+                        <%=p.name%>
+                      </a>
+                    </div>
+                    <div id="collapseOne" class="collapse" data-parent="#accordion">
+                      <div class="card-body">
+                          <form style="width:60%;text-align:center;display: inline-block" action="/staff/updatePatient" method="POST">
+                            <input class="<%=p._id%>" type="hidden" name="_id" value="<%=p._id%>">
+                            <div class="form-group" id="NameInput">
+                                <input name="name" id="name" type="text" class="form-control <%=p._id%>" value="<%=p.name%>" disabled>
+                            </div>
+                            <div class="form-group" id="EmailInput">
+                                    <input name="email" id="email" type="email" class="form-control <%=p._id%>" value="<%=p.email%>" disabled>
+                            </div>
+                            <div class="form-group" id="GenderInput">
+                                    <select class="form-control <%=p._id%>" id="gender" name="gender" value="<%= p.gender%>" disabled>
+                                            <option value="male">Select Gender</option>
+                                            <option value="male">Male</option>
+                                            <option value="female">Female</option>
+                                            <option value="others">Others</option>
+                                            </select>
+                                </div>
+                            <div class="form-group" id="ContactInput">
+                                <input name="contact" id="contact" type="text" class="form-control <%=p._id%>" value="<%=p.contact%>" disabled>
+                            </div>
+                            <div class="form-group" id="RefIDInput">
+                                    <input name="refID" type="text" class="form-control <%=p._id%>" value="<%=p.refCode%>" disabled>
+                                </div>
+                            <div class="form-group" id="DocAssignedInput">
+                                <input name="doctor" id="doctor" type="text" class="form-control <%=p._id%>" value="<%=p.doctor%>" disabled>
+                            </div>
+                            <div class="form-group" id="TrustedUserInput">
+                                <input name="trusteduser" id="trusteduser" type="text" class="form-control <%=p._id%>" value="<%=p.trustedUser%>" disabled>
+                            </div>                
+                            <div id="EditButton">
+                                <button id="edit" onclick="return handleEdit()" class="btn btn-outline-primary" style="display: block;margin: auto;">Edit</button>
+                            </div>
+                            <div id="SaveButton">
+                                <button id="save" hidden onclick="return handleSave(event,this)" data-id="<%=p._id%>" class="btn btn-outline-primary" style="display: block;margin: auto;">Save</button>
+                            </div>
+                        </form>
+
+                      </div>
+                    </div>
+                  </div>
+
                 </div>
-              </div>
             </div>
 
-            <%
+            <%    }
                 }
-              }
-             %>
+                %>
           </div>
         </div>
 
       </div>
     </div>
   </section>
+  <script>
+  function handleEdit(){
+      document.getElementById('name').disabled = false;
+      document.getElementById('email').disabled = false;
+      document.getElementById('gender').disabled = false;
+      document.getElementById('contact').disabled = false;
+      document.getElementById('doctor').disabled = false;
+      document.getElementById('trusteduser').disabled = false;
+      document.getElementById('save').hidden = false;
+      document.getElementById('edit').hidden = true;
+      return false;
+    }
+    function handleSave(e,ele){
+      e.preventDefault();
+      document.getElementById('name').disabled = true;
+      document.getElementById('email').disabled = true;
+      document.getElementById('gender').disabled = true;
+      document.getElementById('contact').disabled = true;
+      document.getElementById('doctor').disabled = true;
+      document.getElementById('trusteduser').disabled = true;
+      document.getElementById('save').hidden = true;
+      document.getElementById('edit').hidden = false;
+      var id = ele.getAttribute('data-id');
+      console.log(id);
+      var formData={
+        '_id' : id,
+        'name' : $('input[name=name].'+id).val(),
+        'email' : $('input[name=email].'+id).val(),
+        'gender' : $('input[name=gender].'+id).val(),
+        'contact' : $('input[name=contact].'+id).val(),
+        'refCode' : $('input[name=refID].'+id).val(),
+        'doctor' : $('input[name=doctor]'.id).val(),
+        'trustedUser' : $('input[name=trusteduser].'+id).val(),
+      }
+      $.ajax({
+        type : 'POST',
+        url :  '/staff/updatePatient',
+        data : formData,
+        dataType : 'json',
+        encode : true
+      })
+      .done(function(data){
+        console.log(data);
+      })
+      return false;
+    }
+    </script>
 </body>
 
 </html>
