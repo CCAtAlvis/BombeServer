@@ -1,23 +1,39 @@
 const User = require('../models/User');
+const Patient = require('../models/Patient');
 
 const index = (req, res) => {
-  let role = req.session.user.role;
-  // if (role === 'doctor') {
-    
-  // } else if (role === 'nurse') {
-
-  // } else if (role === 'other-staff') {
-
-  // }
-  if (!(typeof req.session.user === 'undefined')) {
-    //staff is registered/loggedIn
-    res.render('staff/index');
-  } else if((typeof req.session.user === 'undefined')) {
+  if (typeof req.session.user === 'undefined') {
     //user is not registered/loggedIn
     res.redirect('/staff/login');
   } else {
-    //user has to login
-    // res.render('users/login');
+    const role = req.session.user.role;
+    const hospCode = req.session.user.role;
+
+    let condidions = {
+      hospCode: hospCode,   
+    };
+
+    if (role === 'other-staff') {
+      Patient.find(condidions, (err, docs) => {
+        if (err) {
+          throw err;
+        }
+
+        if (docs) {
+          res.render('staff/other', {patients: docs});
+        } else {
+          res.render('staff/other');
+        }
+      });
+    } else {
+      if (role === 'doctor') {
+
+      } else if (role === 'nurse') {
+      
+      } else {
+        res.redirect('/', { error: 'Unauth Access!' });
+      }
+    }
   }
 }
 
@@ -64,39 +80,7 @@ const register = (req, res) => {
   }); 
 }
 
-const createPatient = (req, res) => {
-  const code = req.body.Code;
-  const trustedUser = req.body.trustedUser;
-  const doctorAssigned = req.body.doctorAssigned;
-  const name = req.body.name;
-  const gender = req.body.gender;
-  const contact = req.body.contact;
-  const email = req.body.email;
-  //create a patient with the above details and add them to database
-  let user = new User({
-    code: code,
-    trustedUser: trustedUser,
-    doctorAssigned: doctorAssigned,
-    name: name,
-    gender: gender,
-    contact: contact,
-    email: email
-  })
-  user.save()
-    .then(doc => {
-      console.log(doc)
-    })
-    .catch(err => {
-      console.error(err)
-    })
-}
-
 const viewLogin = (req, res) => {
-  // if(req.session.user) {
-  //   res.redirect('/staff');
-  // } else {
-  //   res.render('staff/login');
-  // }
   if (!(typeof req.session.user === 'undefined')) {
     //staff is registered/loggedIn
     res.render('staff/index');
@@ -115,10 +99,11 @@ const login = (req, res) => {
   const password = req.body.password;
   // console.log(email, password);
 
-  User.findOne({phone: phone}, (err, doc) => {
+  User.findOne({ phone: phone }, (err, doc) => {
     if (err) {
       throw err;
     }
+
     if (doc) {
       // console.log(doc);
       if(doc.password === password) {
@@ -141,6 +126,44 @@ const login = (req, res) => {
   });
 }
 
+
+
+
+
+
+
+
+
+
+
+const createPatient = (req, res) => {
+  const code = req.body.Code;
+  const trustedUser = req.body.trustedUser;
+  const doctorAssigned = req.body.doctorAssigned;
+  const name = req.body.name;
+  const gender = req.body.gender;
+  const contact = req.body.contact;
+  const email = req.body.email;
+
+  //create a patient with the above details and add them to database
+  let user = new User({
+    code: code,
+    trustedUser: trustedUser,
+    doctorAssigned: doctorAssigned,
+    name: name,
+    gender: gender,
+    contact: contact,
+    email: email
+  })
+  user.save()
+    .then(doc => {
+      console.log(doc)
+    })
+    .catch(err => {
+      console.error(err)
+    })
+}
+
 const viewupdatePatient = (req, res) => {
   const code = req.body.Code;
   User.findOne({code: code}, (err, doc) => {
@@ -158,7 +181,6 @@ const viewupdatePatient = (req, res) => {
 }
 
 const updatePatient = (req,res) => {
-
   const trustedUser = req.body.trustedUser;
   const doctorAssigned = req.body.doctorAssigned;
   const name = req.body.name;
