@@ -22,21 +22,46 @@ const index = (req, res) => {
 }
 
 const viewRegisterStaff = (req, res) => {
-  // if (req.session.user) {
-  //   res.redirect('/staff');
-  // } else {
-  //   res.render('staff/staffregister');
-  // }
-  if (!(typeof req.session.user === 'undefined')) {
+  if (typeof req.session.user !== 'undefined') {
     //staff is registered/loggedIn
-    res.render('staff/index');
+    res.redirect('/staff');
   } else if((typeof req.session.user === 'undefined')) {
     //user is not registered/loggedIn
-    res.redirect('/staff/register');
+    res.render('staff/staffregister');
   } else {
     //user has to login
     // res.render('users/login');
   }
+}
+
+const register = (req, res) => {
+  const name = req.body.name;
+  const contact = req.body.contact;
+  const password = req.body.password;
+  const role = req.body.role;
+
+  const user = new User({
+    name: name,
+    contact: contact,
+    password: password,
+    role: role,
+    verified: true
+  });
+
+  user.save((err, doc) => {
+    if (err) {
+      res.send('some error try again later');
+      throw err;
+    }
+    req.session.user = doc;
+    req.session.save((err) => {
+      if (err) {
+        throw err;
+      }
+      //user has registered so now he will verify account
+      res.redirect('/staff');
+    });
+  }); 
 }
 
 const createPatient = (req, res) => {
@@ -55,16 +80,15 @@ const createPatient = (req, res) => {
     name: name,
     gender: gender,
     contact: contact,
-    email: email,
-    verified: true
+    email: email
   })
   user.save()
-     .then(doc => {
-       console.log(doc)
-     })
-     .catch(err => {
-       console.error(err)
-     })
+    .then(doc => {
+      console.log(doc)
+    })
+    .catch(err => {
+      console.error(err)
+    })
 }
 
 const viewLogin = (req, res) => {
@@ -164,40 +188,13 @@ const deletePatient = (req, res) => {
   //soft delete the patient with the above reference code
 }
 
-const register = (req, res) => {
-  const name = req.body.name;
-  const contact = req.body.contact;
-  const password = req.body.password;
-  const role = req.body.role;
-  const user = new User({
-    // email: email,
-    name: name,
-    contact: contact,
-    password: password,
-    role: role
-  });
-  user.save((err, doc) => {
-    if (err) {
-      res.send('some error try again later');
-      throw err;
-    }
-    req.session.user = doc;
-    req.session.save((err) => {
-      if (err) {
-        throw err;
-      }
-      res.redirect('/staff');
-    });
-  })
-}
-
 module.exports = {
   index,
+  register,
   viewRegisterStaff,
   createPatient,
   login,
   viewLogin,
   viewupdatePatient,
   deletePatient,
-  register
 }

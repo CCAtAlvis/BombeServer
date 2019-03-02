@@ -71,7 +71,7 @@ const register = (req, res) => {
       //user has registered so now he will verify account
       res.redirect('/verify');
     });
-  })
+  });
 }
 
 //OTP verification 

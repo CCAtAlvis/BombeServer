@@ -6,6 +6,7 @@ const staffController = require('../controllers/staffController');
 router.get('/', staffController.index);
 
 router.get('/register', staffController.viewRegisterStaff);
+router.post('/register', staffController.register);
 
 router.post('/createPatient', staffController.createPatient);
 
