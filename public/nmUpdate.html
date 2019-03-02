@@ -21,6 +21,44 @@
       document.getElementById('edit').hidden = true;
       return false;
     }
+    function handleSave(e,element){
+      e.preventDefault();
+      document.getElementById('name').disabled = true;
+      document.getElementById('email').disabled = true;
+      document.getElementById('gender').disabled = true;
+      document.getElementById('contact').disabled = true;
+      document.getElementById('doctor').disabled = true;
+      document.getElementById('trusteduser').disabled = true;
+      document.getElementById('save').hidden = true;
+      document.getElementById('edit').hidden = false;
+      var id = element.getAttribute('data-id');
+      console.log("id");
+      console.log(id);
+      console.log($('input[name=email].'+id).val());
+      var formData={
+        '_id' : id,
+        'name' : $('input[name=name].'+id).val(),
+        'email' : $('.'+id+' input[name=email]').val(),
+        'gender' : $('.'+id+' input[name=gender]').val(),
+        'contact' : $('.'+id+' input[name=contact]').val(),
+        'refID' : $('.'+id+' input[name=refID]').val(),
+        'doctor' : $('.'+id+' input[name=doctor]').val(),
+        'trusteduser' : $('.'+id+' input[name=trusteduser]').val(),
+
+      }
+      console.log(formData);
+      $.ajax({
+        type : 'POST',
+        url :  'http://localhost:3000/staff/updatePatient',
+        data : formData,
+        dataType : 'json',
+        encode : true
+      })
+      .done(function(data){
+        console.log(data);
+      })
+      return false;
+    }
   </script>
     <title>Staff Page</title>
 </head>
@@ -47,18 +85,18 @@
                             Patient Name
                           </a>
                         </div>
-                        <div id="collapseOne" class="collapse show" data-parent="#accordion">
+                        <div id="collapseOne" class="collapse" data-parent="#accordion">
                           <div class="card-body">
                               <form style="width:60%;text-align:center;display: inline-block" action="/users/register" method="POST">
                                               
                                 <div class="form-group" id="NameInput">
-                                    <input name="name" id="name" type="text" class="form-control" value="Patient Name" disabled>
+                                    <input name="name" id="name" type="text" class="abc form-control" value="Patient Name" disabled>
                                 </div>
                                 <div class="form-group" id="EmailInput">
-                                        <input name="email" id="email" type="email" class="form-control" value="Email ID" disabled>
+                                        <input name="email" id="email" type="email" class="abc form-control" value="Email ID" disabled>
                                 </div>
                                 <div class="form-group" id="GenderInput">
-                                        <select class="form-control" id="gender" name="Gender" value="Gender" disabled>
+                                        <select class="abc form-control" id="gender" name="Gender" value="Gender" disabled>
                                                 <option value="male">Select Gender</option>
                                                 <option value="male">Male</option>
                                                 <option value="female">Female</option>
@@ -66,7 +104,7 @@
                                                 </select>
                                     </div>
                                 <div class="form-group" id="ContactInput">
-                                    <input name="contact" id="contact" type="text" class="form-control" value="Patient's Contact Number" disabled>
+                                    <input name="contact" id="contact" type="text" class="abc form-control" value="Patient's Contact Number" disabled>
                                 </div>
                                 <div class="form-group" id="RefIDInput">
                                         <input name="refID" type="text" class="form-control" value="Reference ID" disabled>
@@ -81,7 +119,7 @@
                                     <button id="edit" onclick="return handleEdit()" class="btn btn-outline-primary" style="display: block;margin: auto;">Edit</button>
                                 </div>
                                 <div id="SaveButton">
-                                    <button id="save" hidden onclick="" class="btn btn-outline-primary" style="display: block;margin: auto;">Save</button>
+                                    <button id="save" hidden onclick="return handleSave(event,this)" data-id="abc" class="btn btn-outline-primary" style="display: block;margin: auto;">Save</button>
                                 </div>
                             </form>
                           </div>
@@ -115,139 +153,6 @@
                       </div>
 
                     </div>
-                    <!--
-                    <form style="width:60%;text-align:center;display: inline-block" action="/users/register" method="POST">
-                                              
-                      <div class="form-group" id="NameInput">
-                          <input name="name" id="name" type="text" class="form-control" value="Patient Name" disabled>
-                      </div>
-                      <div class="form-group" id="EmailInput">
-                              <input name="email" id="email" type="email" class="form-control" value="Email ID" disabled>
-                      </div>
-                      <div class="form-group" id="GenderInput">
-                              <select class="form-control" id="gender" name="Gender" value="Gender" disabled>
-                                      <option value="male">Select Gender</option>
-                                      <option value="male">Male</option>
-                                      <option value="female">Female</option>
-                                      <option value="others">Others</option>
-                                      </select>
-                          </div>
-                      <div class="form-group" id="ContactInput">
-                          <input name="contact" id="contact" type="text" class="form-control" value="Patient's Contact Number" disabled>
-                      </div>
-                      <div class="form-group" id="RefIDInput">
-                              <input name="refID" type="text" class="form-control" value="Reference ID" disabled>
-                          </div>
-                      <div class="form-group" id="DocAssignedInput">
-                          <input name="doctor" id="doctor" type="text" class="form-control" value="Assigned Doctor's ID" disabled>
-                      </div>
-                      <div class="form-group" id="TrustedUserInput">
-                          <input name="trusteduser" id="trusteduser" type="text" class="form-control" value="Trusted User's Phone Number" disabled>
-                      </div>                
-                      <div id="EditButton">
-                          <button id="edit" onclick="return handleEdit()" class="btn btn-outline-primary" style="display: block;margin: auto;">Edit</button>
-                      </div>
-                      <div id="SaveButton">
-                          <button id="save" hidden onclick="" class="btn btn-outline-primary" style="display: block;margin: auto;">Save</button>
-                      </div>
-                  </form>
-                -->
-                <!--
-                  <section class="my-4 mx-4 px-3 py-3">
-
-                  <div class="panel-group px-3 py-3" id="accordian" style="background-color:white">
-                    <div class="panel-heading">
-                      <h4 class="panel-title">
-                        <a style="text-decoration:none" data-toggle="collapse" data-parent="#accordion" href="#collapse1">
-                          Patient Name
-                        </a>
-                      </h4>
-                    </div>
-                    <div id="collapse1" class="panel-collapse collapse in">
-                      <div class="panel-body">
-                          <form action="/users/register" method="POST">
-                                            
-                            <div class="form-group" id="NameInput">
-                                <input name="name" type="text" class="form-control" value="Patient Name" disabled>
-                            </div>
-                            <div class="form-group" id="EmailInput">
-                                    <input name="email" type="email" class="form-control" value="Email ID" disabled>
-                            </div>
-                            <div class="form-group" id="GenderInput">
-                                    <select class="form-control" name="Gender" value="Gender" disabled>
-                                            <option value="male">Select Gender</option>
-                                            <option value="male">Male</option>
-                                            <option value="female">Female</option>
-                                            <option value="others">Others</option>
-                                            </select>
-                                </div>
-                            <div class="form-group" id="ContactInput">
-                                <input name="contact" type="text" class="form-control" value="Patient's Contact Number" disabled>
-                            </div>
-                            <div class="form-group" id="RefIDInput">
-                                    <input name="refID" type="text" class="form-control" value="Reference ID" disabled>
-                                </div>
-                            <div class="form-group" id="DocAssignedInput">
-                                <input name="doctor" type="text" class="form-control" value="Assigned Doctor's ID" disabled>
-                            </div>
-                            <div class="form-group" id="TrustedUserInput">
-                                <input name="trusteduser" type="text" class="form-control" value="Trusted User's Phone Number" disabled>
-                            </div>                
-                            <div id="EditButton">
-                                <button type="submit" class="btn btn-outline-primary" style="display: block;margin: auto;">Edit</button>
-                            </div>
-                        </form>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="panel-group px-3 py-3" id="accordian" style="background-color:white">
-                      <div class="panel-heading">
-                        <h4 class="panel-title">
-                          <a style="text-decoration:none" data-toggle="collapse" data-parent="#accordion" href="#collapse2">
-                            Patient Name
-                          </a>
-                        </h4>
-                      </div>
-                      <div id="collapse2" class="panel-collapse collapse">
-                        <div class="panel-body">
-                            <form action="/users/register" method="POST">
-                                              
-                              <div class="form-group" id="NameInput">
-                                  <input name="name" type="text" class="form-control" value="Patient Name" disabled>
-                              </div>
-                              <div class="form-group" id="EmailInput">
-                                      <input name="email" type="email" class="form-control" value="Email ID" disabled>
-                              </div>
-                              <div class="form-group" id="GenderInput">
-                                      <select class="form-control" name="Gender" value="Gender" disabled>
-                                              <option value="male">Select Gender</option>
-                                              <option value="male">Male</option>
-                                              <option value="female">Female</option>
-                                              <option value="others">Others</option>
-                                              </select>
-                                  </div>
-                              <div class="form-group" id="ContactInput">
-                                  <input name="contact" type="text" class="form-control" value="Patient's Contact Number" disabled>
-                              </div>
-                              <div class="form-group" id="RefIDInput">
-                                      <input name="refID" type="text" class="form-control" value="Reference ID" disabled>
-                                  </div>
-                              <div class="form-group" id="DocAssignedInput">
-                                  <input name="doctor" type="text" class="form-control" value="Assigned Doctor's ID" disabled>
-                              </div>
-                              <div class="form-group" id="TrustedUserInput">
-                                  <input name="trusteduser" type="text" class="form-control" value="Trusted User's Phone Number" disabled>
-                              </div>                
-                              <div id="EditButton">
-                                  <button type="submit" class="btn btn-outline-primary" style="display: block;margin: auto;">Edit</button>
-                              </div>
-                          </form>
-                        </div>
-                      </div>
-                    </div>
-
-                </section> -->
                 </div>
             </div>
         </div>

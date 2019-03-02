@@ -21,7 +21,8 @@
       document.getElementById('edit').hidden = true;
       return false;
     }
-    function handleSave(){
+    function handleSave(e,ele){
+      e.preventDefault();
       document.getElementById('name').disabled = true;
       document.getElementById('email').disabled = true;
       document.getElementById('gender').disabled = true;
@@ -30,6 +31,28 @@
       document.getElementById('trusteduser').disabled = true;
       document.getElementById('save').hidden = true;
       document.getElementById('edit').hidden = false;
+      var id = ele.getAttribute('data-id');
+      console.log(id);
+      var formData={
+        '_id' : id,
+        'name' : $('input[name=name].'+id).val(),
+        'email' : $('input[name=email].'+id).val(),
+        'gender' : $('input[name=gender].'+id).val(),
+        'contact' : $('input[name=contact].'+id).val(),
+        'refCode' : $('input[name=refID].'+id).val(),
+        'doctor' : $('input[name=doctor]'.id).val(),
+        'trustedUser' : $('input[name=trusteduser].'+id).val(),
+      }
+      $.ajax({
+        type : 'POST',
+        url :  '/staff/updatePatient',
+        data : formData,
+        dataType : 'json',
+        encode : true
+      })
+      .done(function(data){
+        console.log(data);
+      })
       return false;
     }
   </script>
@@ -63,16 +86,16 @@
                         </div>
                         <div id="collapseOne" class="collapse" data-parent="#accordion">
                           <div class="card-body">
-                              <form style="width:60%;text-align:center;display: inline-block" action="/users/register" method="POST">
-                                              
+                              <form style="width:60%;text-align:center;display: inline-block" action="/staff/updatePatient" method="POST">
+                                <input class="<%=p._id%>" type="hidden" name="_id" value="<%=p._id%>">
                                 <div class="form-group" id="NameInput">
-                                    <input name="name" id="name" type="text" class="form-control" value="<%=p.name%>" disabled>
+                                    <input name="name" id="name" type="text" class="form-control <%=p._id%>" value="<%=p.name%>" disabled>
                                 </div>
                                 <div class="form-group" id="EmailInput">
-                                        <input name="email" id="email" type="email" class="form-control" value="<%=p.email%>" disabled>
+                                        <input name="email" id="email" type="email" class="form-control <%=p._id%>" value="<%=p.email%>" disabled>
                                 </div>
                                 <div class="form-group" id="GenderInput">
-                                        <select class="form-control" id="gender" name="Gender" value="<%=gender%>" disabled>
+                                        <select class="form-control <%=p._id%>" id="gender" name="gender" value="<%=gender%>" disabled>
                                                 <option value="male">Select Gender</option>
                                                 <option value="male">Male</option>
                                                 <option value="female">Female</option>
@@ -80,22 +103,22 @@
                                                 </select>
                                     </div>
                                 <div class="form-group" id="ContactInput">
-                                    <input name="contact" id="contact" type="text" class="form-control" value="<%=contact%>" disabled>
+                                    <input name="contact" id="contact" type="text" class="form-control <%=p._id%>" value="<%=contact%>" disabled>
                                 </div>
                                 <div class="form-group" id="RefIDInput">
-                                        <input name="refID" type="text" class="form-control" value="<%=refCode%>" disabled>
+                                        <input name="refID" type="text" class="form-control <%=p._id%>" value="<%=refCode%>" disabled>
                                     </div>
                                 <div class="form-group" id="DocAssignedInput">
-                                    <input name="doctor" id="doctor" type="text" class="form-control" value="<%=doctor%>" disabled>
+                                    <input name="doctor" id="doctor" type="text" class="form-control <%=p._id%>" value="<%=doctor%>" disabled>
                                 </div>
                                 <div class="form-group" id="TrustedUserInput">
-                                    <input name="trusteduser" id="trusteduser" type="text" class="form-control" value="<%=trustedUser%>" disabled>
+                                    <input name="trusteduser" id="trusteduser" type="text" class="form-control <%=p._id%>" value="<%=trustedUser%>" disabled>
                                 </div>                
                                 <div id="EditButton">
                                     <button id="edit" onclick="return handleEdit()" class="btn btn-outline-primary" style="display: block;margin: auto;">Edit</button>
                                 </div>
                                 <div id="SaveButton">
-                                    <button id="save" hidden onclick="return handleSave()" class="btn btn-outline-primary" style="display: block;margin: auto;">Save</button>
+                                    <button id="save" hidden onclick="return handleSave(event,this)" data-id="<%=p._id%>" class="btn btn-outline-primary" style="display: block;margin: auto;">Save</button>
                                 </div>
                             </form>
 
