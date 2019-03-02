@@ -28,9 +28,35 @@ const index = (req, res) => {
       });
     } else {
       if (role === 'doctor') {
-        res.send('todo: doctor');
+        console.log('todo: doctor');
+
+        Patient.find(condidions, (err, docs) => {
+          if (err) {
+            throw err;
+          }
+  
+          if (docs) {
+            console.log(docs);
+            res.render('staff/doctor', {patients: docs});
+          } else {
+            res.render('staff/doctor');
+          }
+        });
       } else if (role === 'nurse') {
-        res.send('todo: nurse');
+        console.log('todo: nurse');
+
+        Patient.find(condidions, (err, docs) => {
+          if (err) {
+            throw err;
+          }
+  
+          if (docs) {
+            console.log(docs);
+            res.render('staff/nurse', {patients: docs});
+          } else {
+            res.render('staff/nurse');
+          }
+        });
       } else {
         res.redirect('/', { error: 'Unauth Access!' });
       }
@@ -131,6 +157,10 @@ const login = (req, res) => {
   });
 }
 
+const logout = (req, res) => {
+  req.session.destroy();
+  res.redirect('/');
+}
 
 
 
@@ -223,9 +253,11 @@ module.exports = {
   index,
   register,
   viewRegisterStaff,
-  createPatient,
   login,
   viewLogin,
+  logout,
+  createPatient,
   viewupdatePatient,
+  updatPatient,
   deletePatient,
 }
