@@ -3,7 +3,9 @@
 const wsHost = 'wss://bombe.westindia.cloudapp.azure.com:8443/ws/';
 let wsChannel = 'echo/chetan';
 let patID = 'Pchetan123456';
+//let patID = 'sexychetan';
 let clientID = 'c1234567890';
+//let clientID = 'c1234';
 let wsUri = wsHost + wsChannel;
 let websocket = new WebSocket(wsUri);
 let localConn;

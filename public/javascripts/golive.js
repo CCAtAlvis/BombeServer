@@ -67,7 +67,7 @@ function onMessage(evt) {
     } else if (message.type == 'answer' && message.name == 'patient') {
       console.log('^^^ BAD');
     } else if (message.type == 'icecandi' && message.name == 'client') {
-        onGetIceCandi(message.candidate, message.name);
+        onGetIceCandi(message.candidate, message.name,message.from);
     } else if (message.type == 'icecandi' && message.name == 'patient'){
       console.log('^^^ BAD');
     } else if (message.type == 'request' && message.name == 'client') {
@@ -167,7 +167,7 @@ async function onIceCandidate(event,clientID) {
     console.log('connections[',index,'] sent ICE-candi to other person');
 }
 
-async function onGetIceCandi(candi, name) {
+async function onGetIceCandi(candi, name,clientID) {
     if (candi !=null && name=='client') {
         let index = clients.reverse().indexOf(clientID);
         (connections[index]).addIceCandidate(candi);
