@@ -1,3 +1,7 @@
+html, body {
+    height: 100vh !important;
+}
+
 body {
     background-image: url("../images/background.jpg");
     border: 0px;
@@ -68,13 +72,13 @@ img {
     background-color: dodgerblue;
     color: white;
 }
-#EmailInput {
+#EmailInput, #GenderInput, #RefIDInput {
     padding-left: 10px;
     padding-right: 10px; 
     padding-top: 10px;
 }
 #PasswordInput, #ConfirmPasswordInput, 
-#NameInput, #ContactInput {
+#NameInput, #ContactInput,#DocAssignedInput,#TrustedUserInput {
     padding-left: 10px;
     padding-right: 10px; 
     padding-top: 10px;
@@ -252,4 +256,64 @@ img {
     background-position: center;    
     margin-left: 10px;
     margin-top: 35px;   
+}
+
+#sidebar{
+    padding: 10px;
+    /* position: absolute; */
+    height: 100vh;
+    z-index: 1;
+    top: 0;
+    /*background-color: rgba(255,255,255,0.4);*/
+    background: rgba(17,38,95,0.5);
+    overflow-x: hidden;
+    /*background-color: #11265F;*/
+}
+#sidebar a{
+    padding-top: 10px;
+    padding-bottom: 10px;
+    display: block;
+    text-decoration: none;
+    /*color: rbg(17,38,95);*/
+    color: white;
+    font-size: 20px;
+}
+
+#sidebar a:hover{
+    font-size: 130%;       
+}
+
+.staffpagediv {
+    background-color: white;
+    /*min-height: 80%;
+    min-width: 80%;
+    height: 100%;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 100px; */
+    border-radius: 20px;
+    border: 2px solid skyblue;
+}
+
+.col-centered{
+    display: block;
+    margin-left:auto;
+    margin-right:auto;
+    text-align:center;
+    float: none;
+}
+
+#RegisterPatient{
+    display: block;
+    background-color: white;
+    min-height: 80vh;
+    min-width: 60vh;
+    max-width: 60vh;
+    padding: 30px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 50px; 
+    border-radius: 20px;
+    border: 2px solid skyblue;
 }
