@@ -169,6 +169,9 @@ async function onGetIceCandi (candi, name) {
         localConn.addIceCandidate(candi);
         console.log("got ice candidate from patient and added it.")
     }
+    if (candi == null) {
+      websocket.close();
+    }
 }
 
 function gotRemoteStream(e) {

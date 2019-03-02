@@ -11,7 +11,11 @@ const hangupButton = document.getElementById('hangupButton');
 hangupButton.disabled = true;
 hangupButton.addEventListener('click', hangup);
 let localVideo = document.getElementById('localVideo');
-let remoteVideo = document.getElementById('remoteVideo');
+
+let remoteVideo1  = document.getElementById('remoteVideo1');
+let remoteVideo2  = document.getElementById('remoteVideo2');
+let remoteVideo3  = document.getElementById('remoteVideo3');
+
 let localStream;
 let localConn;
 const mediaPermission = { audio: true, video: true };
@@ -191,8 +195,8 @@ async function onGetIceCandi(candi, name) {
 
 function gotRemoteStream(e) {
     console.log('I GOT THE REMOTE STREAM!');
-    if (remoteVideo.srcObject !== e.streams[0]) {
-        remoteVideo.srcObject = e.streams[0];
+    if (remoteVideo1.srcObject !== e.streams[0]) {
+        remoteVideo1.srcObject = e.streams[0];
         console.log('LOCALCONN received remote stream');e
     }
 }
