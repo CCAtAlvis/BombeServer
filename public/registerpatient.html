@@ -26,7 +26,7 @@
                                 <div id="RegisterPatient">
                                         <img src="images/logo.png">
                             
-                                        <form action="/users/register" method="POST">
+                                        <form action="/staff/register" method="POST">
                                             
                                             <div class="form-group" id="NameInput">
                                                 <input name="name" type="text" class="form-control" placeholder="Name">
@@ -35,7 +35,7 @@
                                                     <input name="email" type="email" class="form-control" placeholder="Email ID">
                                             </div>
                                             <div class="form-group" id="GenderInput">
-                                                    <select class="form-control" name="Gender">
+                                                    <select class="form-control" name="gender">
                                                             <option value="male">Select Gender</option>
                                                             <option value="male">Male</option>
                                                             <option value="female">Female</option>
@@ -46,13 +46,13 @@
                                                 <input name="contact" type="text" class="form-control"placeholder="Patient's Contact Number">
                                             </div>
                                             <div class="form-group" id="RefIDInput">
-                                                    <input name="refID" type="text" class="form-control" placeholder="Reference ID">
+                                                    <input name="refCode" type="text" class="form-control" placeholder="Reference ID">
                                                 </div>
                                             <div class="form-group" id="DocAssignedInput">
                                                 <input name="doctor" type="text" class="form-control" placeholder="Assigned Doctor's ID">
                                             </div>
                                             <div class="form-group" id="TrustedUserInput">
-                                                <input name="trusteduser" type="text" class="form-control" placeholder="Trusted User's Phone Number">
+                                                <input name="trustedUser" type="text" class="form-control" placeholder="Trusted User's Phone Number">
                                             </div>                
                                             <div id="SubmitButton">
                                                 <button type="submit" class="btn btn-outline-primary" style="display: block;margin: auto;">Register</button>
