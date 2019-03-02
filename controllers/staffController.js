@@ -1,5 +1,5 @@
 const User = require('../models/User');
-
+const Patient = require('../models/Patient');
 const index = (req, res) => {
   let role = req.session.user.role;
   // if (role === 'doctor') {
@@ -48,10 +48,10 @@ const createPatient = (req, res) => {
   const contact = req.body.contact;
   const email = req.body.email;
   //create a patient with the above details and add them to database
-  let user = new User({
-    code: code,
-    trustedUser: trustedUser,
-    doctorAssigned: doctorAssigned,
+  let patient = new Patient({
+    refCode: code,
+    trustedUser: {userContact: trustedUser},
+    doctor: doctorAssigned,
     name: name,
     gender: gender,
     contact: contact,
