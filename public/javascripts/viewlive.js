@@ -47,7 +47,7 @@ function onOpen (evt) {
     name: 'client',
     id: clientID
   }
-
+  console.log('CONNECTED to WS: msg: ',message);
   websocket.send(JSON.stringify(message));
   createRequest();
 }
@@ -67,16 +67,19 @@ function onMessage (evt) {
   if (message.type == 'offer' && message.name == 'patient') {
       //console.log("Client got offer(GOOD)");
       onGetOffer(message.offer, message.name);
-  } else if (message.type == 'answer' && message.name == 'patient') {
-    console.log("Client got answer(BAD)");
-    //onGetAnswer(message.answer, message.name);
+  } else if (message.type == 'offer' && message.name == 'client') {
+    console.log('^^^ BAD');
+  } else if (message.type == 'answer' && (message.name == 'patient'|| message.name == 'client')) {
+    console.log('^^^ BAD');
   } else if (message.type == 'icecandi' && message.name == 'patient') {
     //console.log("Client got icecandi(GOOD)");
     onGetIceCandi(message.candidate, message.name);
-  } else if (message.type == 'request' && message.name == 'patient') {
-    console.log("Client got request(BAD)");
+  } else if (message.type == 'icecandi' && message.name == 'client') {
+    console.log('^^^ BAD');
+  } else if (message.type == 'request' && (message.name == 'patient'|| message.name == 'client')) {
+    console.log("^^^ BAD");
   } else {
-
+    console.log('else wala ^^^ BAD   U MISSED SOMETHING');
   }
 }
 //--------------------------------------------------------------------------------------HANDLING WS events--------------------
@@ -110,7 +113,7 @@ async function createRequest() {
           from: clientID
         };
         websocket.send(JSON.stringify(message));
-        console.log('createRequest() : Sent the request to all.')
+        console.log('createRequest() : Sent the request to all. msg:',message)
       } catch (e) {
         console.log("COULD not send request..");
       }
@@ -136,7 +139,7 @@ async function onGetOffer (offer, name) {
     };
     websocket.send(JSON.stringify(message));
     console.log('answer sent to all');
-    websocket.close();
+    //websocket.close();
   } catch (e) {
     console.log(e);
   }
