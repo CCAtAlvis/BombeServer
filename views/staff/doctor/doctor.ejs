@@ -1,11 +1,11 @@
-<%- include ('../template/head'); -%>
+<%- include ('../../template/head'); -%>
 
 <body>
   <section>
     <div class="container-fluid">
       <div class="row">
 
-        <%- include('../template/doctorSidebar') -%>
+        <%- include('../../template/doctorSidebar') -%>
 
         <% if (typeof patients !== 'undefined'){
               for(let i=0; i<patients.length; i++){
