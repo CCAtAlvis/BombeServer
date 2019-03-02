@@ -18,28 +18,14 @@
     <button type="button" class="btn btn-outline-primary" onclick="window.location.href='/'"
       style="margin-left:12px;"><i class="fas fa-arrow-left"></i></button>
 
-    <form action="/users/register" method="POST">
-      <!-- <div class="form-group" id="EmailInput">
-        <input name="email" type="email" class="form-control" placeholder="Enter Email">
-      </div> -->
-      <div class="form-group" id="NameInput">
-        <input name="name" type="text" class="form-control" placeholder="Name">
+    <form action="/users/verify" method="POST">
+      <div class="form-group" id="otpInput">
+        <input name="otp" type="text" class="form-control" placeholder="Enter OTP">
       </div>
-      <div class="form-group" id="ContactInput">
-        <input name="contact" type="text" class="form-control" placeholder="Phone Number">
-      </div>
-      <div class="form-group" id="PasswordInput">
-        <input name="password" type="password" class="form-control" placeholder="Password">
-      </div>
-      <!-- <div class="form-group" id="ConfirmPasswordInput">
-        <input name="repassword" type="password" class="form-control" placeholder="Confirm Password">
-      </div> -->
-
-      <input type="hidden" name="role" value="user">
 
       <div id="SubmitButton">
         <button type="submit" class="btn btn-outline-primary"
-          style="padding-left: 109px; padding-right: 109px;">Register</button>
+          style="padding-left: 109px; padding-right: 109px;">Verify</button>
       </div>
     </form>
 

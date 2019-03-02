@@ -14,34 +14,35 @@ const userSchema = new mongoose.Schema({
   },
   email: {
     type: String,
-    unique: true
   },
   dateOfBirth: {
     type: Date,
   },
-  imageUrl: {
-    type: String,
-  },
   contact: {
     type: Number,
     minlength: 10,
-    maxlength: 10
+    maxlength: 10,
+    unique: true
   },
-  address: {
-    type: String
-  },
+  // address: {
+  //   type: String
+  // },
   role: {
     type: String,
     required: true,
-    enum: ['patient', 'user', 'staff', 'doctor', 'nurse','developer']
+    enum: ['user', 'doctor', 'nurse','developer','other-staff']
   },
   app: {
     deviceToken: {
       type: String
     }
   },
-  tos: {
+  otp: {
+    type: String
+  },
+  active: {
     type: Boolean,
+    required: true,
     default: false
   }
 }, {

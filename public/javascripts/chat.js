@@ -10,8 +10,8 @@ callButton.addEventListener('click', call);
 const hangupButton = document.getElementById('hangupButton');
 hangupButton.disabled = true;
 hangupButton.addEventListener('click', hangup);
-const localVideo = document.getElementById('localVideo');
-const remoteVideo = document.getElementById('remoteVideo');
+let localVideo = document.getElementById('localVideo');
+let remoteVideo = document.getElementById('remoteVideo');
 let localStream;
 let localConn;
 const mediaPermission = { audio: true, video: true };
@@ -38,6 +38,8 @@ let configuration = {
         },
     ]
 };
+let from;
+let to;
 start();
 //------------------------------------------------------------END OF INITIALIZATION-----------------------------------------------
 
@@ -51,8 +53,10 @@ function onOpen(evt) {
     let message = {
         type : 'new-connection',
         name : '',
-        id : 'a'
+        id : from
     }
+    websocket.send(JSON.stringify(message));
+    console.log('Message on connecting: ',message);
 }
 function onClose(evt) {
     console.log('DISCONNECTED from WS');
@@ -62,12 +66,12 @@ function onError(evt) {
 }
 function onMessage(evt) {
     let message = JSON.parse(evt.data);
-    console.log('localConn got a ',message.type,' from ',message.name);
+    console.log('localConn got a ',message.type,' from ',message.name,'(',message.from,')');
     if (message.type == 'offer' &&(message.name=='offerer'||message.name=='answerer')) {
         onGetOffer(message.offer, message.name);
     } else if (message.type == 'answer' &&(message.name=='offerer'||message.name=='answerer')) {
         onGetAnswer(message.answer, message.name);
-    } else if (message.type == 'icecandi' &&(message.name=='offerer'||message.name=='answerer')) {
+    } else if (message.type == 'icecandi' &&(message.name=='offerer'||message.name=='answerer'||message.name=='ICEmessenger')) {
         onGetIceCandi(message.candidate, message.name);
     } else {
 
@@ -76,6 +80,8 @@ function onMessage(evt) {
 //--------------------------------------------------------------END OF HANDLING WEBSOCKET EVENTS------------------------------------
 
 async function start() {
+    to = prompt("enter To:");
+    from = prompt("enter From:");
     try {
         const stream = await navigator.mediaDevices.getUserMedia(mediaPermission);
         localVideo.srcObject = stream;
@@ -114,10 +120,11 @@ async function onCreateOfferSuccess(desc) {
         console.log('Offerer set its localDesc to offer')
         let message = {
             type: 'offer',
-            //name: 'chetan',
             name: 'offerer',
             offer: desc,
-            id: 'o'
+            // id: from,
+            from : from,
+            to : to
         };
         websocket.send(JSON.stringify(message));
         console.log('Offerer sent the message to answerer.');
@@ -141,7 +148,9 @@ async function onGetOffer(offer, name) {
             type: 'answer',
             name: 'answerer',
             answer: answer,
-            id : 'a'
+            // id: from,
+            from : from,
+            to : to
         };
         websocket.send(JSON.stringify(message));
     } catch (e) {
@@ -164,8 +173,9 @@ async function onIceCandidate(pc, event) {
             type: 'icecandi',
             name: 'ICEmessenger',
             candidate: event.candidate,
-            to : 'o',
-            from: 'a'
+            // id: from,
+            from : from,
+            to : to
         };
         websocket.send(JSON.stringify(message));
     } catch (e) {

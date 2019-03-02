@@ -4,21 +4,41 @@ const patientSchema = new mongoose.Schema({
   name: {
     type: String,
   },
-  authUsers: [{
-    userId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
+  gender: {
+    type: String,
+    enum: ['male', 'female', 'others']
+  },
+  contact: {
+    type: Number,
+    minlength: 10,
+    maxlength: 10
+  },
+  email: {
+    type: String,
+  },
+  // trustedUser: [{
+  //   userCotact: {
+  //     type: String,
+  //     required: true
+  //   }
+  // }],
+  trustedUser: {
+    userCotact: {
+      type: String,
       required: true
     }
-  }],
+  },
+  doctor: {
+    type: String,
+    required: true
+  },
   refCode: {
     type: String,
     required: true
   },
   users: [{
-    userId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
+    userCotact: {
+      type: String,
       required: true
     },
     name: {

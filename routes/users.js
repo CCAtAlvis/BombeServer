@@ -11,6 +11,9 @@ router.get('/login', userController.viewLogin);
 router.post('/register', userController.register);
 router.get('/register', userController.viewRegister);
 
+router.post('/verify', userController.verify);
+router.get('/verify', userController.viewVerify);
+
 router.get('/logout', userController.logout);
 
 module.exports = router;
