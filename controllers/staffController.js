@@ -7,10 +7,10 @@ const index = (req, res) => {
     res.redirect('/staff/login');
   } else {
     const role = req.session.user.role;
-    const hospCode = req.session.user.role;
+    const hospCode = req.session.user.hospCode;
 
     let condidions = {
-      hospCode: hospCode,   
+      hospCode: hospCode,
     };
 
     if (role === 'other-staff') {
@@ -20,6 +20,7 @@ const index = (req, res) => {
         }
 
         if (docs) {
+          console.log(docs);
           res.render('staff/other', {patients: docs});
         } else {
           res.render('staff/other');
