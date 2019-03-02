@@ -35,12 +35,12 @@
                 </div>
 
                 
-            <% if (typeof patients !== 'undefined'){
-              for(let i=0; i<patients.length; i++){
-                let p = patients[i];
-            %>
             <div class="col-md-10 " id="target">
               <div class="row mx-5 my-5">
+                  <% if (typeof patients !== 'undefined'){
+                    for(let i=0; i<patients.length; i++){
+                      let p = patients[i];
+                  %>
                   <div class="col-4 mb-5">
                       <div class = "card text-center">
                           <div class="card-body">
@@ -51,13 +51,14 @@
                           </div>
                       </div>
                   </div>
+
+                  <%
+                }
+              }
+             %>    
               </div>
           </div>
-
-          <%
-              }
-            }
-           %>     
+ 
             </div>
         </div>
     </section>
