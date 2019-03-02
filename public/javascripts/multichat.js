@@ -11,9 +11,13 @@ const hangupButton = document.getElementById('hangupButton');
 hangupButton.disabled = true;
 hangupButton.addEventListener('click', hangup);
 let localVideo = document.getElementById('localVideo');
-let remoteVideo = document.getElementById('remoteVideo');
+
+let remoteVideo1  = document.getElementById('remoteVideo1');
+let remoteVideo2  = document.getElementById('remoteVideo2');
+let remoteVideo3  = document.getElementById('remoteVideo3');
+
 let localStream;
-let localConn;
+//let localConn;
 const mediaPermission = { audio: true, video: true };
 const offerOptions = {
     mandatory: {
@@ -38,8 +42,10 @@ let configuration = {
         },
     ]
 };
-let from;
-let to;
+//let from;
+//let to;
+let current;
+let clients = [];
 start();
 //------------------------------------------------------------END OF INITIALIZATION-----------------------------------------------
 
@@ -50,13 +56,13 @@ websocket.addEventListener('error', e => onError(e));
 websocket.addEventListener('message', e => onMessage(e));
 function onOpen(evt) {
     console.log('CONNECTED to WS');
-    let message = {
-        type : 'new-connection',
-        name : 'chatter',
-        id : from
-    }
-    websocket.send(JSON.stringify(message));
-    console.log('Message on connecting: ',message);
+    // let message = {
+    //     type : 'new-connection',
+    //     name : 'chatter',
+    //     id : current.from
+    // }
+    // websocket.send(JSON.stringify(message));
+    // console.log('Message on connecting: ',message);
 }
 function onClose(evt) {
     console.log('DISCONNECTED from WS');
@@ -80,8 +86,9 @@ function onMessage(evt) {
 //--------------------------------------------------------------END OF HANDLING WEBSOCKET EVENTS------------------------------------
 
 async function start() {
-    to = prompt("enter To:");
-    from = prompt("enter From:");
+    let localConn;
+    let to = prompt("enter To:");
+    let from = prompt("enter From:");
     try {
         const stream = await navigator.mediaDevices.getUserMedia(mediaPermission);
         localVideo.srcObject = stream;
@@ -101,14 +108,27 @@ async function start() {
     } catch (e) {
         console.log(e);
     }
+    current = {localConn: localConn, to: to, from: from};
+    console.log(current);
+    clients.push(current.from);
+    let message = {
+      type : 'new-connection',
+      name : 'chatter',
+      id : current.from
+  }
+  websocket.send(JSON.stringify(message));
+  console.log('Message on connecting: ',message);
 }
 
 async function call() {
     try {
-        const offer = await localConn.createOffer(offerOptions);
-        hangupButton.disabled = false;
-        console.log('call() : Offerer created offer successfully');
-        await onCreateOfferSuccess(offer);
+      if(clients.length != 1) {
+        start();
+      }
+      const offer = await current.localConn.createOffer(offerOptions);
+      hangupButton.disabled = false;
+      console.log('call() : Offerer created offer successfully');
+      await onCreateOfferSuccess(offer);
     } catch (e) {
         onCreateSessionDescriptionError(e);
     }
@@ -116,18 +136,19 @@ async function call() {
 
 async function onCreateOfferSuccess(desc) {
     try {
-        await localConn.setLocalDescription(new RTCSessionDescription(desc));
+        await current.localConn.setLocalDescription(new RTCSessionDescription(desc));
         console.log('Offerer set its localDesc to offer')
         let message = {
             type: 'offer',
             name: 'offerer',
             offer: desc,
             // id: from,
-            from : from,
-            to : to
+            from : current.from,
+            to : current.to
         };
         websocket.send(JSON.stringify(message));
         console.log('Offerer sent the message to answerer.');
+        //console.log(current);
     } catch (e) {
         onSetSessionDescriptionError(e);
     }
@@ -135,22 +156,22 @@ async function onCreateOfferSuccess(desc) {
 
 async function onGetOffer(offer, name) {
     try {
-        await localConn.setRemoteDescription(new RTCSessionDescription(offer));
+        await current.localConn.setRemoteDescription(new RTCSessionDescription(offer));
         console.log('Answerer created answer and setRemoteDesc to offer');
     } catch (e) {
         console.log("error: ", e);
     }
     try {
-        const answer = await localConn.createAnswer();
-        await localConn.setLocalDescription(answer);
+        const answer = await current.localConn.createAnswer();
+        await current.localConn.setLocalDescription(answer);
         console.log('Answerer setLocalDesc to answer')
         let message = {
             type: 'answer',
             name: 'answerer',
             answer: answer,
             // id: from,
-            from : from,
-            to : to
+            from : current.from,
+            to : current.to
         };
         websocket.send(JSON.stringify(message));
     } catch (e) {
@@ -160,7 +181,7 @@ async function onGetOffer(offer, name) {
 
 async function onGetAnswer(answer, name) {
     try {
-        await localConn.setRemoteDescription(answer);
+        await current.localConn.setRemoteDescription(answer);
         console.log('Offerer setRemoteDesc to answer');
     } catch (e) {
         console.log("error: ", e);
@@ -174,8 +195,8 @@ async function onIceCandidate(pc, event) {
             name: 'ICEmessenger',
             candidate: event.candidate,
             // id: from,
-            from : from,
-            to : to
+            from : current.from,
+            to : current.to
         };
         websocket.send(JSON.stringify(message));
     } catch (e) {
@@ -185,22 +206,34 @@ async function onIceCandidate(pc, event) {
 }
 
 async function onGetIceCandi(candi, name) {
-    localConn.addIceCandidate(candi);
+  current.localConn.addIceCandidate(candi);
     console.log('localConn recieved ICEcandi and added it.')
 }
 
 function gotRemoteStream(e) {
     console.log('I GOT THE REMOTE STREAM!');
-    if (remoteVideo.srcObject !== e.streams[0]) {
-        remoteVideo.srcObject = e.streams[0];
-        console.log('LOCALCONN received remote stream');e
-    }
+    if(clients.length == 1) {
+      if (remoteVideo1.srcObject !== e.streams[0]) {
+          remoteVideo1.srcObject = e.streams[0];
+          console.log('LOCALCONN received remote stream');
+      }
+    } else if(clients.length == 2) {
+      if (remoteVideo2.srcObject !== e.streams[0]) {
+          remoteVideo2.srcObject = e.streams[0];
+          console.log('LOCALCONN received remote stream');
+      }
+    } else if(clients.length == 3) {
+      if (remoteVideo3.srcObject !== e.streams[0]) {
+          remoteVideo3.srcObject = e.streams[0];
+          console.log('LOCALCONN received remote stream');
+      }
+    } 
 }
 
 function hangup() {
     console.log('Ending call');
-    localConn.close();
-    localConn = null;
+    current.localConn.close();
+    current.localConn = null;
     hangupButton.disabled = true;
     callButton.disabled = false;
 }

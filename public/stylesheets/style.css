@@ -242,7 +242,7 @@ img {
     background-attachment: initial;
     background-position: center;     
 }
-#remoteVideo {
+#remoteVideo,#remoteVideo1,#remoteVideo2,#remoteVideo3 {
     height: 703px;
     /* width: 1518px; */
     width: 933px;
