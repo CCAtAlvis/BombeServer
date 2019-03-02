@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" type="text/css" href="./stylesheets/style.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+    <title>Staff Page</title>
+    <script>
+        $(function() {
+        var $menu = $('#sidebar'), 
+        $target = $('#target');
+
+        $menu.on('click', '> a', function(event) {
+        var $this = $(this);
+        event.preventDefault();
+        $target.load($this.attr('href'));
+    });
+});
+    </script>
+</head>
+<body>
+    <section>
+        <div class="container-fluid">
+            <div class="row">
+
+                <div class="col-md-2 px-5 py-5" id="sidebar">
+                    <img class="pb-5" src="images/logo.png">
+                    <a href="registerpatient.html">Register a new Patient</a>
+                    <a href="#">Register an existing Patient</a>
+                    <a href="StaffUpdate.html">Update Patient Details</a>
+                    <a href="#">Settings</a>
+                    <a href="#">Logout</a>
+                </div>
+
+                <div class="col-md-10 " id="target">
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

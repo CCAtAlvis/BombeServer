@@ -28,6 +28,22 @@ const createPatient = (req, res) => {
   const contact = req.body.contact;
   const email = req.body.email;
   //create a patient with the above details and add them to database
+  let user = new User({
+    code: code,
+    trustedUser: trustedUser,
+    doctorAssigned: doctorAssigned,
+    name: name,
+    gender: gender,
+    contact: contact,
+    email: email
+  })
+  user.save()
+     .then(doc => {
+       console.log(doc)
+     })
+     .catch(err => {
+       console.error(err)
+     })
 }
 
 const viewLogin = (req, res) => {
@@ -70,20 +86,24 @@ const login = (req, res) => {
   });
 }
 
-const updatePatient = (req, res) => {
+const viewupdatePatient = (req, res) => {
   const code = req.body.Code;
   User.findOne({code: code}, (err, doc) => {
     if (err) {
       throw err;
     }
     if (doc) {
-      // console.log(doc);
-      req.session.user = doc;
+      res.redirect('/staff/updatePatient');
+      //we need to pass the doc to /staff/updatePatient.
     } else {
       console.log('no such patient');
-      res.render('staff/updatPatient', {error:'No such patient'});
+      res.render('staff/index', {error:'No such patient'});
     }
   });
+}
+
+const updatePatient = (req,res) => {
+
   const trustedUser = req.body.trustedUser;
   const doctorAssigned = req.body.doctorAssigned;
   const name = req.body.name;
@@ -110,12 +130,40 @@ const deletePatient = (req, res) => {
   //delete the patient with the above reference code
 }
 
+const register = (req, res) => {
+  const name = req.body.name;
+  const contact = req.body.contact;
+  const password = req.body.password;
+  const role = req.body.role;
+  const user = new User({
+    // email: email,
+    name: name,
+    contact: contact,
+    password: password,
+    role: role
+  });
+  user.save((err, doc) => {
+    if (err) {
+      res.send('some error try again later');
+      throw err;
+    }
+    req.session.user = doc;
+    req.session.save((err) => {
+      if (err) {
+        throw err;
+      }
+      res.redirect('/staff');
+    });
+  })
+}
+
 module.exports = {
   index,
   viewRegisterStaff,
   createPatient,
   login,
   viewLogin,
-  updatePatient,
+  viewupdatePatient,
   deletePatient,
+  register
 }
