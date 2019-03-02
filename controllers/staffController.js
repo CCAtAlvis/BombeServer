@@ -14,50 +14,53 @@ const index = (req, res) => {
     };
 
     if (role === 'other-staff') {
-      Patient.find(condidions, (err, docs) => {
-        if (err) {
-          throw err;
-        }
+      // Patient.find(condidions, (err, docs) => {
+      //   if (err) {
+      //     throw err;
+      //   }
 
-        if (docs) {
-          console.log(docs);
-          res.render('staff/other/other', {patients: docs});
-        } else {
-          res.render('staff/other/other');
-        }
-      });
+      //   if (docs) {
+      //     console.log(docs);
+      //     res.render('staff/staff/other', {patients: docs});
+      //   } else {
+      //     res.render('staff/staff/other');
+      //   }
+      // });
+      res.redirect('/staff/other/clipboard');
     } else {
       if (role === 'doctor') {
-        console.log('todo: doctor');
-        condidions.doctor = req.session.user.contact;
+        // console.log('todo: doctor');
+        // condidions.doctor = req.session.user.contact;
 
-        Patient.find(condidions, (err, docs) => {
-          if (err) {
-            throw err;
-          }
+        // Patient.find(condidions, (err, docs) => {
+        //   if (err) {
+        //     throw err;
+        //   }
   
-          if (docs) {
-            console.log(docs);
-            res.render('staff/doctor/doctor', {patients: docs});
-          } else {
-            res.render('staff/doctor/doctor');
-          }
-        });
+        //   if (docs) {
+        //     console.log(docs);
+        //     res.render('staff/doctor/doctor', {patients: docs});
+        //   } else {
+        //     res.render('staff/doctor/doctor');
+        //   }
+        // });
+        res.redirect('/staff/doctor/clipboard');
       } else if (role === 'nurse') {
-        console.log('todo: nurse');
+        // console.log('todo: nurse');
 
-        Patient.find(condidions, (err, docs) => {
-          if (err) {
-            throw err;
-          }
+        // Patient.find(condidions, (err, docs) => {
+        //   if (err) {
+        //     throw err;
+        //   }
   
-          if (docs) {
-            console.log(docs);
-            res.render('staff/nurse/nurse', {patients: docs});
-          } else {
-            res.render('staff/nurse/nurse');
-          }
-        });
+        //   if (docs) {
+        //     console.log(docs);
+        //     res.render('staff/nurse/nurse', {patients: docs});
+        //   } else {
+        //     res.render('staff/nurse/nurse');
+        //   }
+        // });
+        res.redirect('/staff/nurse/clipboard');
       } else {
         res.redirect('/', { error: 'Unauth Access!' });
       }
@@ -351,9 +354,9 @@ const viewOtherClipboard = (req, res) => {
 
     if (docs) {
       console.log(docs);
-      res.render('staff/other/other', {patients: docs});
+      res.render('staff/staff/other', {patients: docs});
     } else {
-      res.render('staff/other/other');
+      res.render('staff/staff/other');
     }
   });
 }
@@ -370,9 +373,9 @@ const viewOtherPatientDetails = (req, res) => {
 
     if (docs) {
       console.log(docs);
-      res.render('staff/other/other', {patients: docs});
+      res.render('staff/staff/other', {patients: docs});
     } else {
-      res.render('staff/other/other');
+      res.render('staff/staff/other');
     }
   });
 }
