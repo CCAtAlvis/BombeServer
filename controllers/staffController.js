@@ -36,7 +36,7 @@ const index = (req, res) => {
         //   if (err) {
         //     throw err;
         //   }
-  
+
         //   if (docs) {
         //     console.log(docs);
         //     res.render('staff/doctor/doctor', {patients: docs});
@@ -52,7 +52,7 @@ const index = (req, res) => {
         //   if (err) {
         //     throw err;
         //   }
-  
+
         //   if (docs) {
         //     console.log(docs);
         //     res.render('staff/nurse/nurse', {patients: docs});
@@ -109,7 +109,7 @@ const register = (req, res) => {
 
       res.redirect('/staff');
     });
-  }); 
+  });
 }
 
 const viewLogin = (req, res) => {
@@ -135,7 +135,7 @@ const login = (req, res) => {
 
     if (doc) {
       // console.log(doc);
-      if(doc.password === password) {
+      if (doc.password === password) {
         req.session.user = doc;
         req.session.save((err) => {
           if (err) {
@@ -146,11 +146,11 @@ const login = (req, res) => {
 
       } else {
         console.log('Contact Number or password incorrect');
-        res.render('staff/login', {error:'Contact Number or password incorrect'});
+        res.render('staff/login', { error: 'Contact Number or password incorrect' });
       }
     } else {
       console.log('no such staff');
-      res.render('staff/login', {error:'No such staff'});
+      res.render('staff/login', { error: 'No such staff' });
     }
   });
 }
@@ -168,6 +168,132 @@ const logout = (req, res) => {
 
 
 
+
+
+const doctorClipboard = (req, res) => { }
+const viewDoctorClipboard = (req, res) => {
+  const condidions = {
+    hospCode: req.session.user.hospCode,
+    doctor: req.session.user.contact
+  };
+
+  Patient.find(condidions, (err, docs) => {
+    if (err) {
+      throw err;
+    }
+
+    if (docs) {
+      console.log(docs);
+      res.render('staff/doctor/doctor', { patients: docs });
+    } else {
+      res.render('staff/doctor/doctor');
+    }
+  });
+}
+const doctorPatientDetails = (req, res) => { }
+const viewDoctorPatientDetails = (req, res) => {
+  const condidions = {
+    hospCode: req.session.user.hospCode,
+    doctor: req.session.user.contact
+  };
+
+  Patient.find(condidions, (err, docs) => {
+    if (err) {
+      throw err;
+    }
+
+    if (docs) {
+      console.log(docs);
+      res.render('staff/doctor/doctor', { patients: docs });
+    } else {
+      res.render('staff/doctor/doctor');
+    }
+  });
+}
+
+
+const nurseClipboard = (req, res) => { }
+const viewNurseClipboard = (req, res) => {
+  const condidions = {
+    hospCode: req.session.user.hospCode,
+  };
+
+  Patient.find(condidions, (err, docs) => {
+    if (err) {
+      throw err;
+    }
+
+    if (docs) {
+      console.log(docs);
+      res.render('staff/nurse/nurse', { patients: docs });
+    } else {
+      res.render('staff/nurse/nurse');
+    }
+  });
+}
+const nursePatientDetails = (req, res) => { }
+const viewNursePatientDetails = (req, res) => {
+  const condidions = {
+    hospCode: req.session.user.hospCode,
+  };
+
+  Patient.find(condidions, (err, docs) => {
+    if (err) {
+      throw err;
+    }
+
+    if (docs) {
+      console.log(docs);
+      res.render('staff/nurse/nurse', { patients: docs });
+    } else {
+      res.render('staff/nurse/nurse');
+    }
+  });
+}
+
+
+const otherClipboard = (req, res) => { }
+const viewOtherClipboard = (req, res) => {
+  const condidions = {
+    hospCode: req.session.user.hospCode,
+  };
+
+  Patient.find(condidions, (err, docs) => {
+    if (err) {
+      throw err;
+    }
+
+    if (docs) {
+      console.log(docs);
+      res.render('staff/staff/other', { patients: docs });
+    } else {
+      res.render('staff/staff/other');
+    }
+  });
+}
+const otherPatientDetails = (req, res) => { }
+const viewOtherPatientDetails = (req, res) => {
+  const condidions = {
+    hospCode: req.session.user.hospCode,
+  };
+
+  Patient.find(condidions, (err, docs) => {
+    if (err) {
+      throw err;
+    }
+
+    if (docs) {
+      console.log(docs);
+      res.render('staff/staff/other', { patients: docs });
+    } else {
+      res.render('staff/staff/other');
+    }
+  });
+}
+
+const viewCreatePatient = (req, res) => {
+  res.render('staff/other/create');
+}
 
 const createPatient = (req, res) => {
   const hospCode = req.session.user.hospCode;
@@ -201,23 +327,23 @@ const createPatient = (req, res) => {
     })
 }
 
-const viewupdatePatient = (req, res) => {
+const viewUpdatePatient = (req, res) => {
   const code = req.body.Code;
-  User.findOne({code: code}, (err, doc) => {
+  User.findOne({ code: code }, (err, doc) => {
     if (err) {
       throw err;
     }
     if (doc) {
-      res.render('staff/updatePatient',{patient:doc});
+      res.render('staff/updatePatient', { patient: doc });
       //we need to pass the doc to /staff/updatePatient.
     } else {
       console.log('no such patient');
-      res.render('staff/updatePatient', {error:'No such patient'});
+      res.render('staff/updatePatient', { error: 'No such patient' });
     }
   });
 }
 
-const updatePatient = (req,res) => {
+const updatePatient = (req, res) => {
   const trustedUser = req.body.trustedUser;
   const doctorAssigned = req.body.doctorAssigned;
   const name = req.body.name;
@@ -237,7 +363,7 @@ const updatePatient = (req,res) => {
 
 const deletePatient = (req, res) => {
   const code = req.body.Code;
-  User.findOne({code: code}, (err, doc) => {
+  User.findOne({ code: code }, (err, doc) => {
     if (err) {
       throw err;
     }
@@ -246,141 +372,11 @@ const deletePatient = (req, res) => {
       req.session.user = doc;
     } else {
       console.log('no such patient');
-      res.render('staff/updatPatient', {error:'No such patient'});
+      res.render('staff/updatPatient', { error: 'No such patient' });
     }
   });
   //soft delete the patient with the above reference code
 }
-
-
-
-
-
-
-
-
-const doctorClipboard = (req, res) => {}
-const viewDoctorClipboard = (req, res) => {
-  const condidions = {
-    hospCode: req.session.user.hospCode,
-    doctor: req.session.user.contact
-  };
-
-  Patient.find(condidions, (err, docs) => {
-    if (err) {
-      throw err;
-    }
-
-    if (docs) {
-      console.log(docs);
-      res.render('staff/doctor/doctor', {patients: docs});
-    } else {
-      res.render('staff/doctor/doctor');
-    }
-  });
-}
-const doctorPatientDetails = (req, res) => {}
-const viewDoctorPatientDetails = (req, res) => {
-  const condidions = {
-    hospCode: req.session.user.hospCode,
-    doctor: req.session.user.contact
-  };
-
-  Patient.find(condidions, (err, docs) => {
-    if (err) {
-      throw err;
-    }
-
-    if (docs) {
-      console.log(docs);
-      res.render('staff/doctor/doctor', {patients: docs});
-    } else {
-      res.render('staff/doctor/doctor');
-    }
-  });
-}
-
-
-const nurseClipboard = (req, res) => {}
-const viewNurseClipboard = (req, res) => {
-  const condidions = {
-    hospCode: req.session.user.hospCode,
-  };
-
-  Patient.find(condidions, (err, docs) => {
-    if (err) {
-      throw err;
-    }
-
-    if (docs) {
-      console.log(docs);
-      res.render('staff/nurse/nurse', {patients: docs});
-    } else {
-      res.render('staff/nurse/nurse');
-    }
-  });
-}
-const nursePatientDetails = (req, res) => {}
-const viewNursePatientDetails = (req, res) => {
-  const condidions = {
-    hospCode: req.session.user.hospCode,
-  };
-
-  Patient.find(condidions, (err, docs) => {
-    if (err) {
-      throw err;
-    }
-
-    if (docs) {
-      console.log(docs);
-      res.render('staff/nurse/nurse', {patients: docs});
-    } else {
-      res.render('staff/nurse/nurse');
-    }
-  });
-}
-
-
-const otherClipboard = (req, res) => {}
-const viewOtherClipboard = (req, res) => {
-  const condidions = {
-    hospCode: req.session.user.hospCode,
-  };
-
-  Patient.find(condidions, (err, docs) => {
-    if (err) {
-      throw err;
-    }
-
-    if (docs) {
-      console.log(docs);
-      res.render('staff/staff/other', {patients: docs});
-    } else {
-      res.render('staff/staff/other');
-    }
-  });
-}
-const otherPatientDetails = (req, res) => {}
-const viewOtherPatientDetails = (req, res) => {
-  const condidions = {
-    hospCode: req.session.user.hospCode,
-  };
-
-  Patient.find(condidions, (err, docs) => {
-    if (err) {
-      throw err;
-    }
-
-    if (docs) {
-      console.log(docs);
-      res.render('staff/staff/other', {patients: docs});
-    } else {
-      res.render('staff/staff/other');
-    }
-  });
-}
-
-
 
 
 
@@ -396,11 +392,6 @@ module.exports = {
   login,
   viewLogin,
   logout,
-  createPatient,
-  viewupdatePatient,
-  updatePatient,
-  deletePatient,
-
 
   doctorClipboard,
   viewDoctorClipboard,
@@ -417,4 +408,10 @@ module.exports = {
   viewOtherClipboard,
   otherPatientDetails,
   viewOtherPatientDetails,
+
+  viewCreatePatient,
+  createPatient,
+  viewUpdatePatient,
+  updatePatient,
+  deletePatient,
 }
