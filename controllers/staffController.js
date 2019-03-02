@@ -27,9 +27,9 @@ const index = (req, res) => {
       });
     } else {
       if (role === 'doctor') {
-
+        res.send('todo: doctor');
       } else if (role === 'nurse') {
-      
+        res.send('todo: nurse');
       } else {
         res.redirect('/', { error: 'Unauth Access!' });
       }
@@ -51,18 +51,20 @@ const viewRegisterStaff = (req, res) => {
 }
 
 const register = (req, res) => {
+  const email = req.body.email;
   const name = req.body.name;
   const contact = req.body.contact;
-  const email = req.body.email;
-  //create a patient with the above details and add them to database
-  let patient = new Patient({
-    refCode: code,
-    trustedUser: {userContact: trustedUser},
-    doctor: doctorAssigned,
+  const password = req.body.password;
+  const hospCode = req.body.hospCode;
+  const role = req.body.role;
+
+  const user = new User({
+    email: email,
     name: name,
     contact: contact,
     password: password,
     role: role,
+    hospCode: hospCode,
     verified: true
   });
 
@@ -76,7 +78,7 @@ const register = (req, res) => {
       if (err) {
         throw err;
       }
-      //user has registered so now he will verify account
+
       res.redirect('/staff');
     });
   }); 
@@ -148,18 +150,20 @@ const createPatient = (req, res) => {
   const email = req.body.email;
 
   //create a patient with the above details and add them to database
-  let user = new User({
-    code: code,
-    trustedUser: trustedUser,
-    doctorAssigned: doctorAssigned,
+  let patient = new Patient({
+    refCode: code,
+    trustedUser: {userContact: trustedUser},
+    doctor: doctorAssigned,
     name: name,
-    gender: gender,
     contact: contact,
+    gender: gender,
     email: email
-  })
-  user.save()
+  });
+
+  patient.save()
     .then(doc => {
       console.log(doc)
+      res.redirect('/staff');
     })
     .catch(err => {
       console.error(err)
