@@ -13,6 +13,10 @@ const patientSchema = new mongoose.Schema({
     minlength: 10,
     maxlength: 10
   },
+  hospCode: {
+    type: String,
+    required: true
+  },
   email: {
     type: String,
   },
