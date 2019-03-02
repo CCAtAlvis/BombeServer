@@ -21,13 +21,17 @@ const index = (req, res) => {
     res.redirect('/users/verify');
   } else if(!(typeof req.session.user === 'undefined') && req.session.user.verified ) {
     //user is registered/loggedIn and is verified
-    let contact = req.session.user.contact;
-    Patient.find({trustedUser: contact}, (err, docs) => {
+    const contact = req.session.user.contact;
+    Patient.find({
+      $or: [{trustedUser: contact},
+         {'users.userContact': contact, 'users.permission': true}]
+    }, (err, docs) => {
       if (err) {
         throw err;
       }
+
       if (docs) {
-        console.log(docs);
+        // console.log(docs);
         res.render('users/index',{userPatients:docs});
       } else {
         res.render('users/index');
@@ -161,7 +165,22 @@ const logout = (req, res) => {
 
 // /users/connect
 const viewConnect = (req, res) => {
-  res.render('users/connect');
+  const contact = req.session.user.contact;
+  Patient.find({
+    $or: [{trustedUser: contact},
+       {'users.userContact': contact, 'users.permission': true}]
+  }, (err, docs) => {
+    if (err) {
+      throw err;
+    }
+
+    if (docs) {
+      // console.log(docs);
+      res.render('users/connect',{userPatients:docs});
+    } else {
+      res.render('users/connect');
+    }
+  });
 }
 
 const connect = (req, res) => {
@@ -171,7 +190,19 @@ const connect = (req, res) => {
 
 // /users/requests
 const viewRequests = (req, res) => {
-  res.render('users/requests');
+  const contact = req.session.user.contact;
+  Patient.find({'users.userContact': contact, 'users.permission': false}, (err, docs) => {
+    if (err) {
+      throw err;
+    }
+
+    if (docs) {
+      // console.log(docs);
+      res.render('users/requests',{userPatients:docs});
+    } else {
+      res.render('users/requests');
+    }
+  });
 }
 
 const requests = (req, res) => {
@@ -181,7 +212,19 @@ const requests = (req, res) => {
 
 // /users/permissions
 const viewPermissions = (req, res) => {
-  res.render('users/permissions');
+  const contact = req.session.user.contact;
+  Patient.find({trustedUser: contact}, (err, docs) => {
+    if (err) {
+      throw err;
+    }
+
+    if (docs) {
+      // console.log(docs);
+      res.render('users/permissions',{userPatients:docs});
+    } else {
+      res.render('users/permissions');
+    }
+  });
 }
 
 const permissions = (req, res) => {
