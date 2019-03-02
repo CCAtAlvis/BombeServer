@@ -71,6 +71,10 @@ const patientSchema = new mongoose.Schema({
   visitCeil: {
     type: Number,
     default: 20,
+  },
+  deleted: {
+    type: Boolean,
+    default: false
   }
 }, {
   timestamps: true
