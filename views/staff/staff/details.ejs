@@ -110,8 +110,7 @@
                                 <input name="trusteduser" id="trusteduser" type="text" class="form-control <%=p._id%>" value="<%=p.trustedUser%>" disabled>
                             </div>                
                             <div id="EditButton">
-                                <label for=""></label>
-                                <button id="edit" onclick="return handleEdit()" class="btn btn-outline-primary" style="display: block;margin: auto;">Edit</button>
+                                <button id="edit" data-id="<%=p._id%>" onclick="return handleEdit()" class="btn btn-outline-primary" style="display: block;margin: auto;">Edit</button>
                             </div>
                             <div id="SaveButton">
                                 <button id="save" hidden onclick="return handleSave(event,this)" data-id="<%=p._id%>" class="btn btn-outline-primary" style="display: block;margin: auto;">Save</button>
