@@ -13,13 +13,14 @@ const addRefCode = (req, res) => {
     }
 
     if (doc) {
-      console.log(doc);
+      // console.log(doc);
       // add this user to
       let flag = true;
       for (let i = 0; i < doc.users.length; i++) {
         const element = doc.users[i];
+        console.log(element);
 
-        if (element.contact.toString() === contact.toString()) {
+        if (element.userContact === contact) {
           flag = false;
           break;
         }
@@ -28,21 +29,22 @@ const addRefCode = (req, res) => {
       if (flag) {
         console.log('adding user to users');
         const update = {
-          users: {
-            userContact: contact,
-            name: name,
-            permission: false
-          }
-        }
+          userContact: contact,
+          name: name,
+          permission: false
+        };
 
-        Patient.findByIdAndUpdate({ _id: doc._id }, update, { upsert: true }, (err, doc) => {
+        Patient.findByIdAndUpdate({ _id: doc._id }, {$push: {users: update}}, { upsert: true }, (err, doc) => {
           if (err) {
             throw err;
           }
 
-          console.log(doc);
-          res.send('you will be able to connect to the patient soon');
+          // console.log(doc);
+          // res.send('you will be able to connect to the patient soon');
+          res.redirect('/users/requests');
         });
+      } else {
+        res.redirect('/users/requests');
       }
 
     } else {

@@ -61,6 +61,101 @@ const register = (req, res) => {
 }
 
 
+// /getRelatives
+const getRelatives = (req, res) => {
+  const contact = req.body.contact;
+
+  Patient.find({
+    $or: [{trustedUser: contact},
+       {'users.userContact': contact, 'users.permission': true}]
+  }, (err, docs) => {
+    if (err) {
+      console.log(err);
+      sendJSON('error', 'some error try again later', 'some error try again later', res);
+    }
+
+    sendJSON('success', '...', docs, res);
+  });
+}
+
+// /getPermissions
+const getPermissions = (req, res) => {
+  const contact = req.body.contact;
+  Patient.find({trustedUser: contact}, (err, docs) => {
+    if (err) {
+      console.log(err);
+      sendJSON('error', 'some error try again later', 'some error try again later', res);
+    }
+
+    sendJSON('success', '...', docs, res);
+  });
+}
+
+
+// /getPatientsForStaff
+const getPatientsForStaff = (req, res) => {
+  let condidions = {
+    hospCode: req.body.hospCode,
+    deleted: false
+  };
+
+  Patient.find(condidions, (err, docs) => {
+    if (err) {
+      console.log(err);
+      sendJSON('error', 'some error try again later', 'some error try again later', res);
+    }
+
+    sendJSON('success', '...', docs, res);
+  });
+}
+
+const deletePatient = (req, res) => {
+  const _id = req.body._id;
+  Patient.findByIdAndUpdate({ _id: _id }, {$set: {deleted: true}}, {
+    upsert: true,
+    new: true,
+}, (err, doc) => {
+    if (err) {
+      console.log(err);
+      sendJSON('error', 'some error try again later', 'some error try again later', res);
+    }
+
+    sendJSON('success', '...', doc, res);
+  });
+  //soft delete the patient with the above reference code
+}
+
+const allow = (req, res) => {
+  const _id = req.body._id;
+  Patient.findByIdAndUpdate({ _id: _id }, {$set: {pubStream: true}}, {
+    upsert: true,
+    new: true,
+}, (err, doc) => {
+    if (err) {
+      console.log(err);
+      sendJSON('error', 'some error try again later', 'some error try again later', res);
+    }
+
+    sendJSON('success', '...', doc, res);
+  });
+}
+
+const deny = (req, res) => {
+  const _id = req.body._id;
+  Patient.findByIdAndUpdate({ _id: _id }, {$set: {pubStream: false}}, {
+    upsert: true,
+    new: true,
+}, (err, doc) => {
+    if (err) {
+      console.log(err);
+      sendJSON('error', 'some error try again later', 'some error try again later', res);
+    }
+
+    sendJSON('success', '...', doc, res);
+  });
+}
+
+
 const test = (req, res) => {
   const body = req.body;
   const query = req.query;
@@ -82,5 +177,11 @@ const test = (req, res) => {
 module.exports = {
   login,
   register,
+  getPatientsForStaff,
+  getPermissions,
+  getRelatives,
+  deletePatient,
+  allow,
+  deny,
   test
 }

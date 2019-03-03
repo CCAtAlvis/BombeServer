@@ -32,4 +32,7 @@ router.get('/other/update', staffController.viewUpdatePatient);
 router.post('/other/update', staffController.updatePatient);
 router.post('/other/delete', staffController.deletePatient);
 
+router.post('/allow', staffController.allow);
+router.post('/deny', staffController.deny);
+
 module.exports = router;

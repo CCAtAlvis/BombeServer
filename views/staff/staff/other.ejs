@@ -13,7 +13,6 @@
                     for(let i=0; i<patients.length; i++){
                       let p = patients[i];  
                       let check = p.pubStream ? 'checked': '';
-                      console.log(check);
                   %>
                   <!-- <script>
                       $('#access').prop('checked',p.pubStream).change()
@@ -32,7 +31,7 @@
                   <form method="POST">
                     <input type="hidden" name="_id" value="<%= p._id%>">
                     <button formaction="/staff/allow" class="btn btn-primary">Allow</button>
-                    <button formaction="/staff/disallow" class="btn btn-danger">Deny</button>
+                    <button formaction="/staff/deny" class="btn btn-danger">Deny</button>
                   </form>
                 </div>
               </div>
