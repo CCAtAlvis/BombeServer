@@ -15,6 +15,10 @@
                 let p = userPatients[i];
           %>
             <p><%= p%> - </p>
+            <form method="POST" action="/users/chat">
+              <input type="hidden" name="to" value="<%= p.refCode%>">
+              <input type="submit" value="Chat">
+            </form>
           <% }
           } %>
 
