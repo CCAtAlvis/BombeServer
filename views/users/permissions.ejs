@@ -6,7 +6,7 @@
 
         <%- include('../layout/userSidebar'); -%>
         
-        <div class="col-md-10 ">
+        <div class="col-md-12 ">
           <div class="row mx-5 my-5">
 
             <div id="accordion" class="mx-4 my-4">
@@ -18,7 +18,7 @@
                   %>
 
 
-            <div class="col-md-10">
+            <div class="col-md-1">
             <div class="card">
               <div class="card-header">
                 <a class="card-link" data-toggle="collapse" href="#id<%= p.refCode%>">
@@ -33,7 +33,7 @@
                       let u = p.users[i];
                       console.log(u)
                       %>
-                      <div class="col-7 mb-5">
+                      <div class="col-10 mb-5">
                         <div class="card">
                           <div class="card-body">
                             <h5 class="card-title"><%= u.name%></h5>
