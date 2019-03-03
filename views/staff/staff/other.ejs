@@ -14,15 +14,13 @@
                       let p = patients[i];  
                       let check = p.pubStream ? 'checked': '';
                   %>
-                  <!-- <script>
-                      $('#access').prop('checked',p.pubStream).change()
-                     </script> -->
+
             <div class="col-4 mb-5">
               <div class="card text-center">
                 <div class="card-body">
                   <h5 class="card-title"><%= p.name%></h5>
                   <h6 class="card-subtitle"><%= p.refCode%></h6>
-                  <p class="card-text"><%= p.visitCeil%>-<%= p.visitFloor%>
+                  <p class="card-text">Visiting Hours :<%= p.visitFloor%>:00hrs-<%= p.visitCeil%>:00hrs
                   </p>
                   <input type="checkbox" disabled <%= check%>  id="access" data-toggle="toggle" data-on="Access Granted" data-off="Access Denied"
                   data-onstyle="success" data-offstyle="danger">
