@@ -5,6 +5,7 @@ const patientController = require('../controllers/actionController');
 
 router.post('/addRefCode', actionController.addRefCode);
 
+router.post('/post', actionController.post);
 
 
 module.exports = router;
