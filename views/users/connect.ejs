@@ -6,27 +6,59 @@
       <div class="row">
 
         <%- include('../layout/userSidebar'); -%>
-        
+
         <div class="col-md-10 " id="target">
           <div class="row mx-5 my-5">
 
-          <% if (typeof userPatients !== 'undefined') {
+            <% if (typeof userPatients !== 'undefined') {
               for(let i=0; i<userPatients.length; i++) {
                 let p = userPatients[i];
           %>
-            <p><%= p%> - </p>
-          <% }
+
+            <div class="col-4 mb-5">
+              <div class="card text-center">
+                <div class="card-body">
+                  <h5 class="card-title"><%= p.name%></h5>
+                  <h6 class="card-subtitle"><%= p.refCode%></h6>
+                  <p class="card-text"><%=p.visitCeil%>-<%=p.visitFloor%></p>
+                  <a href="#" class="btn btn-primary">Live Stream</a>
+                  <a href="#" class="btn btn-primary">Video Call</a>
+                </div>
+              </div>
+            </div>
+
+            <% }
           } %>
-
-        <div class="addRefCode">
-          <form action="/action/addRefCode" method="POST">
-            <input type="text" name="refCode" id="refCode">
-            <input type="submit" value="Connect">
-          </form>
         </div>
-    </div>
+        <div class="row">
+          <div class="col-6 justify-content-center offset-md-3">
+                  <div class = "card text-center">
+                      <div class="card-body">
+                          <form action="/action/addRefCode" method="POST">
+                              <div class="form-group" id="refIDinput">
+                              <input name="refCode" id="refCode" type = "text" class = "form-control" placeholder="Refernence ID of the Paitent">
+                              </div>   
+                              <div class="form+group" id="add">
+                                  <button type="submit" value="Connect" class= "btn btn-primary">Connect</button>
+  
+                              </div>
+                          </form>
+                      </div>
+                  </div>
+          </div>
   </div>
+          <!--
+            <div class="addRefCode">
+              <form action="/action/addRefCode" method="POST">
+                <input type="text" name="refCode" id="refCode">
+                <input type="submit" value="Connect">
+              </form>
+            </div>
+          -->
 
+
+        </div>
+  </section>
 </body>
 
 </html>
