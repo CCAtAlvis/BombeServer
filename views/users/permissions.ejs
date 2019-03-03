@@ -1,6 +1,107 @@
+<%- include('../layout/head'); -%>
+
+<body>
+  <section>
+    <div class="container-fluid">
+      <div class="row">
+
+        <%- include('../layout/userSidebar'); -%>
+
+        <div class="col-md-10 " id="target">
+          <div class="row mx-5 my-5">
+
+            <div class="col-md-10 ">
+
+              <div id="accordion" class="mx-4 my-4">
+
+                <% if(typeof patients !== 'undefined'){
+                      for(let i=0; i<patients.length; i++){
+                        let p = patients[i];
+                        if(p.users.length>0){
+                        %>
+                <div class="card">
+                  <div class="card-header">
+                    <a style="float: left;" class="collapsed card-link" data-toggle="collapse"
+                      href="#id<%= p.refCode%>">
+                      <h4><%=p.name%></h4>
+                    </a>
+
+                  </div>
+                  <div id="id<%= p.refCode%>" class="collapse show" data-parent="#accordion">
+                    <div class="card-body">
+                      <%
+                      for(let j=0;j<p.users.length; j++){
+                        let u = p.users[i];
+                        let check = u.permission ? 'checked' : '';
+                        %>
+                        <table align="center" class=" justify-content-center col- 7table table-striped">
+                          <tr>
+                            <th>Requesting User : <%= u.name%></th>
+                            <td><input type="checkbox" disabled <%= check%> data-size="normal"  id="access" data-toggle="toggle" data-on="Access Granted" data-off="Access Denied"
+                              data-onstyle="success" data-offstyle="danger"></td>
+                            <td>
+                                <form method="POST">
+                                <input type="hidden" name="_id" value="<%= p._id%>">
+                                <button formaction="/staff/allow" class="btn btn-primary">Allow</button>
+                              </form></td>
+                            <td>
+                                <form method="POST">
+                                    <input type="hidden" name="_id" value="<%= p._id%>">
+                                    <button formaction="/staff/deny" class="btn btn-danger">Deny</button>
+                                  </form>
+                            </td>
+                          </tr>
+                        </table>
+                        <!--
+                        <div class="col-10 mb-1">
+                            <div class="card text-center">
+                              <div class="card-body">
+                                <div class="row">
+                                <div class ="col-5 justify-content-center">
+                                <h5 class="card-title">Requesting User : <%= u.name%></h5>
+                              </div>
+                              <div class="col-5 justify-content-right">
+                                <input type="checkbox" disabled <%= check%> data-size="normal"  id="access" data-toggle="toggle" data-on="Access Granted" data-off="Access Denied"
+                                data-onstyle="success" data-offstyle="danger">
+                                <br><br>
+                                <form method="POST">
+                                  <input type="hidden" name="_id" value="<%= p._id%>">
+                                  <button formaction="/staff/allow" class="btn btn-primary">Allow</button>
+                                  <button formaction="/staff/deny" class="btn btn-danger">Deny</button>
+                                </form>
+                              </div>
+                            </div>
+                              </div>
+                            </div>
+                          </div>
+                        -->
+
+                      <%
+                      }
+                      %>
+                    </div>
+                  </div>
+                </div>
+                <br>
+                <%    
+                    }
+                  }
+                }
+                %>
+              </div>
+            </div>
 
 
+          </div>
+        </div>
 
+      </div>
+    </div>
+  </section>
+
+</body>
+
+</html>
 <!--
 <%- include('../layout/head'); -%>
 

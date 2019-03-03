@@ -20,7 +20,8 @@
                 <div class="card-body">
                   <h5 class="card-title"><%= p.name%></h5>
                   <h6 class="card-subtitle"><%= p.refCode%></h6>
-                  <p class="card-text"><%=p.visitCeil%>-<%=p.visitFloor%></p>
+                  <p class="card-text">Visiting Hours :<%= p.visitCeil%>:00hrs-<%= p.visitFloor%>:00hrs
+                  </p>
                   <a href="#" class="btn btn-primary">Live Stream</a>
                   <a href="#" class="btn btn-primary">Video Call</a>
                   <input type="checkbox" disabled <%= check%>  id="access" data-toggle="toggle" data-on="Access Granted" data-off="Access Denied"
@@ -30,7 +31,7 @@
                   <form method="POST">
                     <input type="hidden" name="_id" value="<%= p._id%>">
                     <button formaction="/staff/allow" class="btn btn-primary">Allow</button>
-                    <button formaction="/staff/disallow" class="btn btn-danger">Deny</button>
+                    <button formaction="/staff/deny" class="btn btn-danger">Deny</button>
                   </form>
                 </div>
               </div>
