@@ -3,7 +3,11 @@
 const wsHost = 'wss://bombe.westindia.cloudapp.azure.com:8443/ws/';
 let wsChannel = 'echo/chetan';
 let wsUri = wsHost + wsChannel;
+<<<<<<< HEAD
 // let patID = 'Pchetan123456';
+=======
+//let patID = 'Pchetan123456';
+>>>>>>> 73275448febf761ae98d94967f866ec842274f6a
 const websocket = new WebSocket(wsUri);
 const mediaPermission = { audio: true, video: true };
 const offerOptions = {
@@ -29,8 +33,6 @@ let configuration = {
     },
   ]
 };
-var connections = [];
-var clients = [];
 const localVideo = document.getElementById('localVideo');
 let localStream;
 init();
@@ -42,6 +44,7 @@ websocket.addEventListener('close', e => onClose(e));
 websocket.addEventListener('error', e => onError(e));
 websocket.addEventListener('message', e => onMessage(e));
 function onOpen(evt) {
+<<<<<<< HEAD
   let msg = {
     type: 'new-connection',
     name: 'patient',
@@ -49,6 +52,14 @@ function onOpen(evt) {
   };
   websocket.send(JSON.stringify(msg));
   console.log('CONNECTED to WS: msg sent: ', msg);
+=======
+    let msg = {
+        type: 'new-connection',
+        id: patID
+    };
+    websocket.send(JSON.stringify(msg));
+    console.log('CONNECTED to WS: msg sent: ',msg);
+>>>>>>> 73275448febf761ae98d94967f866ec842274f6a
 }
 function onClose(evt) {
   console.log('DISCONNECTED from WS');
@@ -57,6 +68,7 @@ function onError(evt) {
   console.log('ERROR from WS: ' + evt.data);
 }
 function onMessage(evt) {
+<<<<<<< HEAD
   let message = JSON.parse(evt.data);
   console.log('Patient got a ', message.type, ' from ', message.name);
   if (message.type == 'offer' && (message.name == 'client' || message.name == 'patient')) {
@@ -77,6 +89,24 @@ function onMessage(evt) {
   } else {
     console.log('else wala ^^^ BAD   U MISSED SOMETHING');
   }
+=======
+    let message = JSON.parse(evt.data);
+    console.log('Patient got a ',message.type);
+    if (message.type == 'offer') {
+        //onGetOffer(message.offer, message.name); //patient ignores offers from clients and patients
+        console.log('^^^ BAD');
+    } else if (message.type == 'answer') {
+        onGetAnswer(message.answer,message.from);
+    } else if (message.type == 'icecandi') {
+        onGetIceCandi(message.candidate,message.from);
+    } else if (message.type == 'icecandi'){
+      console.log('^^^ BAD');
+    } else if (message.type == 'requeststream') {
+        onRequest(message.from);
+    } else {
+      console.log('else wala ^^^ BAD   U MISSED SOMETHING');
+    }
+>>>>>>> 73275448febf761ae98d94967f866ec842274f6a
 }
 //-----------------------------------------------------------------END OF HANDLING WEBSOCKET EVENTS--------------------------------------------------------------------
 
@@ -120,6 +150,7 @@ async function onRequest(clientID) { /* creates a variable localCOnn,adds it to 
   }
 }
 
+<<<<<<< HEAD
 async function onCreateOfferSuccess(desc, clientID) {
   try {
     let index = clients.reverse().indexOf(clientID);
@@ -174,6 +205,61 @@ async function onGetIceCandi(candi, name, clientID) {
     (connections[index]).addIceCandidate(candi);
     console.log('connections[', index, '] GOT ICE-candi and added it');
   }
+=======
+async function onCreateOfferSuccess(desc,clientID) {
+    try {
+        let index = clients.reverse().indexOf(clientID);
+        console.log('connections[',index,'] successfully created an offer.');
+        await (connections[index]).setLocalDescription(new RTCSessionDescription(desc));
+        console.log('connections[',index,'] local desc was set to offer');
+        let message = {
+            type: 'offer',
+            //name: 'patient',
+            offer: desc,
+            to : clientID,
+            from : patID
+        };
+        websocket.send(JSON.stringify(message));
+        console.log('connections[',index,'] sent the offer to requesting person.');
+    } catch (e) {
+        onSetSessionDescriptionError(e);
+    }
+}
+
+async function onGetAnswer(answer,clientID) {
+    try {
+        let index = clients.reverse().indexOf(clientID);
+        await (connections[index]).setRemoteDescription(answer);
+        console.log('connections[',index,'] got an answer and set its remote desc to answer');
+    } catch (e) {
+        console.log("error: ", e);
+    }
+};
+
+async function onIceCandidate(event,clientID) {
+    try {
+        let message = {
+            type: 'icecandi',
+            //name: 'patient',
+            candidate: event.candidate,
+            to: clientID,
+            from : patID
+        };
+        websocket.send(JSON.stringify(message));
+    } catch (e) {
+        onAddIceCandidateError(pc, e);
+    }
+    let index = clients.reverse().indexOf(clientID);
+    console.log('connections[',index,'] sent ICE-candi to other person');
+}
+
+async function onGetIceCandi(candi,clientID) {
+    // if (candi !=null && name=='client') {
+        let index = clients.reverse().indexOf(clientID);
+        (connections[index]).addIceCandidate(candi);
+        console.log('connections[',index,'] GOT ICE-candi and added it');
+    
+>>>>>>> 73275448febf761ae98d94967f866ec842274f6a
 }
 
 function onCreateSessionDescriptionError(error) {
@@ -227,7 +313,7 @@ function onIceStateChange(localConn, event) {
 //     console.log(`${getName(pc)} addIceCandidate success`);
 // }
 // function onAddIceCandidateError(pc, error) {
-//     console.log(`${getName(pc)} failed to add ICE Candidate: ${error.toString()}`);
+//     console.log(`${getNames(pc)} failed to add ICE Candidate: ${error.toString()}`);
 // }
 // function gotRemoteStream(e) {
 //   console.log('HACKER MAN, M In');

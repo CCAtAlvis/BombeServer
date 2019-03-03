@@ -60,7 +60,7 @@ function onOpen(evt) {
   console.log('CONNECTED to WS');
   let message = {
     type: 'new-connection',
-    name: 'chatter',
+    //name: 'chatter',
     id: from
   }
   websocket.send(JSON.stringify(message));
@@ -77,13 +77,13 @@ function onError(evt) {
 
 function onMessage(evt) {
   let message = JSON.parse(evt.data);
-  console.log('localConn(', message.to, ') got a ', message.type, ' from ', message.name, '(', message.from, ')');
-  if (message.type == 'offer' && (message.name == 'offerer' || message.name == 'answerer')) {
-    onGetOffer(message.offer, message.name);
-  } else if (message.type == 'answer' && (message.name == 'offerer' || message.name == 'answerer')) {
-    onGetAnswer(message.answer, message.name);
-  } else if (message.type == 'icecandi' && (message.name == 'offerer' || message.name == 'answerer' || message.name == 'ICEmessenger')) {
-    onGetIceCandi(message.candidate, message.name);
+  console.log('localConn(', message.to, ') got a ', message.type, ' from (', message.from, ')');
+  if (message.type == 'offer') {
+    onGetOffer(message.offer);
+  } else if (message.type == 'answer') {
+    onGetAnswer(message.answer);
+  } else if (message.type == 'icecandi') {
+    onGetIceCandi(message.candidate);
   } else {
 
   }
@@ -132,7 +132,7 @@ async function onCreateOfferSuccess(desc) {
     console.log('Offerer set its localDesc to offer')
     let message = {
       type: 'offer',
-      name: 'offerer',
+      // name: 'offerer',
       offer: desc,
       // id: from,
       from: from,
@@ -145,7 +145,7 @@ async function onCreateOfferSuccess(desc) {
   }
 }
 
-async function onGetOffer(offer, name) {
+async function onGetOffer(offer) {
   try {
     await localConn.setRemoteDescription(new RTCSessionDescription(offer));
     console.log('Answerer created answer and setRemoteDesc to offer');
@@ -158,7 +158,7 @@ async function onGetOffer(offer, name) {
     console.log('Answerer setLocalDesc to answer')
     let message = {
       type: 'answer',
-      name: 'answerer',
+      // name: 'answerer',
       answer: answer,
       // id: from,
       from: from,
@@ -170,7 +170,7 @@ async function onGetOffer(offer, name) {
   }
 };
 
-async function onGetAnswer(answer, name) {
+async function onGetAnswer(answer) {
   try {
     await localConn.setRemoteDescription(answer);
     console.log('Offerer setRemoteDesc to answer');
@@ -183,7 +183,7 @@ async function onIceCandidate(pc, event) {
   try {
     let message = {
       type: 'icecandi',
-      name: 'ICEmessenger',
+      // name: 'ICEmessenger',
       candidate: event.candidate,
       // id: from,
       from: from,
@@ -196,7 +196,7 @@ async function onIceCandidate(pc, event) {
   console.log('localConn sent ICE-candi to other client');
 }
 
-async function onGetIceCandi(candi, name) {
+async function onGetIceCandi(candi) {
   localConn.addIceCandidate(candi);
   console.log('localConn recieved ICEcandi and added it.')
 }
