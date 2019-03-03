@@ -1,4 +1,5 @@
 const User = require('../models/User');
+const Patient = require('../models/Patient');
 
 const sendJSON = (status, message, data, res) => {
   let msg = {
