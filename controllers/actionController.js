@@ -19,7 +19,7 @@ const addRefCode = (req, res) => {
       for (let i = 0; i < doc.users.length; i++) {
         const element = doc.users[i];
 
-        if (element.contact.toString() === contact.toString()) {
+        if (element.contact === contact) {
           flag = false;
           break;
         }
@@ -40,8 +40,9 @@ const addRefCode = (req, res) => {
             throw err;
           }
 
-          console.log(doc);
-          res.send('you will be able to connect to the patient soon');
+          // console.log(doc);
+          // res.send('you will be able to connect to the patient soon');
+          res.redirect('/users/connect');
         });
       }
 
