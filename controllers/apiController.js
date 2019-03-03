@@ -109,10 +109,42 @@ const getPatientsForStaff = (req, res) => {
   });
 }
 
+const deletePatient = (req, res) => {
+  const _id = req.body._id;
+  User.findByIdAndUpdate({ _id: _id }, {deleted: true} , (err, doc) => {
+    if (err) {
+      console.log(err);
+      sendJSON('error', 'some error try again later', 'some error try again later', res);
+    }
 
+    sendJSON('success', '...', doc, res);
+  });
+  //soft delete the patient with the above reference code
+}
 
+const allow = (req, res) => {
+  const _id = req.body._id;
+  User.findByIdAndUpdate({ _id: _id }, {pubStream: true} , (err, doc) => {
+    if (err) {
+      console.log(err);
+      sendJSON('error', 'some error try again later', 'some error try again later', res);
+    }
 
+    sendJSON('success', '...', doc, res);
+  });
+}
 
+const deny = (req, res) => {
+  const _id = req.body._id;
+  User.findByIdAndUpdate({ _id: _id }, {pubStream: false} , (err, doc) => {
+    if (err) {
+      console.log(err);
+      sendJSON('error', 'some error try again later', 'some error try again later', res);
+    }
+
+    sendJSON('success', '...', doc, res);
+  });
+}
 
 
 const test = (req, res) => {
@@ -139,5 +171,8 @@ module.exports = {
   getPatientsForStaff,
   getPermissions,
   getRelatives,
+  deletePatient,
+  allow,
+  deny,
   test
 }

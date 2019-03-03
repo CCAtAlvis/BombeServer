@@ -13,13 +13,14 @@ const addRefCode = (req, res) => {
     }
 
     if (doc) {
-      console.log(doc);
+      // console.log(doc);
       // add this user to
       let flag = true;
       for (let i = 0; i < doc.users.length; i++) {
         const element = doc.users[i];
+        console.log(element);
 
-        if (element.contact === contact) {
+        if (element.userContact === contact) {
           flag = false;
           break;
         }
@@ -40,8 +41,10 @@ const addRefCode = (req, res) => {
 
           // console.log(doc);
           // res.send('you will be able to connect to the patient soon');
-          res.redirect('/users/connect');
+          res.redirect('/users/requests');
         });
+      } else {
+        res.redirect('/users/requests');
       }
 
     } else {

@@ -68,9 +68,14 @@
                         %>
                   <div class="card">
                     <div class="card-header">
-                      <a class="collapsed card-link" data-toggle="collapse" href="#id<%= p.refCode%>">
+                      <a style="float: left;" class="collapsed card-link" data-toggle="collapse" href="#id<%= p.refCode%>">
                         <%=p.name%>
                       </a>
+
+                      <form method="POST" action="/staff/other/delete">
+                        <input type="hiddent" name="_id" value="<%= p._id%>">
+                        <input style="float: right;" type="submit" class="btn btn-danger" value="Delete">
+                      </form>
                     </div>
                     <div id="id<%= p.refCode%>" class="collapse" data-parent="#accordion">
                       <div class="card-body">
@@ -121,6 +126,7 @@
                       </div>
                     </div>
                   </div>
+                  <br>
                   <%    
                   }
                 }

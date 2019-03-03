@@ -9,6 +9,11 @@ router.post('/getPatientsForStaff', apiController.getPatientsForStaff);
 router.post('/getPermissions', apiController.getPermissions);
 router.post('/getRelatives', apiController.getRelatives);
 
+router.post('/deletePatient', apiController.deletePatient);
+
+router.post('/allow', apiController.allow);
+router.post('/deny', apiController.deny);
+
 router.post('/test', apiController.test);
 
 module.exports = router;

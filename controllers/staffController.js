@@ -63,7 +63,7 @@ const index = (req, res) => {
         // });
         res.redirect('/staff/nurse/clipboard');
       } else {
-        res.redirect('/', { error: 'Unauth Access!' });
+        res.redirect('/');
       }
     }
   }
@@ -371,27 +371,37 @@ const updatePatient = (req, res) => {
 
 const deletePatient = (req, res) => {
   const _id = req.body._id;
-  User.findById({ _id: _id }, (err, doc) => {
+  User.findByIdAndUpdate({ _id: _id }, {deleted: true} , (err, doc) => {
     if (err) {
       throw err;
     }
-    if (doc) {
-      // console.log(doc);
-      req.session.user = doc;
-    } else {
-      console.log('no such patient');
-      res.render('staff/updatPatient', { error: 'No such patient' });
-    }
+
+    res.redirect('back');
   });
   //soft delete the patient with the above reference code
 }
 
+const allow = (req, res) => {
+  const _id = req.body._id;
+  User.findByIdAndUpdate({ _id: _id }, {pubStream: true} , (err, doc) => {
+    if (err) {
+      throw err;
+    }
 
+    res.redirect('back');    
+  });
+}
 
+const deny = (req, res) => {
+  const _id = req.body._id;
+  User.findByIdAndUpdate({ _id: _id }, {pubStream: false} , (err, doc) => {
+    if (err) {
+      throw err;
+    }
 
-
-
-
+    res.redirect('back');    
+  });
+}
 
 module.exports = {
   index,
@@ -422,4 +432,7 @@ module.exports = {
   viewUpdatePatient,
   updatePatient,
   deletePatient,
+
+  allow,
+  deny,
 }
