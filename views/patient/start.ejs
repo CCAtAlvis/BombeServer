@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>
+            I-SEE-YOU : Enter Referral Code
+        </title>
+        <link rel="stylesheet" type="text/css" href="/stylesheets/style.css">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+    </head>
+    <body>
+        <div id="userScreen">
+            <img src="/images/logo.png">
+            <br>
+            <form method="GET">
+              <button formaction="/patient/live/<%= req.params.id%>" class="btn btn-outline-primary"
+              style="padding-left: 110px; padding-right: 110px; margin: 0 auto; display: block;">Go Live</button>
+              <br><br>
+              <button formaction="/patient/chat/<%= req.params.id%>" class="btn btn-outline-primary"
+              style="padding-left: 118px; padding-right: 118px; margin: 0 auto; display: block;">Chat</button>
+            </form>
+
+        </div>
+    </body>
+</html>
