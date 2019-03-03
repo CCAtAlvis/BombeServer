@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const userController = require('../controllers/userController');
+const actionController = require('../controllers/actionController');
 
 /* GET users listing. */
 router.get('/', userController.index);
@@ -24,5 +25,7 @@ router.post('/requests', userController.requests);
 
 router.post('/permissions', userController.permissions);
 router.get('/permissions', userController.viewPermissions);
+
+router.post('/chat', actionController.chat);
 
 module.exports = router;

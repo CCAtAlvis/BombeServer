@@ -125,7 +125,7 @@ const viewLogin = (req, res) => {
 
 //renders loggedIn/userIndex if number and password are correct else shows error.
 const login = (req, res) => {
-  const contact = req.body.contact;
+  let contact = req.body.contact;
   const password = req.body.password;
   // console.log(email, password);
 

@@ -3,35 +3,33 @@
 const wsHost = 'wss://bombe.westindia.cloudapp.azure.com:8443/ws/';
 let wsChannel = 'echo/chetan';
 let wsUri = wsHost + wsChannel;
-let patID = 'Pchetan123456';
+//let patID = 'Pchetan123456';
 const websocket = new WebSocket(wsUri);
 const mediaPermission = { audio: true, video: true };
 const offerOptions = {
-    mandatory: {
-        'OfferToReceiveAudio': true,
-        'OfferToReceiveVideo': true
-    },
-    'offerToReceiveAudio': true,
-    'offerToReceiveVideo': true
+  mandatory: {
+    'OfferToReceiveAudio': true,
+    'OfferToReceiveVideo': true
+  },
+  'offerToReceiveAudio': true,
+  'offerToReceiveVideo': true
 };
 let configuration = {
-    sdpSemantics: "unified-plan",
-    iceServers: [
-        { urls: 'stun:stun.stunprotocol.org:3478' },
-        // { urls: 'turn:localhost:9999',
-        //   username: 'bombe',
-        //   credential: 'bombe'
-        // },     
-        {
-            urls: 'turn:bturn2.xirsys.com:80?transport=udp',
-            username: 'cf3f2d7e-34ee-11e9-83f7-1c77da0cc4bc',
-            credential: 'cf3f2e50-34ee-11e9-82e9-78f09928b5b8'
-        },
-    ]
+  sdpSemantics: "unified-plan",
+  iceServers: [
+    { urls: 'stun:stun.stunprotocol.org:3478' },
+    // { urls: 'turn:localhost:9999',
+    //   username: 'bombe',
+    //   credential: 'bombe'
+    // },     
+    {
+      urls: 'turn:bturn2.xirsys.com:80?transport=udp',
+      username: 'cf3f2d7e-34ee-11e9-83f7-1c77da0cc4bc',
+      credential: 'cf3f2e50-34ee-11e9-82e9-78f09928b5b8'
+    },
+  ]
 };
-var connections = [];
-var clients = [];
-const localVideo = document.getElementById('goLiveLocalVideo');
+const localVideo = document.getElementById('localVideo');
 let localStream;
 init();
 //-----------------------------------------------------------------END OF INITIALIZATION------------------------------------------------------------------------
@@ -44,21 +42,20 @@ websocket.addEventListener('message', e => onMessage(e));
 function onOpen(evt) {
     let msg = {
         type: 'new-connection',
-        //name: 'patient',
         id: patID
     };
     websocket.send(JSON.stringify(msg));
     console.log('CONNECTED to WS: msg sent: ',msg);
 }
 function onClose(evt) {
-    console.log('DISCONNECTED from WS');
+  console.log('DISCONNECTED from WS');
 }
 function onError(evt) {
-    console.log('ERROR from WS: ' + evt.data);
+  console.log('ERROR from WS: ' + evt.data);
 }
 function onMessage(evt) {
     let message = JSON.parse(evt.data);
-    console.log('Patient got a ',message.type,' from ',message.from);
+    console.log('Patient got a ',message.type);
     if (message.type == 'offer') {
         //onGetOffer(message.offer, message.name); //patient ignores offers from clients and patients
         console.log('^^^ BAD');
@@ -66,7 +63,9 @@ function onMessage(evt) {
         onGetAnswer(message.answer,message.from);
     } else if (message.type == 'icecandi') {
         onGetIceCandi(message.candidate,message.from);
-    } else if (message.type == 'request') {
+    } else if (message.type == 'icecandi'){
+      console.log('^^^ BAD');
+    } else if (message.type == 'requeststream') {
         onRequest(message.from);
     } else {
       console.log('else wala ^^^ BAD   U MISSED SOMETHING');
@@ -75,43 +74,43 @@ function onMessage(evt) {
 //-----------------------------------------------------------------END OF HANDLING WEBSOCKET EVENTS--------------------------------------------------------------------
 
 async function init() { /* Adds local stream from camera and mic to LOCALVIDEO DIV*/
-    try {
-        const stream = await navigator.mediaDevices.getUserMedia(mediaPermission);
-        if (localVideo.srcObject == null) {
-            localVideo.srcObject = stream;
-            localStream = stream;
-            console.log('init() - Added local stream to LOCALVIDEO div');
-        }
-    } catch (e) {
-        alert(`init() - getUserMedia() error: ${e.name}`);
-    } 
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia(mediaPermission);
+    if (localVideo.srcObject == null) {
+      localVideo.srcObject = stream;
+      localStream = stream;
+      console.log('init() - Added local stream to LOCALVIDEO div');
+    }
+  } catch (e) {
+    alert(`init() - getUserMedia() error: ${e.name}`);
+  }
 }
 
 async function onRequest(clientID) { /* creates a variable localCOnn,adds it to array,creates an offer*/
-    console.log('.'); console.log('.'); console.log('.'); console.log('.'); console.log('.'); console.log('.'); console.log('.');
+  console.log('.'); console.log('.'); console.log('.'); console.log('.'); console.log('.'); console.log('.'); console.log('.');
+  try {
+    let localConn;
+    clients.push(clientID);
+    let index = clients.reverse().indexOf(clientID);;
     try {
-        let localConn;
-        clients.push(clientID);
-        let index = clients.reverse().indexOf(clientID);;
-        try {
-            //console.log('onRequest() with connections[',connections.length-1,']');
-            localConn = new RTCPeerConnection(configuration);
-            localConn.addEventListener('icecandidate', e => onIceCandidate(e,clientID));
-            localConn.addEventListener('iceconnectionstatechange', e => onIceStateChange(localConn, e));
-            localStream.getTracks().forEach(track => localConn.addTrack(track, localStream));
-            //console.log('onRequest() : Added local stream to connections[',connections.length-1,']');
-        } catch (e) {
-            //console.log("onRequest() : Error in onRequest() : ",e);
-        }
-        //console.log('onRequest() with connections[',connections.length-1,']');
-        connections.splice(index,0,localConn);
-        // connections.push(localConn);
-        console.log('onRequest() with connections[',index,']');
-        let offer = await (connections[index]).createOffer(offerOptions);
-        await onCreateOfferSuccess(offer,clientID);
+      //console.log('onRequest() with connections[',connections.length-1,']');
+      localConn = new RTCPeerConnection(configuration);
+      localConn.addEventListener('icecandidate', e => onIceCandidate(e, clientID));
+      localConn.addEventListener('iceconnectionstatechange', e => onIceStateChange(localConn, e));
+      localStream.getTracks().forEach(track => localConn.addTrack(track, localStream));
+      //console.log('onRequest() : Added local stream to connections[',connections.length-1,']');
     } catch (e) {
-        onCreateSessionDescriptionError(e);
+      //console.log("onRequest() : Error in onRequest() : ",e);
     }
+    //console.log('onRequest() with connections[',connections.length-1,']');
+    connections.splice(index, 0, localConn);
+    // connections.push(localConn);
+    console.log('onRequest() with connections[', index, ']');
+    let offer = await (connections[index]).createOffer(offerOptions);
+    await onCreateOfferSuccess(offer, clientID);
+  } catch (e) {
+    onCreateSessionDescriptionError(e);
+  }
 }
 
 async function onCreateOfferSuccess(desc,clientID) {
@@ -166,18 +165,19 @@ async function onGetIceCandi(candi,clientID) {
         let index = clients.reverse().indexOf(clientID);
         (connections[index]).addIceCandidate(candi);
         console.log('connections[',index,'] GOT ICE-candi and added it');
+    
 }
 
 function onCreateSessionDescriptionError(error) {
-    let index = clients.reverse().indexOf(clientID);
-    console.log('connections[',index,'] Failed to create session description:');
-    console.log(error);
+  let index = clients.reverse().indexOf(clientID);
+  console.log('connections[', index, '] Failed to create session description:');
+  console.log(error);
 }
 
 function onSetSessionDescriptionError(error) {
-    let index = clients.reverse().indexOf(clientID);
-    console.log('connections[',index,'] Failed to set session description:');
-    console.log(error);
+  let index = clients.reverse().indexOf(clientID);
+  console.log('connections[', index, '] Failed to set session description:');
+  console.log(error);
 }
 
 // async function start() { /* defines localconn,adds events and tracks to it*/ 
@@ -219,7 +219,7 @@ function onIceStateChange(localConn, event) {
 //     console.log(`${getName(pc)} addIceCandidate success`);
 // }
 // function onAddIceCandidateError(pc, error) {
-//     console.log(`${getName(pc)} failed to add ICE Candidate: ${error.toString()}`);
+//     console.log(`${getNames(pc)} failed to add ICE Candidate: ${error.toString()}`);
 // }
 // function gotRemoteStream(e) {
 //   console.log('HACKER MAN, M In');
