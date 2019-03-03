@@ -28,14 +28,12 @@ const addRefCode = (req, res) => {
       if (flag) {
         console.log('adding user to users');
         const update = {
-          users: {
-            userContact: contact,
-            name: name,
-            permission: false
-          }
-        }
+          userContact: contact,
+          name: name,
+          permission: false
+        };
 
-        Patient.findByIdAndUpdate({ _id: doc._id }, update, { upsert: true }, (err, doc) => {
+        Patient.findByIdAndUpdate({ _id: doc._id }, {$push: {users: update}}, { upsert: true }, (err, doc) => {
           if (err) {
             throw err;
           }

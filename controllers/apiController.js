@@ -61,6 +61,60 @@ const register = (req, res) => {
 }
 
 
+// /getRelatives
+const getRelatives = (req, res) => {
+  const contact = req.body.contact;
+
+  Patient.find({
+    $or: [{trustedUser: contact},
+       {'users.userContact': contact, 'users.permission': true}]
+  }, (err, docs) => {
+    if (err) {
+      console.log(err);
+      sendJSON('error', 'some error try again later', 'some error try again later', res);
+    }
+
+    sendJSON('success', '...', docs, res);
+  });
+}
+
+// /getPermissions
+const getPermissions = (req, res) => {
+  const contact = req.body.contact;
+  Patient.find({trustedUser: contact}, (err, docs) => {
+    if (err) {
+      console.log(err);
+      sendJSON('error', 'some error try again later', 'some error try again later', res);
+    }
+
+    sendJSON('success', '...', docs, res);
+  });
+}
+
+
+// /getPatientsForStaff
+const getPatientsForStaff = (req, res) => {
+  let condidions = {
+    hospCode: req.body.hospCode,
+    deleted: false
+  };
+
+  Patient.find(condidions, (err, docs) => {
+    if (err) {
+      console.log(err);
+      sendJSON('error', 'some error try again later', 'some error try again later', res);
+    }
+
+    sendJSON('success', '...', docs, res);
+  });
+}
+
+
+
+
+
+
+
 const test = (req, res) => {
   const body = req.body;
   const query = req.query;
@@ -82,5 +136,8 @@ const test = (req, res) => {
 module.exports = {
   login,
   register,
+  getPatientsForStaff,
+  getPermissions,
+  getRelatives,
   test
 }
