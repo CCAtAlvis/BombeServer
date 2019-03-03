@@ -318,3 +318,8 @@ img {
     border-radius: 20px;
     border: 2px solid skyblue;
 }
+
+td,th {
+  padding: 15px;
+  text-align: center;
+}
