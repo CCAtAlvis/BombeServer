@@ -3,7 +3,7 @@
 const wsHost = 'wss://bombe.westindia.cloudapp.azure.com:8443/ws/';
 let wsChannel = 'echo/chetan';
 let wsUri = wsHost + wsChannel;
-let patID = 'Pchetan123456';
+//let patID = 'Pchetan123456';
 const websocket = new WebSocket(wsUri);
 const mediaPermission = { audio: true, video: true };
 const offerOptions = {
@@ -29,8 +29,6 @@ let configuration = {
         },
     ]
 };
-var connections = [];
-var clients = [];
 const localVideo = document.getElementById('localVideo');
 let localStream;
 init();
@@ -44,7 +42,6 @@ websocket.addEventListener('message', e => onMessage(e));
 function onOpen(evt) {
     let msg = {
         type: 'new-connection',
-        name: 'patient',
         id: patID
     };
     websocket.send(JSON.stringify(msg));
@@ -58,22 +55,18 @@ function onError(evt) {
 }
 function onMessage(evt) {
     let message = JSON.parse(evt.data);
-    console.log('Patient got a ',message.type,' from ',message.name);
-    if (message.type == 'offer' && (message.name == 'client'||message.name =='patient')) {
+    console.log('Patient got a ',message.type);
+    if (message.type == 'offer') {
         //onGetOffer(message.offer, message.name); //patient ignores offers from clients and patients
         console.log('^^^ BAD');
-    } else if (message.type == 'answer' && message.name == 'client') {
-        onGetAnswer(message.answer, message.name,message.from);
-    } else if (message.type == 'answer' && message.name == 'patient') {
+    } else if (message.type == 'answer') {
+        onGetAnswer(message.answer,message.from);
+    } else if (message.type == 'icecandi') {
+        onGetIceCandi(message.candidate,message.from);
+    } else if (message.type == 'icecandi'){
       console.log('^^^ BAD');
-    } else if (message.type == 'icecandi' && message.name == 'client') {
-        onGetIceCandi(message.candidate, message.name,message.from);
-    } else if (message.type == 'icecandi' && message.name == 'patient'){
-      console.log('^^^ BAD');
-    } else if (message.type == 'request' && message.name == 'client') {
+    } else if (message.type == 'requeststream') {
         onRequest(message.from);
-    } else if (message.type == 'request' && message.name == 'patient') {
-      console.log('^^^ BAD');
     } else {
       console.log('else wala ^^^ BAD   U MISSED SOMETHING');
     }
@@ -128,7 +121,7 @@ async function onCreateOfferSuccess(desc,clientID) {
         console.log('connections[',index,'] local desc was set to offer');
         let message = {
             type: 'offer',
-            name: 'patient',
+            //name: 'patient',
             offer: desc,
             to : clientID,
             from : patID
@@ -140,7 +133,7 @@ async function onCreateOfferSuccess(desc,clientID) {
     }
 }
 
-async function onGetAnswer(answer, name,clientID) {
+async function onGetAnswer(answer,clientID) {
     try {
         let index = clients.reverse().indexOf(clientID);
         await (connections[index]).setRemoteDescription(answer);
@@ -154,7 +147,7 @@ async function onIceCandidate(event,clientID) {
     try {
         let message = {
             type: 'icecandi',
-            name: 'patient',
+            //name: 'patient',
             candidate: event.candidate,
             to: clientID,
             from : patID
@@ -167,13 +160,12 @@ async function onIceCandidate(event,clientID) {
     console.log('connections[',index,'] sent ICE-candi to other person');
 }
 
-async function onGetIceCandi(candi, name,clientID) {
+async function onGetIceCandi(candi,clientID) {
     // if (candi !=null && name=='client') {
-      if (name=='client') {
         let index = clients.reverse().indexOf(clientID);
         (connections[index]).addIceCandidate(candi);
         console.log('connections[',index,'] GOT ICE-candi and added it');
-    }
+    
 }
 
 function onCreateSessionDescriptionError(error) {
@@ -227,7 +219,7 @@ function onIceStateChange(localConn, event) {
 //     console.log(`${getName(pc)} addIceCandidate success`);
 // }
 // function onAddIceCandidateError(pc, error) {
-//     console.log(`${getName(pc)} failed to add ICE Candidate: ${error.toString()}`);
+//     console.log(`${getNames(pc)} failed to add ICE Candidate: ${error.toString()}`);
 // }
 // function gotRemoteStream(e) {
 //   console.log('HACKER MAN, M In');
