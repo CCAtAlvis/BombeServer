@@ -51,6 +51,19 @@ const addRefCode = (req, res) => {
   });
 }
 
+
+const chat = (req, res) => {
+  const to = req.body.to;
+  const from = req.body.from;
+
+  res.render('users/chat', {
+    to: to,
+    from: from
+  })
+}
+
+
 module.exports = {
   addRefCode,
+  chat,
 }

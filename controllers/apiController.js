@@ -81,5 +81,6 @@ const test = (req, res) => {
 
 module.exports = {
   login,
+  register,
   test
 }
