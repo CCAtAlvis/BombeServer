@@ -10,7 +10,7 @@ callButton.disabled = true;
 callButton.addEventListener('click', call);
 
 const hangupButton = document.getElementById('hangupButton');
-hangupButton.disabled = true;
+hangupButton.disabled = false;
 hangupButton.addEventListener('click', hangup);
 
 let localVideo = document.getElementById('localVideo');
@@ -216,7 +216,7 @@ function hangup() {
   console.log('Ending call');
   localConn.close();
   localConn = null;
-  hangupButton.disabled = true;
+  hangupButton.disabled = false;
   callButton.disabled = false;
 }
 
