@@ -18,10 +18,6 @@ let remoteVideo = document.getElementById('remoteVideo');
 let localStream;
 let localConn;
 
-// let from;
-// let to;
-
-
 const mediaPermission = { audio: true, video: true };
 const offerOptions = {
   mandatory: {
@@ -30,15 +26,12 @@ const offerOptions = {
   },
   'offerToReceiveAudio': true,
   'offerToReceiveVideo': true
+
 };
 let configuration = {
   sdpSemantics: "unified-plan",
   iceServers: [
     { urls: 'stun:stun.stunprotocol.org:3478' },
-    // { urls: 'turn:localhost:9999',
-    //   username: 'bombe',
-    //   credential: 'bombe'
-    // },
     {
       urls: 'turn:bturn2.xirsys.com:80?transport=udp',
       username: 'cf3f2d7e-34ee-11e9-83f7-1c77da0cc4bc',
@@ -46,6 +39,9 @@ let configuration = {
     },
   ]
 };
+
+let from;
+let to;
 
 start();
 //------------------------------------------------------------END OF INITIALIZATION-----------------------------------------------
@@ -60,7 +56,7 @@ function onOpen(evt) {
   console.log('CONNECTED to WS');
   let message = {
     type: 'new-connection',
-    //name: 'chatter',
+    name: 'chatter',
     id: from
   }
   websocket.send(JSON.stringify(message));
@@ -77,13 +73,14 @@ function onError(evt) {
 
 function onMessage(evt) {
   let message = JSON.parse(evt.data);
-  console.log('localConn(', message.to, ') got a ', message.type, ' from (', message.from, ')');
-  if (message.type == 'offer') {
-    onGetOffer(message.offer);
-  } else if (message.type == 'answer') {
-    onGetAnswer(message.answer);
-  } else if (message.type == 'icecandi') {
-    onGetIceCandi(message.candidate);
+  console.log('localConn(', message.to, ') got a ', message.type, ' from ', message.name, '(', message.from, ')');
+
+  if (message.type == 'offer' && (message.name == 'offerer' || message.name == 'answerer')) {
+    onGetOffer(message.offer, message.name);
+  } else if (message.type == 'answer' && (message.name == 'offerer' || message.name == 'answerer')) {
+    onGetAnswer(message.answer, message.name);
+  } else if (message.type == 'icecandi' && (message.name == 'offerer' || message.name == 'answerer' || message.name == 'ICEmessenger')) {
+    onGetIceCandi(message.candidate, message.name);
   } else {
 
   }
@@ -91,8 +88,9 @@ function onMessage(evt) {
 //--------------------------------------------------------------END OF HANDLING WEBSOCKET EVENTS------------------------------------
 
 async function start() {
-  // to = prompt("enter To:");
-  // from = prompt("enter From:");
+  to = prompt("enter To:");
+  from = prompt("enter From:");
+
   try {
     const stream = await navigator.mediaDevices.getUserMedia(mediaPermission);
     localVideo.srcObject = stream;
@@ -120,6 +118,7 @@ async function call() {
     const offer = await localConn.createOffer(offerOptions);
     hangupButton.disabled = false;
     console.log('call() : Offerer created offer successfully');
+
     await onCreateOfferSuccess(offer);
   } catch (e) {
     onCreateSessionDescriptionError(e);
@@ -130,35 +129,38 @@ async function onCreateOfferSuccess(desc) {
   try {
     await localConn.setLocalDescription(new RTCSessionDescription(desc));
     console.log('Offerer set its localDesc to offer')
+
     let message = {
       type: 'offer',
-      // name: 'offerer',
+      name: 'offerer',
       offer: desc,
-      // id: from,
       from: from,
       to: to
     };
     websocket.send(JSON.stringify(message));
+
     console.log('Offerer sent the message to answerer.');
   } catch (e) {
     onSetSessionDescriptionError(e);
   }
 }
 
-async function onGetOffer(offer) {
+async function onGetOffer(offer, name) {
   try {
     await localConn.setRemoteDescription(new RTCSessionDescription(offer));
     console.log('Answerer created answer and setRemoteDesc to offer');
   } catch (e) {
     console.log("error: ", e);
   }
+
   try {
     const answer = await localConn.createAnswer();
     await localConn.setLocalDescription(answer);
     console.log('Answerer setLocalDesc to answer')
+
     let message = {
       type: 'answer',
-      // name: 'answerer',
+      name: 'answerer',
       answer: answer,
       // id: from,
       from: from,
@@ -170,7 +172,7 @@ async function onGetOffer(offer) {
   }
 };
 
-async function onGetAnswer(answer) {
+async function onGetAnswer(answer, name) {
   try {
     await localConn.setRemoteDescription(answer);
     console.log('Offerer setRemoteDesc to answer');
@@ -183,7 +185,7 @@ async function onIceCandidate(pc, event) {
   try {
     let message = {
       type: 'icecandi',
-      // name: 'ICEmessenger',
+      name: 'ICEmessenger',
       candidate: event.candidate,
       // id: from,
       from: from,
@@ -193,10 +195,11 @@ async function onIceCandidate(pc, event) {
   } catch (e) {
     onAddIceCandidateError(pc, e);
   }
+
   console.log('localConn sent ICE-candi to other client');
 }
 
-async function onGetIceCandi(candi) {
+async function onGetIceCandi(candi, name) {
   localConn.addIceCandidate(candi);
   console.log('localConn recieved ICEcandi and added it.')
 }
@@ -226,26 +229,15 @@ function onSetSessionDescriptionError(error) {
   console.log(`Failed to set session description:`);
   console.log(error);
 }
-// function getSelectedSdpSemantics() {
-//   const sdpSemanticsSelect = document.querySelector('#sdpSemantics');
-//   const option = sdpSemanticsSelect.options[sdpSemanticsSelect.selectedIndex];
-//   return option.value === '' ? {} : {sdpSemantics: option.value};
-// }
-// function onSetLocalSuccess(pc) {
-//   console.log(`${getName(pc)} setLocalDescription complete`);
-// }
-// function onSetRemoteSuccess(pc) {
-//   console.log(`${getName(pc)} setRemoteDescription complete`);
-// }
-// function onAddIceCandidateSuccess(pc) {
-//     console.log(`${getName(pc)} addIceCandidate success`);
-// }
-// function onAddIceCandidateError(pc, error) {
-//     console.log(`${getName(pc)} failed to add ICE Candidate: ${error.toString()}`);
-// }
+
 function onIceStateChange(localConn, event) {
   if (localConn) {
     console.log(`localConn ICE state: ${localConn.iceConnectionState}`);
     console.log('ICE state change event: ', event);
+
+    if (localConn.iceConnectionState == 'failed') {
+      offerOptions.iceRestart = true;
+      call();
+    }
   }
-}
+} 

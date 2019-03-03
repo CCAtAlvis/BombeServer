@@ -14,7 +14,18 @@
               for(let i=0; i<userPatients.length; i++) {
                 let p = userPatients[i];
           %>
-            <p><%= p%> - </p>
+          
+            <div class="col-4 mb-5">
+              <div class="card text-center">
+                <div class="card-body">
+                  <h5 class="card-title"><%= p.name%></h5>
+                  <h6 class="card-subtitle"><%= p.refCode%></h6>
+                  <h5 style="color:green">Request Successfully sent</h6>
+                  <h5 style="color:red">Permission not yet granted</h6>
+                </div>
+              </div>
+            </div>
+
           <% }
           } %>
     </div>

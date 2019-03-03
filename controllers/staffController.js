@@ -185,7 +185,7 @@ const viewDoctorClipboard = (req, res) => {
     }
 
     if (docs) {
-      console.log(docs);
+      // console.log(docs);
       res.render('staff/doctor/doctor', { patients: docs });
     } else {
       res.render('staff/doctor/doctor');
@@ -206,7 +206,7 @@ const viewDoctorPatientDetails = (req, res) => {
     }
 
     if (docs) {
-      console.log(docs);
+      // console.log(docs);
       res.render('staff/doctor/doctor', { patients: docs });
     } else {
       res.render('staff/doctor/doctor');
@@ -228,7 +228,7 @@ const viewNurseClipboard = (req, res) => {
     }
 
     if (docs) {
-      console.log(docs);
+      // console.log(docs);
       res.render('staff/nurse/nurse', { patients: docs });
     } else {
       res.render('staff/nurse/nurse');
@@ -249,7 +249,7 @@ const viewNursePatientDetails = (req, res) => {
     }
 
     if (docs) {
-      console.log(docs);
+      // console.log(docs);
       res.render('staff/nurse/nurse', { patients: docs });
     } else {
       res.render('staff/nurse/nurse');
@@ -271,7 +271,7 @@ const viewOtherClipboard = (req, res) => {
     }
 
     if (docs) {
-      console.log(docs);
+      // console.log(docs);
       res.render('staff/staff/other', { patients: docs });
     } else {
       res.render('staff/staff/other');
@@ -291,7 +291,7 @@ const viewOtherPatientDetails = (req, res) => {
     }
 
     if (docs) {
-      console.log(docs);
+      // console.log(docs);
       res.render('staff/staff/details', { patients: docs });
     } else {
       res.render('staff/staff/details');
@@ -337,7 +337,7 @@ const createPatient = (req, res) => {
 
 const viewUpdatePatient = (req, res) => {
   const _id = req.body._id;
-  User.findById({ _id: _id }, (err, doc) => {
+  patient.findById({ _id: _id }, (err, doc) => {
     if (err) {
       throw err;
     }
@@ -371,11 +371,16 @@ const updatePatient = (req, res) => {
 
 const deletePatient = (req, res) => {
   const _id = req.body._id;
-  User.findByIdAndUpdate({ _id: _id }, {deleted: true} , (err, doc) => {
+  console.log(_id);
+  Patient.findOneAndUpdate({ _id: _id }, {$set: {deleted: true}}, {
+    upsert: true,
+    new: true,
+}, (err, doc) => {
     if (err) {
       throw err;
     }
 
+    console.log(doc);
     res.redirect('back');
   });
   //soft delete the patient with the above reference code
@@ -383,10 +388,15 @@ const deletePatient = (req, res) => {
 
 const allow = (req, res) => {
   const _id = req.body._id;
-  User.findByIdAndUpdate({ _id: _id }, {pubStream: true} , (err, doc) => {
+  console.log(_id);
+  Patient.findOneAndUpdate({ _id: _id }, {$set: {pubStream: true}}, {
+    upsert: true,
+    new: true,
+}, (err, doc) => {
     if (err) {
       throw err;
     }
+    console.log(doc);
 
     res.redirect('back');    
   });
@@ -394,11 +404,16 @@ const allow = (req, res) => {
 
 const deny = (req, res) => {
   const _id = req.body._id;
-  User.findByIdAndUpdate({ _id: _id }, {pubStream: false} , (err, doc) => {
+  console.log(_id);
+
+  Patient.findOneAndUpdate({ _id: _id }, {$set: {pubStream: false}}, {
+    upsert: true,
+    new: true,
+}, (err, doc) => {
     if (err) {
       throw err;
     }
-
+    console.log(doc);
     res.redirect('back');    
   });
 }

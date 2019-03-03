@@ -46,7 +46,7 @@ function onOpen (evt) {
   console.log('CONNECTED to WS');
   let message = {
     type: 'new-connection',
-    //name: 'client',
+    name: 'client',
     id: clientID
   }
   console.log('CONNECTED to WS: msg: ',message);
@@ -65,14 +65,20 @@ function onError (evt) {
 function onMessage (evt) {
   // console.log('RESPONSE from WS: ' + evt.data);
   let message = JSON.parse(evt.data);
-  console.log('Client got a ',message.type,' from ');
-  if (message.type == 'offer') {
-      onGetOffer(message.offer);
-  } else if (message.type == 'answer') {
+  console.log('Client got a ',message.type,' from ',message.name);
+  if (message.type == 'offer' && message.name == 'patient') {
+      //console.log("Client got offer(GOOD)");
+      onGetOffer(message.offer, message.name);
+  } else if (message.type == 'offer' && message.name == 'client') {
     console.log('^^^ BAD');
-  } else if (message.type == 'icecandi') {
-    onGetIceCandi(message.candidate);
-  } else if (message.type == 'request') {
+  } else if (message.type == 'answer' && (message.name == 'patient'|| message.name == 'client')) {
+    console.log('^^^ BAD');
+  } else if (message.type == 'icecandi' && message.name == 'patient') {
+    //console.log("Client got icecandi(GOOD)");
+    onGetIceCandi(message.candidate, message.name);
+  } else if (message.type == 'icecandi' && message.name == 'client') {
+    console.log('^^^ BAD');
+  } else if (message.type == 'request' && (message.name == 'patient'|| message.name == 'client')) {
     console.log("^^^ BAD");
   } else {
     console.log('else wala ^^^ BAD   U MISSED SOMETHING');
@@ -104,7 +110,7 @@ async function createRequest() {
         }
         let message = {
           type: 'request',
-          //name: 'client',
+          name: 'client',
           to: patID,
           from: clientID
         };
@@ -115,7 +121,7 @@ async function createRequest() {
       }
 }
 
-async function onGetOffer (offer) {
+async function onGetOffer (offer, name) {
   try {
     await localConn.setRemoteDescription(new RTCSessionDescription(offer));
     console.log('onGetOffer() : Offer set to remote desc');
@@ -128,7 +134,7 @@ async function onGetOffer (offer) {
     console.log('client created answer and set it to local desc');
     let message = {
       type: 'answer',
-      //name: 'client',
+      name: 'client',
       answer: answer,
       to : patID,
       from : clientID
@@ -145,7 +151,7 @@ async function onIceCandidate(pc, event) {
   try {
     let message = {
       type: 'icecandi',
-      //name: 'client',
+      name: 'client',
       candidate: event.candidate,
       to : patID,
       from: clientID
@@ -157,12 +163,10 @@ async function onIceCandidate(pc, event) {
   console.log('sent ICE-candi to other patient');
 }
 
-async function onGetIceCandi (candi) {
-  // if (candi !=null && name=='patient') {
+async function onGetIceCandi (candi, name) {
+  if (candi !=null && name=='patient') {
         localConn.addIceCandidate(candi);
         console.log("got ice candidate from patient and added it.")
-    if (candi == null) {
-      websocket.close();
     }
 }
 
@@ -182,6 +186,9 @@ function onIceStateChange(localConn, event) {
   if (localConn) {
     console.log(`localConn ICE state: ${localConn.iceConnectionState}`);
     console.log('ICE state change event: ', event);
+    if(localConn.iceConnectionState =='connected'||localConn.iceConnectionState == 'completed') {
+      websocket.close();
+    }
   }
 }
 // function hangup() {
