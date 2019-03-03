@@ -168,9 +168,6 @@ async function onGetIceCandi (candi, name) {
         localConn.addIceCandidate(candi);
         console.log("got ice candidate from patient and added it.")
     }
-    if (candi == null) {
-      websocket.close();
-    }
 }
 
 function gotRemoteStream(e) {
@@ -189,6 +186,9 @@ function onIceStateChange(localConn, event) {
   if (localConn) {
     console.log(`localConn ICE state: ${localConn.iceConnectionState}`);
     console.log('ICE state change event: ', event);
+    if(localConn.iceConnectionState =='connected'||localConn.iceConnectionState == 'completed') {
+      websocket.close();
+    }
   }
 }
 // function hangup() {
