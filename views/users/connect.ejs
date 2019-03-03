@@ -14,16 +14,6 @@
               for(let i=0; i<userPatients.length; i++) {
                 let p = userPatients[i];
           %>
-<<<<<<< HEAD
-=======
-            <p><%= p%> - </p>
-            <form method="POST" action="/users/chat">
-              <input type="hidden" name="to" value="<%= p.refCode%>">
-              <input type="submit" value="Chat">
-            </form>
-          <% }
-          } %>
->>>>>>> e4f4c9bcbb5f9c7b004f17aeba0beaf14fa067f6
 
             <div class="col-4 mb-5">
               <div class="card text-center">
@@ -32,7 +22,11 @@
                   <h6 class="card-subtitle"><%= p.refCode%></h6>
                   <p class="card-text"><%=p.visitCeil%>-<%=p.visitFloor%></p>
                   <a href="#" class="btn btn-primary">Live Stream</a>
-                  <a href="#" class="btn btn-primary">Video Call</a>
+                  <!-- <a href="#" class="btn btn-primary">Video Call</a> -->
+                  <form method="POST" action="/users/chat">
+                    <input type="hidden" name="to" value="<%= p.refCode%>">
+                    <input type="submit" value="Video Call">
+                  </form>
                 </div>
               </div>
             </div>
