@@ -88,8 +88,8 @@ function onMessage(evt) {
 //--------------------------------------------------------------END OF HANDLING WEBSOCKET EVENTS------------------------------------
 
 async function start() {
-  to = prompt("enter To:");
-  from = prompt("enter From:");
+  to = 'User1';
+  from = 'patient001';
 
   try {
     const stream = await navigator.mediaDevices.getUserMedia(mediaPermission);
