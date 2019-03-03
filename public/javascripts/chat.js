@@ -18,6 +18,10 @@ let remoteVideo = document.getElementById('remoteVideo');
 let localStream;
 let localConn;
 
+// let from;
+// let to;
+
+
 const mediaPermission = { audio: true, video: true };
 const offerOptions = {
   mandatory: {
@@ -43,8 +47,6 @@ let configuration = {
   ]
 };
 
-let from;
-let to;
 start();
 //------------------------------------------------------------END OF INITIALIZATION-----------------------------------------------
 
