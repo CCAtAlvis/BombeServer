@@ -20,8 +20,6 @@ const userSchema = new mongoose.Schema({
   },
   contact: {
     type: Number,
-    minlength: 10,
-    maxlength: 10,
     unique: true
   },
   // address: {

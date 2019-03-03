@@ -7,7 +7,7 @@ const renderView = (req, res, view) => {
     res.redirect('/users/verify');
   } else if ((typeof req.session.user !== 'undefined') && (typeof req.session.user.verified !== 'undefined') && req.session.user.verified) {
     //user is registered and is verified
-    res.redirect('/users');
+    res.redirect('/users/connect');
   } else {
     //user has not registered yet
     res.render(`users/${view}`);
@@ -21,17 +21,23 @@ const index = (req, res) => {
     res.redirect('/users/verify');
   } else if(!(typeof req.session.user === 'undefined') && req.session.user.verified ) {
     //user is registered/loggedIn and is verified
-    let contact = req.session.user.contact;
-    User.find({'users.userContact': contact,'users.permission':true}, (err, docs) => {
-      if (err) {
-        throw err;
-      }
-      if (docs) {
-        res.render('users/index',{userPatients:docs});
-      } else {
-        res.render('users/index');
-      }
-    });
+    res.redirect('/users/connect');
+    // const contact = req.session.user.contact;
+    // Patient.find({
+    //   $or: [{trustedUser: contact},
+    //      {'users.userContact': contact, 'users.permission': true}]
+    // }, (err, docs) => {
+    //   if (err) {
+    //     throw err;
+    //   }
+
+    //   if (docs) {
+    //     // console.log(docs);
+    //     res.render('users/index',{userPatients:docs});
+    //   } else {
+    //     res.render('users/index');
+    //   }
+    // });
   } else {
     //user has to login
     res.redirect('/users/login');
@@ -55,7 +61,8 @@ const register = (req, res) => {
     contact: contact,
     password: password,
     role: role,
-    otp: otp
+    otp: otp,
+    verified: true
   });
 
   user.save((err, doc) => {
@@ -69,7 +76,7 @@ const register = (req, res) => {
         throw err;
       }
       //user has registered so now he will verify account
-      res.redirect('/verify');
+      res.redirect('/users');
     });
   });
 }
@@ -154,6 +161,79 @@ const logout = (req, res) => {
   res.redirect('/');
 }
 
+
+
+
+// /users/connect
+const viewConnect = (req, res) => {
+  const contact = req.session.user.contact;
+  Patient.find({
+    $or: [{trustedUser: contact},
+       {'users.userContact': contact, 'users.permission': true}]
+  }, (err, docs) => {
+    if (err) {
+      throw err;
+    }
+
+    if (docs) {
+      // console.log(docs);
+      res.render('users/connect',{userPatients:docs});
+    } else {
+      res.render('users/connect');
+    }
+  });
+}
+
+const connect = (req, res) => {
+  // TODO:
+}
+
+
+// /users/requests
+const viewRequests = (req, res) => {
+  const contact = req.session.user.contact;
+  Patient.find({'users.userContact': contact, 'users.permission': false}, (err, docs) => {
+    if (err) {
+      throw err;
+    }
+
+    if (docs) {
+      // console.log(docs);
+      res.render('users/requests',{userPatients:docs});
+    } else {
+      res.render('users/requests');
+    }
+  });
+}
+
+const requests = (req, res) => {
+  // TODO:
+}
+
+
+// /users/permissions
+const viewPermissions = (req, res) => {
+  const contact = req.session.user.contact;
+  Patient.find({trustedUser: contact}, (err, docs) => {
+    if (err) {
+      throw err;
+    }
+
+    if (docs) {
+      // console.log(docs);
+      res.render('users/permissions',{userPatients:docs});
+    } else {
+      res.render('users/permissions');
+    }
+  });
+}
+
+const permissions = (req, res) => {
+  // TODO:
+}
+
+
+
 module.exports = {
   index,
   login,
@@ -162,5 +242,14 @@ module.exports = {
   viewRegister,
   logout,
   verify,
-  viewVerify
+  viewVerify,
+
+  viewConnect,
+  connect,
+
+  viewPermissions,
+  permissions,
+
+  viewRequests,
+  requests
 }

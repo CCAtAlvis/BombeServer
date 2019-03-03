@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const patientSchema = new mongoose.Schema({
   name: {
     type: String,
+    default: 'John Doe'
   },
   gender: {
     type: String,
@@ -10,8 +11,6 @@ const patientSchema = new mongoose.Schema({
   },
   contact: {
     type: Number,
-    minlength: 10,
-    maxlength: 10
   },
   hospCode: {
     type: String,
@@ -33,22 +32,19 @@ const patientSchema = new mongoose.Schema({
   //   }
   // },
   trustedUser: {
-    type: String,
-    required: true
+    type: Number,
   },
   doctor: {
-    type: String,
-    required: true
+    type: Number,
   },
   refCode: {
     type: String,
     required: true
   },
   users: [{
-    userCotact: {
-      type: String,
-      required: true
-    },
+    userContact: {
+      type: Number,
+      },
     name: {
       type: String,
     },
@@ -70,6 +66,10 @@ const patientSchema = new mongoose.Schema({
   visitCeil: {
     type: Number,
     default: 20,
+  },
+  deleted: {
+    type: Boolean,
+    default: false
   }
 }, {
   timestamps: true

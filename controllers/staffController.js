@@ -11,8 +11,9 @@ const index = (req, res) => {
 
     let condidions = {
       hospCode: hospCode,
+      deleted: false
     };
-
+  
     if (role === 'other-staff') {
       // Patient.find(condidions, (err, docs) => {
       //   if (err) {
@@ -124,7 +125,7 @@ const viewLogin = (req, res) => {
 
 //renders loggedIn/userIndex if number and password are correct else shows error.
 const login = (req, res) => {
-  const contact = req.body.contact;
+  let contact = req.body.contact;
   const password = req.body.password;
   // console.log(email, password);
 
@@ -174,7 +175,8 @@ const doctorClipboard = (req, res) => { }
 const viewDoctorClipboard = (req, res) => {
   const condidions = {
     hospCode: req.session.user.hospCode,
-    doctor: req.session.user.contact
+    doctor: req.session.user.contact,
+    deleted: false
   };
 
   Patient.find(condidions, (err, docs) => {
@@ -194,7 +196,8 @@ const doctorPatientDetails = (req, res) => { }
 const viewDoctorPatientDetails = (req, res) => {
   const condidions = {
     hospCode: req.session.user.hospCode,
-    doctor: req.session.user.contact
+    doctor: req.session.user.contact,
+    delete: false
   };
 
   Patient.find(condidions, (err, docs) => {
@@ -214,8 +217,9 @@ const viewDoctorPatientDetails = (req, res) => {
 
 const nurseClipboard = (req, res) => { }
 const viewNurseClipboard = (req, res) => {
-  const condidions = {
+  let condidions = {
     hospCode: req.session.user.hospCode,
+    deleted: false
   };
 
   Patient.find(condidions, (err, docs) => {
@@ -233,9 +237,11 @@ const viewNurseClipboard = (req, res) => {
 }
 const nursePatientDetails = (req, res) => { }
 const viewNursePatientDetails = (req, res) => {
-  const condidions = {
+  let condidions = {
     hospCode: req.session.user.hospCode,
+    deleted: false
   };
+
 
   Patient.find(condidions, (err, docs) => {
     if (err) {
@@ -254,8 +260,9 @@ const viewNursePatientDetails = (req, res) => {
 
 const otherClipboard = (req, res) => { }
 const viewOtherClipboard = (req, res) => {
-  const condidions = {
+  let condidions = {
     hospCode: req.session.user.hospCode,
+    deleted: false
   };
 
   Patient.find(condidions, (err, docs) => {
@@ -273,8 +280,9 @@ const viewOtherClipboard = (req, res) => {
 }
 const otherPatientDetails = (req, res) => { }
 const viewOtherPatientDetails = (req, res) => {
-  const condidions = {
+  let condidions = {
     hospCode: req.session.user.hospCode,
+    deleted: false
   };
 
   Patient.find(condidions, (err, docs) => {
@@ -328,8 +336,8 @@ const createPatient = (req, res) => {
 }
 
 const viewUpdatePatient = (req, res) => {
-  const code = req.body.Code;
-  User.findOne({ code: code }, (err, doc) => {
+  const _id = req.body._id;
+  User.findById({ _id: _id }, (err, doc) => {
     if (err) {
       throw err;
     }
@@ -362,8 +370,8 @@ const updatePatient = (req, res) => {
 }
 
 const deletePatient = (req, res) => {
-  const code = req.body.Code;
-  User.findOne({ code: code }, (err, doc) => {
+  const _id = req.body._id;
+  User.findById({ _id: _id }, (err, doc) => {
     if (err) {
       throw err;
     }
