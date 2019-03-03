@@ -1,5 +1,6 @@
 const User = require('../models/User');
 const Patient = require('../models/Patient');
+const formidable = require('formidable');
 
 const addRefCode = (req, res) => {
   const refCode = req.body.refCode;
@@ -65,7 +66,24 @@ const chat = (req, res) => {
 }
 
 
+const post = (req, res) => {
+  var form = new formidable.IncomingForm();
+  form.parse(req);
+
+  form.on('fileBegin', function (name, file){
+      file.path = __dirname + '/uploads/' + file.name;
+  });
+
+  form.on('file', function (name, file) {
+      console.log('Uploaded ' + file.name);
+  });
+
+  res.json({status: 'success', message: 'file uploaded succesfully'});
+}
+
+
 module.exports = {
   addRefCode,
   chat,
+  post,
 }

@@ -12,13 +12,11 @@
         <div id="userScreen">
             <img src="/images/logo.png">
             <br>
-            <form method="GET">
-              <button formaction="/patient/live/<%= req.params.id%>" class="btn btn-outline-primary"
-              style="padding-left: 110px; padding-right: 110px; margin: 0 auto; display: block;">Go Live</button>
-              <br><br>
-              <button formaction="/patient/chat/<%= req.params.id%>" class="btn btn-outline-primary"
-              style="padding-left: 118px; padding-right: 118px; margin: 0 auto; display: block;">Chat</button>
-            </form>
+            <a href="/files/golive.html" class="btn btn-outline-primary"
+            style="padding-left: 100px; padding-right: 100px; margin: 0 auto; display: block;">Go Live</a>
+            <br><br>
+            <a href="/files/chatp.html" class="btn btn-outline-primary"
+            style="padding-left: 100px; padding-right: 100px; margin: 0 auto; display: block;">Chat</a>
 
         </div>
     </body>
