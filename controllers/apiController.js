@@ -111,7 +111,10 @@ const getPatientsForStaff = (req, res) => {
 
 const deletePatient = (req, res) => {
   const _id = req.body._id;
-  User.findByIdAndUpdate({ _id: _id }, {deleted: true} , (err, doc) => {
+  Patient.findByIdAndUpdate({ _id: _id }, {$set: {deleted: true}}, {
+    upsert: true,
+    new: true,
+}, (err, doc) => {
     if (err) {
       console.log(err);
       sendJSON('error', 'some error try again later', 'some error try again later', res);
@@ -124,7 +127,10 @@ const deletePatient = (req, res) => {
 
 const allow = (req, res) => {
   const _id = req.body._id;
-  User.findByIdAndUpdate({ _id: _id }, {pubStream: true} , (err, doc) => {
+  Patient.findByIdAndUpdate({ _id: _id }, {$set: {pubStream: true}}, {
+    upsert: true,
+    new: true,
+}, (err, doc) => {
     if (err) {
       console.log(err);
       sendJSON('error', 'some error try again later', 'some error try again later', res);
@@ -136,7 +142,10 @@ const allow = (req, res) => {
 
 const deny = (req, res) => {
   const _id = req.body._id;
-  User.findByIdAndUpdate({ _id: _id }, {pubStream: false} , (err, doc) => {
+  Patient.findByIdAndUpdate({ _id: _id }, {$set: {pubStream: false}}, {
+    upsert: true,
+    new: true,
+}, (err, doc) => {
     if (err) {
       console.log(err);
       sendJSON('error', 'some error try again later', 'some error try again later', res);

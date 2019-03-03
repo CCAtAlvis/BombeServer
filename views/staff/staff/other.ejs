@@ -11,8 +11,12 @@
           <div class="row mx-5 my-5">
             <% if (typeof patients !== 'undefined'){
                     for(let i=0; i<patients.length; i++){
-                      let p = patients[i];
+                      let p = patients[i];  
+                      let check = p.pubStream ? 'checked': '';
                   %>
+                  <!-- <script>
+                      $('#access').prop('checked',p.pubStream).change()
+                     </script> -->
             <div class="col-4 mb-5">
               <div class="card text-center">
                 <div class="card-body">
@@ -20,7 +24,15 @@
                   <h6 class="card-subtitle"><%= p.refCode%></h6>
                   <p class="card-text"><%= p.visitCeil%>-<%= p.visitFloor%>
                   </p>
-                  <a href="#" class="btn btn-primary">Enable/Disable</a>
+                  <input type="checkbox" disabled <%= check%>  id="access" data-toggle="toggle" data-on="Access Granted" data-off="Access Denied"
+                  data-onstyle="success" data-offstyle="danger">
+
+                  <br><br>
+                  <form method="POST">
+                    <input type="hidden" name="_id" value="<%= p._id%>">
+                    <button formaction="/staff/allow" class="btn btn-primary">Allow</button>
+                    <button formaction="/staff/deny" class="btn btn-danger">Deny</button>
+                  </form>
                 </div>
               </div>
             </div>

@@ -1,149 +1,8 @@
 <%- include('../../layout/head'); -%>
 
 <body>
-    <script>
-        function handleEdit(){
-            document.getElementById('name').disabled = false;
-            document.getElementById('email').disabled = false;
-            document.getElementById('gender').disabled = false;
-            document.getElementById('contact').disabled = false;
-            document.getElementById('doctor').disabled = false;
-            document.getElementById('trusteduser').disabled = false;
-            document.getElementById('save').hidden = false;
-            document.getElementById('edit').hidden = true;
-            return false;
-          }
-          function handleSave(e,ele){
-            e.preventDefault();
-            document.getElementById('name').disabled = true;
-            document.getElementById('email').disabled = true;
-            document.getElementById('gender').disabled = true;
-            document.getElementById('contact').disabled = true;
-            document.getElementById('doctor').disabled = true;
-            document.getElementById('trusteduser').disabled = true;
-            document.getElementById('save').hidden = true;
-            document.getElementById('edit').hidden = false;
-            var id = ele.getAttribute('data-id');
-            console.log(id);
-            var formData={
-              '_id' : id,
-              'name' : $('input[name=name].'+id).val(),
-              'email' : $('input[name=email].'+id).val(),
-              'gender' : $('input[name=gender].'+id).val(),
-              'contact' : $('input[name=contact].'+id).val(),
-              'refCode' : $('input[name=refID].'+id).val(),
-              'doctor' : $('input[name=doctor]'.id).val(),
-              'trustedUser' : $('input[name=trusteduser].'+id).val(),
-            }
-            $.ajax({
-              type : 'POST',
-              url :  '/staff/other/update',
-              data : formData,
-              dataType : 'json',
-              encode : true
-            })
-            .done(function(data){
-              console.log(data);
-            })
-            return false;
-          }
-          </script>
-  <section>
-    <div class="container-fluid">
-      <div class="row">
-
-        <%- include('../../layout/staffSidebar'); -%>
-
-        <div class="col-md-10 " id="target">
-          <div class="row mx-5 my-5">
-
-            <div class="col-md-10 ">
-
-                <div id="accordion" class="mx-4 my-4">
-
-                    <% if(typeof patients !== 'undefined'){
-                      for(let i=0; i<patients.length; i++){
-                        let p = patients[i];
-                        console.log(p.refCode);
-                        %>
-                  <div class="card">
-                    <div class="card-header">
-                      <a style="float: left;" class="collapsed card-link" data-toggle="collapse" href="#id<%= p.refCode%>">
-                        <%=p.name%>
-                      </a>
-
-                      <form method="POST" action="/staff/other/delete">
-                        <input type="hiddent" name="_id" value="<%= p._id%>">
-                        <input style="float: right;" type="submit" class="btn btn-danger" value="Delete">
-                      </form>
-                    </div>
-                    <div id="id<%= p.refCode%>" class="collapse" data-parent="#accordion">
-                      <div class="card-body">
-                          <form style="width:60%;display: inline-block" action="/staff/updatePatient" method="POST">
-                            <input class="<%=p._id%>" type="hidden" name="_id" value="<%=p._id%>">
-                            <div class="form-group" id="NameInput">
-                                <label for="Name:" text-align="left">Name:</label>
-                                <input name="name" id="name" type="text" class="form-control <%=p._id%>" value="<%=p.name%>" disabled>
-                            </div>
-                            <div class="form-group" id="EmailInput">
-                                <label for="email" text-align="left">E-mail:</label>
-                                    <input name="email" id="email" type="email" class="form-control <%=p._id%>" value="<%=p.email%>" disabled>
-                            </div>
-                            <div class="form-group" id="GenderInput">
-                                <label for="gender" text-align="left">Gender:</label>
-                                    <select class="form-control <%=p._id%>" id="gender" name="gender" value="<%= p.gender%>" disabled>
-                                            <option value="male">Select Gender</option>
-                                            <option value="male">Male</option>
-                                            <option value="female">Female</option>
-                                            <option value="others">Others</option>
-                                            </select>
-                                </div>
-                            <div class="form-group" id="ContactInput">
-                                <label for="contact" text-align="left">Contact: </label>
-                                <input name="contact" id="contact" type="text" class="form-control <%=p._id%>" value="<%=p.contact%>" disabled>
-                            </div>
-                            <div class="form-group" id="RefIDInput">
-                                <label for="refID">Reference ID:</label>
-                                    <input name="refID" id="refID" type="text" class="form-control <%=p._id%>" value="<%=p.refCode%>" disabled>
-                                </div>
-                            <div class="form-group" id="DocAssignedInput">
-                                <label for="doctor">Doctor ID:</label>
-                                <input name="doctor" id="doctor" type="text" class="form-control <%=p._id%>" value="<%=p.doctor%>" disabled>
-                            </div>
-                            <div class="form-group" id="TrustedUserInput">
-                                <label for="trusteduser">Trusted User:</label>
-                                <input name="trusteduser" id="trusteduser" type="text" class="form-control <%=p._id%>" value="<%=p.trustedUser%>" disabled>
-                            </div>                
-                            <div id="EditButton">
-                                <label for=""></label>
-                                <button id="edit" onclick="return handleEdit()" class="btn btn-outline-primary" style="display: block;margin: auto;">Edit</button>
-                            </div>
-                            <div id="SaveButton">
-                                <button id="save" hidden onclick="return handleSave(event,this)" data-id="<%=p._id%>" class="btn btn-outline-primary" style="display: block;margin: auto;">Save</button>
-                            </div>
-                        </form>
-
-                      </div>
-                    </div>
-                  </div>
-                  <br>
-                  <%    
-                  }
-                }
-                %>
-                </div>
-            </div>
-
-
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </section>
-<<<<<<< HEAD
   <script>
-      function handleEdit(){
+    function handleEdit() {
       document.getElementById('name').disabled = false;
       document.getElementById('email').disabled = false;
       document.getElementById('gender').disabled = false;
@@ -154,7 +13,7 @@
       document.getElementById('edit').hidden = true;
       return false;
     }
-    function handleSave(e,ele){
+    function handleSave(e, ele) {
       e.preventDefault();
       document.getElementById('name').disabled = true;
       document.getElementById('email').disabled = true;
@@ -166,31 +25,177 @@
       document.getElementById('edit').hidden = false;
       var id = ele.getAttribute('data-id');
       console.log(id);
-      var formData={
-        '_id' : id,
-        'name' : $('input[name=name].'+id).val(),
-        'email' : $('input[name=email].'+id).val(),
-        'gender' : $('input[name=gender].'+id).val(),
-        'contact' : $('input[name=contact].'+id).val(),
-        'refCode' : $('input[name=refID].'+id).val(),
-        'doctor' : $('input[name=doctor]'.id).val(),
-        'trustedUser' : $('input[name=trusteduser].'+id).val(),
+      var formData = {
+        '_id': id,
+        'name': $('input[name=name].' + id).val(),
+        'email': $('input[name=email].' + id).val(),
+        'gender': $('input[name=gender].' + id).val(),
+        'contact': $('input[name=contact].' + id).val(),
+        'refCode': $('input[name=refID].' + id).val(),
+        'doctor': $('input[name=doctor]'.id).val(),
+        'trustedUser': $('input[name=trusteduser].' + id).val(),
       }
       $.ajax({
-        type : 'POST',
-        url :  '/staff/updatePatient',
-        data : formData,
-        dataType : 'json',
-        encode : true
+        type: 'POST',
+        url: '/staff/other/update',
+        data: formData,
+        dataType: 'json',
+        encode: true
       })
-      .done(function(data){
-        console.log(data);
-      })
+        .done(function (data) {
+          console.log(data);
+        })
       return false;
     }
-    </script> 
-=======
->>>>>>> e4f4c9bcbb5f9c7b004f17aeba0beaf14fa067f6
+  </script>
+  <section>
+    <div class="container-fluid">
+      <div class="row">
+
+        <%- include('../../layout/staffSidebar'); -%>
+
+        <div class="col-md-10 " id="target">
+          <div class="row mx-5 my-5">
+
+            <div class="col-md-10 ">
+
+              <div id="accordion" class="mx-4 my-4">
+
+                <% if(typeof patients !== 'undefined'){
+                      for(let i=0; i<patients.length; i++){
+                        let p = patients[i];
+                        %>
+                <div class="card">
+                  <div class="card-header">
+                    <a style="float: left;" class="collapsed card-link" data-toggle="collapse"
+                      href="#id<%= p.refCode%>">
+                      <%=p.name%>
+                    </a>
+
+                    <form method="POST" action="/staff/other/delete">
+                      <input type="hidden" name="_id" value="<%= p._id%>">
+                      <input style="float: right;" type="submit" class="btn btn-danger" value="Delete">
+                    </form>
+                  </div>
+                  <div id="id<%= p.refCode%>" class="collapse" data-parent="#accordion">
+                    <div class="card-body">
+                      <form style="width:60%;display: inline-block" action="/staff/updatePatient" method="POST">
+                        <input class="<%=p._id%>" type="hidden" name="_id" value="<%=p._id%>">
+                        <div class="form-group" id="NameInput">
+                          <label for="Name:" text-align="left">Name:</label>
+                          <input name="name" id="name" type="text" class="form-control <%=p._id%>" value="<%=p.name%>"
+                            disabled>
+                        </div>
+                        <div class="form-group" id="EmailInput">
+                          <label for="email" text-align="left">E-mail:</label>
+                          <input name="email" id="email" type="email" class="form-control <%=p._id%>"
+                            value="<%=p.email%>" disabled>
+                        </div>
+                        <div class="form-group" id="GenderInput">
+                          <label for="gender" text-align="left">Gender:</label>
+                          <select class="form-control <%=p._id%>" id="gender" name="gender" value="<%= p.gender%>"
+                            disabled>
+                            <option value="male">Select Gender</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                            <option value="others">Others</option>
+                          </select>
+                        </div>
+                        <div class="form-group" id="ContactInput">
+                          <label for="contact" text-align="left">Contact: </label>
+                          <input name="contact" id="contact" type="text" class="form-control <%=p._id%>"
+                            value="<%=p.contact%>" disabled>
+                        </div>
+                        <div class="form-group" id="RefIDInput">
+                          <label for="refID">Reference ID:</label>
+                          <input name="refID" id="refID" type="text" class="form-control <%=p._id%>"
+                            value="<%=p.refCode%>" disabled>
+                        </div>
+                        <div class="form-group" id="DocAssignedInput">
+                          <label for="doctor">Doctor ID:</label>
+                          <input name="doctor" id="doctor" type="text" class="form-control <%=p._id%>"
+                            value="<%=p.doctor%>" disabled>
+                        </div>
+                        <div class="form-group" id="TrustedUserInput">
+                          <label for="trusteduser">Trusted User:</label>
+                          <input name="trusteduser" id="trusteduser" type="text" class="form-control <%=p._id%>"
+                            value="<%=p.trustedUser%>" disabled>
+                        </div>
+                        <div id="EditButton">
+                          <button id="edit" data-id="<%=p._id%>" onclick="return handleEdit()"
+                            class="btn btn-outline-primary" style="display: block;margin: auto;">Edit</button>
+                        </div>
+                        <div id="SaveButton">
+                          <button id="save" hidden onclick="return handleSave(event,this)" data-id="<%=p._id%>"
+                            class="btn btn-outline-primary" style="display: block;margin: auto;">Save</button>
+                        </div>
+                      </form>
+
+                    </div>
+                  </div>
+                </div>
+                <br>
+                <%    
+                  }
+                }
+                %>
+              </div>
+            </div>
+
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+  <script>
+    function handleEdit() {
+      document.getElementById('name').disabled = false;
+      document.getElementById('email').disabled = false;
+      document.getElementById('gender').disabled = false;
+      document.getElementById('contact').disabled = false;
+      document.getElementById('doctor').disabled = false;
+      document.getElementById('trusteduser').disabled = false;
+      document.getElementById('save').hidden = false;
+      document.getElementById('edit').hidden = true;
+      return false;
+    }
+    function handleSave(e, ele) {
+      e.preventDefault();
+      document.getElementById('name').disabled = true;
+      document.getElementById('email').disabled = true;
+      document.getElementById('gender').disabled = true;
+      document.getElementById('contact').disabled = true;
+      document.getElementById('doctor').disabled = true;
+      document.getElementById('trusteduser').disabled = true;
+      document.getElementById('save').hidden = true;
+      document.getElementById('edit').hidden = false;
+      var id = ele.getAttribute('data-id');
+      console.log(id);
+      var formData = {
+        '_id': id,
+        'name': $('input[name=name].' + id).val(),
+        'email': $('input[name=email].' + id).val(),
+        'gender': $('input[name=gender].' + id).val(),
+        'contact': $('input[name=contact].' + id).val(),
+        'refCode': $('input[name=refID].' + id).val(),
+        'doctor': $('input[name=doctor]'.id).val(),
+        'trustedUser': $('input[name=trusteduser].' + id).val(),
+      }
+      $.ajax({
+        type: 'POST',
+        url: '/staff/updatePatient',
+        data: formData,
+        dataType: 'json',
+        encode: true
+      })
+        .done(function (data) {
+          console.log(data);
+        })
+      return false;
+    }
+  </script>
 
 </body>
 
