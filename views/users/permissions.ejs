@@ -1,24 +1,63 @@
 <%- include('../layout/head'); -%>
 
 <body>
-  <section>
-    <div class="container-fluid">
-      <div class="row">
+  <div class="container-fluid">
+    <div class="row">
 
-        <%- include('../layout/userSidebar'); -%>
-        
-        <div class="col-md-10 " id="target">
-          <div class="row mx-5 my-5">
+      <%- include('../layout/userSidebar'); -%>
 
-          <% if (typeof userPatients !== 'undefined') {
-              for(let i=0; i<userPatients.length; i++) {
-                let p = userPatients[i];
-          %>
-            <p><%= p%> - </p>
+      <div class="col-md-10">
+        <div class="row mx-5 my-5">
+
+          <div id="accordion" class="mx-4 my-4">
+
+            <% if(typeof patients !== 'undefined'){
+                for(let i=0; i<patients.length; i++){
+                  let p = patients[i];
+                  // console.log(p);
+            %>
+
+            <div class="col-md-12">
+              <div class="card">
+                <div class="card-header">
+                  <a class="card-link" data-toggle="collapse" href="#id<%= p.refCode%>">
+                    <h5><%= p.name%></h5>
+                  </a>
+                </div>
+                <div id="id<%= p.refCode%>" class="collapse" data-parent="#accordion">
+                  <div class="card-body">
+
+                    <%
+                    for(let j=0; j<(p.users).length; j++){
+                      let u = p.users[i];
+                      //console.log(u)
+                    %>
+
+                    <div class="col-10 mb-5">
+                      <div class="card">
+                        <div class="card-body">
+                          <h5 class="card-title"><%= u.name%></h5>
+                          <h6 class="card-subtitle"><%= u.userContact%></h6>
+                          <input type="checkbox" data-toggle="toggle" data-on="Access Granted" data-off="Access Denied"
+                            data-onstyle="info" data-offstyle="danger">
+                        </div>
+                      </div>
+                    </div>
+
+                    <% } %>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+            <br>
+
           <% }
           } %>
-    </div>
-  </div>
+          </div>
+
+        </div>
+      </div>
 
 </body>
 

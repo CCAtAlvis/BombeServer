@@ -221,7 +221,7 @@ const viewPermissions = (req, res) => {
 
     if (docs) {
       // console.log(docs);
-      res.render('users/permissions',{userPatients:docs});
+      res.render('users/permissions', {patients:docs});
     } else {
       res.render('users/permissions');
     }
