@@ -40,8 +40,8 @@ let configuration = {
   ]
 };
 
-let from;
-let to;
+//let from;
+//let to;
 
 start();
 //------------------------------------------------------------END OF INITIALIZATION-----------------------------------------------

@@ -3,7 +3,7 @@
 const wsHost = 'wss://bombe.westindia.cloudapp.azure.com:8443/ws/';
 let wsChannel = 'echo/chetan';
 let wsUri = wsHost + wsChannel;
-let patID = 'Pchetan123456';
+let patID = 'patient001';
 const websocket = new WebSocket(wsUri);
 const mediaPermission = { audio: true, video: true };
 const offerOptions = {
