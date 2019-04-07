@@ -14,7 +14,7 @@ const renderView = (req, res, view) => {
   }
 }
 
-//if no user logged in ,show login page else userIndex page
+//if no user logged in, show login page else userIndex page
 const index = (req, res) => {
   if (!(typeof req.session.user === 'undefined') && !req.session.user.verified) {
     //user is registered/loggedIn but is not verified

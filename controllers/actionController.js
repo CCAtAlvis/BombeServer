@@ -32,7 +32,7 @@ const addRefCode = (req, res) => {
         const update = {
           userContact: contact,
           name: name,
-          permission: false
+          permission: true
         };
 
         Patient.findByIdAndUpdate({ _id: doc._id }, {$push: {users: update}}, { upsert: true }, (err, doc) => {
@@ -49,7 +49,9 @@ const addRefCode = (req, res) => {
       }
 
     } else {
-      res.send('ref code entered is wrong!');
+      res.write('<meta http-equiv="refresh" content="2; url=/users/" />');
+      res.write('ref code entered is wrong!');
+      res.end();
     }
   });
 }
