@@ -4,7 +4,7 @@ const index = (req, res) => {
 
 const start = (req, res) => {
   const code = req.body.refCode;
-  res.redirect(`/patient/start/${code}`);
+  res.redirect(`/patient/chat/${code}`);
 }
 
 const viewStart = (req, res) => {
