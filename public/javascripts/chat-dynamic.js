@@ -74,6 +74,7 @@ function onError(evt) {
 function onMessage(evt) {
   let message = JSON.parse(evt.data);
   console.log('localConn(', message.to, ') got a ', message.type, ' from ', message.name, '(', message.from, ')');
+  to = message.from;
 
   if (message.type == 'offer' && (message.name == 'offerer' || message.name == 'answerer')) {
     onGetOffer(message.offer, message.name);
