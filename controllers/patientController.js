@@ -4,12 +4,12 @@ const index = (req, res) => {
 
 const start = (req, res) => {
   const code = req.body.refCode;
-  res.redirect(`/patient/chat/${code}`);
+  res.redirect(`/patient/start/${code}`);
 }
 
 const viewStart = (req, res) => {
-  // const code = req.params.id;
-  res.render('patient/start', {req:req});
+  const from = req.params.id;
+  res.render('patient/start', {from: from});
 }
 
 const chat = (req, res) => {

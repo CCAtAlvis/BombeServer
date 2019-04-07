@@ -184,12 +184,17 @@ img {
     margin-top: 180px; 
     border-radius: 20px;
 }
+
 #logoDiv {
     background-color: white;
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
-    height: 200px;
 }
+
+img {
+  max-height: 200px !important;
+}
+
 #container {
     display: block;
     position: absolute;
