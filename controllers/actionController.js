@@ -42,15 +42,15 @@ const addRefCode = (req, res) => {
 
           // console.log(doc);
           // res.send('you will be able to connect to the patient soon');
-          res.redirect('/users/requests');
+          res.redirect('/users');
         });
       } else {
-        res.redirect('/users/requests');
+        res.redirect('/users');
       }
 
     } else {
       res.write('<meta http-equiv="refresh" content="2; url=/users/" />');
-      res.write('ref code entered is wrong!');
+      res.write('reference code entered is wrong!');
       res.end();
     }
   });
@@ -58,7 +58,7 @@ const addRefCode = (req, res) => {
 
 
 const chat = (req, res) => {
-  const to = req.body.to;
+  const to = req.params.to;
   const from = req.session.user.contact;
 
   res.render('users/chat', {

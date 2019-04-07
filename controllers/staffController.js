@@ -63,7 +63,7 @@ const index = (req, res) => {
         // });
         res.redirect('/staff/nurse/clipboard');
       } else {
-        res.redirect('/');
+        res.render('staff/login');
       }
     }
   }

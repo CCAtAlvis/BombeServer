@@ -26,6 +26,7 @@ router.post('/requests', userController.requests);
 router.post('/permissions', userController.permissions);
 router.get('/permissions', userController.viewPermissions);
 
-router.post('/chat', actionController.chat);
+router.get('/chat/:to', actionController.chat);
+router.get('/viewlive/:to', actionController.chat);
 
 module.exports = router;
