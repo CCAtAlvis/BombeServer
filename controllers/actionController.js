@@ -67,6 +67,16 @@ const chat = (req, res) => {
   })
 }
 
+const view = (req, res) => {
+  const to = req.params.to;
+  const from = req.session.user.contact;
+
+  res.render('users/view', {
+    to: to,
+    from: from
+  })
+}
+
 
 const post = (req, res) => {
   var form = new formidable.IncomingForm();
@@ -88,4 +98,5 @@ module.exports = {
   addRefCode,
   chat,
   post,
+  view
 }
