@@ -5,7 +5,7 @@ let wsChannel = 'echo/chetan';
 let wsUri = wsHost + wsChannel;
 // let patID = 'Pchetan123456';
 const websocket = new WebSocket(wsUri);
-const mediaPermission = { audio: true, video: true };
+const mediaPermission = { audio: false, video: true };
 const offerOptions = {
     mandatory: {
         'OfferToReceiveAudio': true,
@@ -187,79 +187,16 @@ function onSetSessionDescriptionError(error) {
     console.log(error);
 }
 
-// async function start() { /* defines localconn,adds events and tracks to it*/ 
-//     try {
-//         console.log('onRequest() with connections[',connections.length-1,']');
-//         (connections[connections.length - 1]) = new RTCPeerConnection(configuration);
-//         (connections[connections.length - 1]).addEventListener('icecandidate', e => onIceCandidate((connections[connections.length - 1]), e));
-//         (connections[connections.length - 1]).addEventListener('iceconnectionstatechange', e => onIceStateChange((connections[connections.length - 1]), e));
-//         localStream.getTracks().forEach(track => (connections[connections.length - 1]).addTrack(track, localStream));
-//         console.log('onRequest() : Added local stream to connections[',connections.length-1,']');
-//     } catch (e) {
-//         console.log("onRequest() : Error in onRequest() : ",e);
-//     }
-// }
 // function onIceStateChange(pc, event) {
 //     // if (pc) {
 //     //   console.log(`${getName(pc)} ICE state: ${pc.iceConnectionState}`);
 //     //   console.log('ICE state change event: ', event);
 //     // }
 // }
+
 function onIceStateChange(localConn, event) {
   if (localConn) {
     console.log(`localConn ICE state: ${localConn.iceConnectionState}`);
     console.log('ICE state change event: ', event);
   }
 }
-// function getSelectedSdpSemantics() {
-//   const sdpSemanticsSelect = document.querySelector('#sdpSemantics');
-//   const option = sdpSemanticsSelect.options[sdpSemanticsSelect.selectedIndex];
-//   return option.value === '' ? {} : {sdpSemantics: option.value};
-// }
-// function onSetLocalSuccess(pc) {
-//     console.log(`${getName(pc)} setLocalDescription complete`);
-// }
-// function onSetRemoteSuccess(pc) {
-//     console.log(`${getName(pc)} setRemoteDescription complete`);
-// }
-// function onAddIceCandidateSuccess(pc) {
-//     console.log(`${getName(pc)} addIceCandidate success`);
-// }
-// function onAddIceCandidateError(pc, error) {
-//     console.log(`${getName(pc)} failed to add ICE Candidate: ${error.toString()}`);
-// }
-// function gotRemoteStream(e) {
-//   console.log('HACKER MAN, M In');
-//   if (remoteVideo.srcObject !== e.streams[0]) {
-//     remoteVideo.srcObject = e.streams[0];
-//     console.log('local conn received remote stream');
-//   }
-// }
-// async function onGetOffer (offer, name) {
-//   try {
-//     await localConn.setRemoteDescription(new RTCSessionDescription(offer));
-//     console.log('set remote desc to offer done');
-//   } catch (e) {
-//     console.log("error: ",e);
-//   }
-//   try {
-//     const answer = await localConn.createAnswer();
-//     await localConn.setLocalDescription(answer);
-//     let message = {
-//       type: 'answer',
-//       user: 'chinmay',
-//       answer: answer
-//     };
-//     console.log('create answer and set local desc to answer done');
-//     websocket.send(JSON.stringify(message));
-//   } catch (e) {
-//     console.log(e);
-//   }
-// };
-// function hangup() {
-//   console.log('Ending call');
-//   localConn.close();
-//   localConn = null;
-//   hangupButton.disabled = true;
-//   callButton.disabled = false;
-// }
